@@ -1,0 +1,128 @@
+// $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/'
+// @import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss'
+// @import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss'
+
+// can add Boostrap overrides, additional Sass/CSS below...
+
+
+$mainFontColor: #777
+$elmOrange: #f0ad00
+
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro')
+
+body
+    color: $mainFontColor
+    font-family: 'Source Sans Pro', sans-serif
+    transition: all 0.2s
+
+
+input:focus, button:focus
+        outline: -webkit-focus-ring-color auto 0px
+        border: 1px solid rgba(0, 122, 240, 0.73)
+
+input, button
+    border: 1px solid #eee
+
+input
+    border-bottom: 1px solid gray
+
+button
+    border-radius: 10px
+    padding: 0 60px
+    position: relative
+    transition: all .3s
+
+    &.spinner
+        padding: 0 80px 0 40px
+
+
+    &.spinner:after
+        content: ''
+        box-sizing: border-box
+        position: absolute
+        top: 50%
+        right: 24px
+        width: 20px
+        height: 20px
+        margin-top: -10px
+        margin-left: -10px
+        border-radius: 50%
+        border: 2px solid transparent
+        border-top-color: $mainFontColor
+        animation: spinner .6s linear infinite
+
+    &.spinner-white:after
+        border-top-color: white
+
+.urlChange
+    opacity: .5
+    transition: all 0s
+
+.menu ul, .container, .footerContainer
+    margin-left: auto
+    margin-right: auto
+    max-width: 800px
+
+.container
+    padding: 20px 20px 80px 20px
+
+.footer
+    padding: 80px 20px 20px 20px
+    background-color: #eee
+
+.menu
+    background-color: #f8ca83
+    margin-top: -3px
+
+.menu ul
+    margin-top: 0
+
+.menu a
+    transition: all 0.2s
+    color: $mainFontColor
+
+.menu a:hover
+    background-color: white
+    color: black
+
+.menu li
+    display: inline-block
+
+.menu a, .menu div
+    padding: 10px
+
+.menu .selected
+    background-color: white
+
+h1
+    font-size: 24px
+    text-align: center
+    padding: 20px
+
+    svg
+        padding-bottom: 20px
+
+h2
+    margin-bottom: 2em
+
+h3
+    color: $elmOrange
+    font-weight: bold
+
+h4
+    font-weight: bold
+    margin-top: 40px
+
+a
+    text-decoration: none
+    color: $elmOrange
+
+.code, pre
+    background-color: #f5f5f5
+    padding: 10px
+    font-family: monospace
+
+
+@keyframes spinner
+    to
+        transform: rotate(360deg)

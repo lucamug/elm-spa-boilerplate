@@ -1,0 +1,41 @@
+{
+    "name": "elm-spa-boilerplate",
+    "description": "Boilerplate to write SPA in Elm",
+    "version": "0.0.1",
+    "license": "MIT",
+    "author": "lucamug",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lucamug/elm-spa-boilerplate"
+    },
+    "scripts": {
+        "start": "webpack-dev-server --hot --inline",
+        "prebuild": "rimraf dist",
+        "build": "webpack -p",
+        "reinstall": "npm i rimraf && rimraf node_modules && npm uninstall -g elm && npm i -g elm && npm i && elm package install",
+        "postinstall": "elm package install -y",
+        "server": "node_modules/spa-http-server/bin/http-server ./dist/ -o -p 8181 --push-state"
+    },
+    "devDependencies": {
+        "autoprefixer": "^7.1.6",
+        "bootstrap-sass": "^3.3.7",
+        "copy-webpack-plugin": "^4.2.0",
+        "css-loader": "^0.28.7",
+        "elm": "^0.18.0",
+        "elm-webpack-loader": "^4.4.0",
+        "extract-text-webpack-plugin": "^3.0.2",
+        "file-loader": "^1.1.5",
+        "html-webpack-plugin": "^2.30.1",
+        "jquery": "^3.2.1",
+        "node-sass": "^4.6.1",
+        "postcss-loader": "^2.0.8",
+        "rimraf": "^2.6.2",
+        "sass-loader": "^6.0.6",
+        "spa-http-server": "^0.9.0",
+        "style-loader": "^0.19.0",
+        "url-loader": "^0.6.2",
+        "webpack": "^3.8.1",
+        "webpack-dev-server": "^2.9.4",
+        "webpack-merge": "^4.1.1"
+    }
+}
