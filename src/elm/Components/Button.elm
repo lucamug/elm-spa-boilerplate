@@ -12,27 +12,23 @@ type Msg
 
 introspection : Introspection.Introspection msg Type
 introspection =
-    let
-        example type_ =
-            component type_ (Html.Attributes.attribute "data" "") "I'm a button"
-    in
-    { types = [ Small, SmallImportant, Large, LargeImportant, LargeWithSpinner, LargeImportantWithSpinner ]
-    , signature = "Type -> Html.Attribute msg -> String -> Html.Html msg"
+    { name = "Buttons"
+    , signature = "List (Html.Attribute msg) -> String -> Type -> Html.Html msg"
     , description = "Button accept a type, an Html.Attribute msg that can be attribute that return a messages, such as onClick, and a string that is used inside the button."
-    , usage = """Large (Html.Attributes.attribute "data" "") "I'm a button\""""
-    , usageResult = example Large
-    , name = "Buttons"
-    , example = example
+    , usage = """[] "I am a button" Large"""
+    , usageResult = component [] "I am a button" Large
+    , types = [ Small, Small_Important, Large, Large_Important, Large_With_Spinner, Large_Important_With_Spinner ]
+    , example = component [] "I'm a button"
     }
 
 
 type Type
     = Small
-    | SmallImportant
+    | Small_Important
     | Large
-    | LargeImportant
-    | LargeWithSpinner
-    | LargeImportantWithSpinner
+    | Large_Important
+    | Large_With_Spinner
+    | Large_Important_With_Spinner
 
 
 type Color
@@ -54,10 +50,10 @@ colorToString color =
             "white"
 
         Important ->
-            Components.Color.component Components.Color.ElmOrange
+            Components.Color.component Components.Color.Elm_Orange
 
         TextOnRegular ->
-            Components.Color.component Components.Color.FontColor
+            Components.Color.component Components.Color.Font_Color
 
         TextOnImportant ->
             "white"
@@ -73,8 +69,8 @@ sizeToString size =
             "64px"
 
 
-component : Type -> Html.Attribute msg -> String -> Html.Html msg
-component type_ msg string =
+component : List (Html.Attribute msg) -> String -> Type -> Html.Html msg
+component msgs string type_ =
     let
         { size, color, textColor, extraClass } =
             case type_ of
@@ -85,7 +81,7 @@ component type_ msg string =
                     , extraClass = ""
                     }
 
-                SmallImportant ->
+                Small_Important ->
                     { size = sizeToString SmallSize
                     , color = colorToString Important
                     , textColor = colorToString TextOnImportant
@@ -99,21 +95,21 @@ component type_ msg string =
                     , extraClass = ""
                     }
 
-                LargeImportant ->
+                Large_Important ->
                     { size = sizeToString LargeSize
                     , color = colorToString Important
                     , textColor = colorToString TextOnImportant
                     , extraClass = ""
                     }
 
-                LargeWithSpinner ->
+                Large_With_Spinner ->
                     { size = sizeToString LargeSize
                     , color = colorToString Regular
                     , textColor = colorToString TextOnRegular
                     , extraClass = "spinner"
                     }
 
-                LargeImportantWithSpinner ->
+                Large_Important_With_Spinner ->
                     { size = sizeToString LargeSize
                     , color = colorToString Important
                     , textColor = colorToString TextOnImportant
@@ -121,12 +117,13 @@ component type_ msg string =
                     }
     in
     Html.button
-        [ Html.Attributes.class extraClass
-        , Html.Attributes.style
+        ([ Html.Attributes.class extraClass
+         , Html.Attributes.style
             [ ( "background-color", color )
             , ( "height", size )
             , ( "color", textColor )
             ]
-        , msg
-        ]
+         ]
+            ++ msgs
+        )
         [ Html.text string ]

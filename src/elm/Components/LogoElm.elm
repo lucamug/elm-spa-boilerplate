@@ -11,13 +11,13 @@ import Svg.Attributes
 
 introspection : Introspection.Introspection msg Type
 introspection =
-    { types = [ Colorful, Color Orange, Color Green, Color LightBlue, Color Blue, Color White, Color Black ]
-    , signature = "Type -> Size -> Html.Html msg"
+    { name = "Logo Elm"
+    , signature = "Size -> Type -> Html.Html msg"
     , description = ""
-    , usage = "(Color Orange) 128"
-    , usageResult = component (Color Orange) 128
-    , name = "Logo Elm"
-    , example = \type_ -> component type_ 64
+    , usage = "128 (Color Orange)"
+    , usageResult = component 128 (Color Orange)
+    , types = [ Colorful, Color Orange, Color Green, Color Light_Blue, Color Blue, Color White, Color Black ]
+    , example = component 64
     }
 
 
@@ -33,7 +33,7 @@ type alias Size =
 type Color
     = Orange
     | Green
-    | LightBlue
+    | Light_Blue
     | Blue
     | White
     | Black
@@ -54,7 +54,7 @@ cssRgb color =
         Green ->
             "#7fd13b"
 
-        LightBlue ->
+        Light_Blue ->
             "#60b5cc"
 
         Blue ->
@@ -67,8 +67,8 @@ cssRgb color =
             "#000"
 
 
-component : Type -> Size -> Html.Html msg
-component type_ height =
+component : Size -> Type -> Html.Html msg
+component height type_ =
     let
         f =
             Svg.Attributes.fill
@@ -84,7 +84,7 @@ component type_ height =
                 Colorful ->
                     { c1 = cssRgb Orange
                     , c2 = cssRgb Green
-                    , c3 = cssRgb LightBlue
+                    , c3 = cssRgb Light_Blue
                     , c4 = cssRgb Blue
                     }
 

@@ -307,7 +307,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h1 []
-            [ Components.LogoElm.component (Components.LogoElm.Color Components.LogoElm.Orange) 50
+            [ Components.LogoElm.component 50 <| Components.LogoElm.Color Components.LogoElm.Orange
             , br [] []
             , text model.title
             ]
@@ -367,19 +367,19 @@ viewTop model =
         , case model.apiData of
             NoData ->
                 div []
-                    [ p [] [ Components.Button.component Components.Button.LargeImportant (onClick <| FetchApiData "https://httpbin.org/delay/1") "My IP is..." ]
+                    [ p [] [ Components.Button.component [ onClick <| FetchApiData "https://httpbin.org/delay/1" ] "My IP is..." Components.Button.Large_Important ]
                     , p [] [ text <| "Your IP is ..." ]
                     ]
 
             Fetching ->
                 div []
-                    [ p [] [ Components.Button.component Components.Button.LargeImportantWithSpinner noAttribute "My IP is..." ]
+                    [ p [] [ Components.Button.component [] "My IP is..." Components.Button.Large_Important_With_Spinner ]
                     , p [] [ text <| "Your IP is ..." ]
                     ]
 
             Fetched ip ->
                 div []
-                    [ p [] [ Components.Button.component Components.Button.LargeImportant (onClick <| FetchApiData "https://httpbin.org/delay/1") "My IP is..." ]
+                    [ p [] [ Components.Button.component [ onClick <| FetchApiData "https://httpbin.org/delay/1" ] "My IP is..." Components.Button.Large_Important ]
                     , p [] [ text <| "Your IP is " ++ ip ]
                     ]
         , h3 [] [ text "Local Storage" ]
@@ -470,11 +470,6 @@ firstElement list =
 secondElement : List String -> String
 secondElement list =
     firstElement (Maybe.withDefault [] (List.tail list))
-
-
-noAttribute : Attribute msg
-noAttribute =
-    attribute "no-data" ""
 
 
 

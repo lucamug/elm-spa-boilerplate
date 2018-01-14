@@ -5,13 +5,13 @@ import Html.Attributes exposing (..)
 
 
 type alias Introspection msg a =
-    { example : a -> Html msg
-    , name : String
-    , description : String
+    { name : String
     , signature : String
-    , types : List a
+    , description : String
     , usage : String
     , usageResult : Html.Html msg
+    , example : a -> Html msg
+    , types : List a
     }
 
 

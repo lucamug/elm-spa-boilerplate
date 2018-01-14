@@ -16,39 +16,37 @@ introspection =
                     , ( "background-color", component type_ )
                     , ( "color", "white" )
                     , ( "padding", "10px" )
-                    , ( "text-align", "center" )
-
-                    -- , ( "text-align", "left" )
+                    , ( "text-align", "left" )
                     , ( "font-family", "monospace" )
                     , ( "font-size", "18px" )
                     ]
                 ]
                 [ Html.text <| component type_ ]
     in
-    { types = [ ElmOrange, LightOrange, FontColor ]
+    { name = "Colors"
     , signature = "Type -> String"
-    , description = ""
-    , usage = "ElmOrange"
-    , usageResult = example ElmOrange
-    , name = "Colors"
+    , description = "List of colors used in the app."
+    , usage = "Elm_Orange"
+    , usageResult = example Elm_Orange
+    , types = [ Elm_Orange, Light_Orange, Font_Color ]
     , example = example
     }
 
 
 type Type
-    = ElmOrange
-    | LightOrange
-    | FontColor
+    = Elm_Orange
+    | Light_Orange
+    | Font_Color
 
 
 component : Type -> String
 component type_ =
     case type_ of
-        ElmOrange ->
+        Elm_Orange ->
             "#f0ad00"
 
-        LightOrange ->
+        Light_Orange ->
             "#f8ca83"
 
-        FontColor ->
+        Font_Color ->
             "#777"

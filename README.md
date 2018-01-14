@@ -34,6 +34,8 @@ http://elm-spa-boilerplate.surge.sh/
 - Add spinner to button
 - Add automatic labels to input fields
 - Add a form
+- Server Side Renderin
+- PWA
 
 ## Other boilerplates
 
