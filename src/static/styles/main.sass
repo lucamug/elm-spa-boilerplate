@@ -30,34 +30,6 @@ input, button
 input
     border-bottom: 1px solid gray
 
-button
-    border-radius: 10px
-    padding: 0 60px
-    position: relative
-    transition: all .3s
-
-    &.spinner
-        padding: 0 80px 0 40px
-
-
-    &.spinner:after
-        content: ''
-        box-sizing: border-box
-        position: absolute
-        top: 50%
-        right: 24px
-        width: 20px
-        height: 20px
-        margin-top: -10px
-        margin-left: -10px
-        border-radius: 50%
-        border: 2px solid transparent
-        border-top-color: $mainFontColor
-        animation: spinner .6s linear infinite
-
-    &.spinner-white:after
-        border-top-color: white
-
 .menu ul, .container, .footerContainer
     margin-left: auto
     margin-right: auto

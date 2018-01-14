@@ -72,58 +72,93 @@ sizeToString size =
 component : List (Html.Attribute msg) -> String -> Type -> Html.Html msg
 component msgs string type_ =
     let
-        { size, bgColor, textColor, class } =
+        { size, bgColor, spinner } =
             case type_ of
                 Small ->
                     { size = SmallSize
                     , bgColor = Regular
-                    , textColor = TextOnRegular
-                    , class = ""
+                    , spinner = False
                     }
 
                 Small_Important ->
                     { size = SmallSize
                     , bgColor = Important
-                    , textColor = TextOnImportant
-                    , class = ""
+                    , spinner = False
                     }
 
                 Large ->
                     { size = LargeSize
                     , bgColor = Regular
-                    , textColor = TextOnRegular
-                    , class = ""
+                    , spinner = False
                     }
 
                 Large_Important ->
                     { size = LargeSize
                     , bgColor = Important
-                    , textColor = TextOnImportant
-                    , class = ""
+                    , spinner = False
                     }
 
                 Large_With_Spinner ->
                     { size = LargeSize
                     , bgColor = Regular
-                    , textColor = TextOnRegular
-                    , class = "spinner"
+                    , spinner = True
                     }
 
                 Large_Important_With_Spinner ->
                     { size = LargeSize
                     , bgColor = Important
-                    , textColor = TextOnImportant
-                    , class = "spinner spinner-white"
+                    , spinner = True
                     }
+
+        textColor =
+            case bgColor of
+                Regular ->
+                    TextOnRegular
+
+                _ ->
+                    TextOnImportant
     in
     Html.button
-        ([ Html.Attributes.class class
-         , Html.Attributes.style
+        ([ Html.Attributes.style
             [ ( "background-color", colorToString bgColor )
             , ( "height", sizeToString size )
             , ( "color", colorToString textColor )
+            , ( "border-radius", "10px" )
+            , ( "padding", "0 60px" )
+            , ( "position", "relative" )
+            , ( "transition", "all .3s" )
+            , if spinner then
+                ( "cursor", "progress" )
+              else
+                ( "cursor", "pointer" )
+            , if spinner then
+                ( "padding", "0 80px 0 40px" )
+              else
+                ( "padding", "0 60px" )
             ]
          ]
             ++ msgs
         )
-        [ Html.text string ]
+        [ Html.text string
+        , if spinner then
+            -- This is a pure css spinner
+            Html.div
+                [ Html.Attributes.style
+                    [ ( "box-sizing", "border-box" )
+                    , ( "position", "absolute" )
+                    , ( "top", "50%" )
+                    , ( "right", "24px" )
+                    , ( "width", "20px" )
+                    , ( "height", "20px" )
+                    , ( "margin-top", "-10px" )
+                    , ( "margin-left", "-10px" )
+                    , ( "border-radius", "50%" )
+                    , ( "border", "2px solid transparent" )
+                    , ( "border-top-color", colorToString textColor )
+                    , ( "animation", "spinner .6s linear infinite" )
+                    ]
+                ]
+                [ Html.text "" ]
+          else
+            Html.text ""
+        ]

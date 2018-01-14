@@ -280,12 +280,16 @@ init val location =
 
 
 type alias DataFromApi =
-    { origin : String }
+    { origin : String
+    , data : String
+    }
 
 
 apiDecoder : Decode.Decoder DataFromApi
 apiDecoder =
-    Decode.map DataFromApi (Decode.at [ "origin" ] Decode.string)
+    Decode.map2 DataFromApi
+        (Decode.at [ "origin" ] Decode.string)
+        (Decode.at [ "data" ] Decode.string)
 
 
 
