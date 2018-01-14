@@ -139,7 +139,8 @@ component msgs string type_ =
          ]
             ++ msgs
         )
-        [ Html.text string
+        [ Html.node "style" [] [ Html.text "@keyframes spinner { to { transform: rotate(360deg);}}" ]
+        , Html.text string
         , if spinner then
             -- This is a pure css spinner
             Html.div
