@@ -10,26 +10,26 @@ require('./styles/main.sass');
 
     var Elm = require('../elm/Main');
 
-    var 凸 = Elm.Main.fullscreen(localStorage.getItem("spa") || "");
+    var elmSpa = Elm.Main.fullscreen(localStorage.getItem("spa") || "");
 
-    凸.ports.urlChange.subscribe(function(title) {
+    elmSpa.ports.urlChange.subscribe(function(title) {
         document.body.classList.add("urlChange");
+        setTimeout(function() {
+            document.body.classList.remove("urlChange");
+        }, 100)
         window.requestAnimationFrame(function() {
             document.title = title;
             document.querySelector('meta[name="description"]').setAttribute("content", title);
-            setTimeout(function() {
-                document.body.classList.remove("urlChange");
-            }, 100)
         });
     });
 
-    凸.ports.storeLocalStorage.subscribe(function(value) {
+    elmSpa.ports.storeLocalStorage.subscribe(function(value) {
         localStorage.setItem("spa", value);
     });
 
     window.addEventListener("storage", function(event) {
         if (event.storageArea === localStorage && event.key === "spa") {
-            凸.ports.onLocalStorageChange.send(event.newValue);
+            elmSpa.ports.onLocalStorageChange.send(event.newValue);
         }
     }, false);
 

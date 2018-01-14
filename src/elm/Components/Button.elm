@@ -72,56 +72,56 @@ sizeToString size =
 component : List (Html.Attribute msg) -> String -> Type -> Html.Html msg
 component msgs string type_ =
     let
-        { size, color, textColor, extraClass } =
+        { size, bgColor, textColor, class } =
             case type_ of
                 Small ->
-                    { size = sizeToString SmallSize
-                    , color = colorToString Regular
-                    , textColor = colorToString TextOnRegular
-                    , extraClass = ""
+                    { size = SmallSize
+                    , bgColor = Regular
+                    , textColor = TextOnRegular
+                    , class = ""
                     }
 
                 Small_Important ->
-                    { size = sizeToString SmallSize
-                    , color = colorToString Important
-                    , textColor = colorToString TextOnImportant
-                    , extraClass = ""
+                    { size = SmallSize
+                    , bgColor = Important
+                    , textColor = TextOnImportant
+                    , class = ""
                     }
 
                 Large ->
-                    { size = sizeToString LargeSize
-                    , color = colorToString Regular
-                    , textColor = colorToString TextOnRegular
-                    , extraClass = ""
+                    { size = LargeSize
+                    , bgColor = Regular
+                    , textColor = TextOnRegular
+                    , class = ""
                     }
 
                 Large_Important ->
-                    { size = sizeToString LargeSize
-                    , color = colorToString Important
-                    , textColor = colorToString TextOnImportant
-                    , extraClass = ""
+                    { size = LargeSize
+                    , bgColor = Important
+                    , textColor = TextOnImportant
+                    , class = ""
                     }
 
                 Large_With_Spinner ->
-                    { size = sizeToString LargeSize
-                    , color = colorToString Regular
-                    , textColor = colorToString TextOnRegular
-                    , extraClass = "spinner"
+                    { size = LargeSize
+                    , bgColor = Regular
+                    , textColor = TextOnRegular
+                    , class = "spinner"
                     }
 
                 Large_Important_With_Spinner ->
-                    { size = sizeToString LargeSize
-                    , color = colorToString Important
-                    , textColor = colorToString TextOnImportant
-                    , extraClass = "spinner spinner-white"
+                    { size = LargeSize
+                    , bgColor = Important
+                    , textColor = TextOnImportant
+                    , class = "spinner spinner-white"
                     }
     in
     Html.button
-        ([ Html.Attributes.class extraClass
+        ([ Html.Attributes.class class
          , Html.Attributes.style
-            [ ( "background-color", color )
-            , ( "height", size )
-            , ( "color", textColor )
+            [ ( "background-color", colorToString bgColor )
+            , ( "height", sizeToString size )
+            , ( "color", colorToString textColor )
             ]
          ]
             ++ msgs
