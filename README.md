@@ -11,8 +11,8 @@
 * Example of Ajax request
 * Update of the Title and Meta Description of the page for [Search Engine Optimisation (SEO)](https://medium.com/@l.mugnaini/spa-and-seo-is-googlebot-able-to-render-a-single-page-application-1f74e706ab11)
 * Webpack environment (based on elm-community/elm-webpack-starter)
-* [Experimental Built-in Living Style Guide generator](https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522) base on stateless components
-* Sitemap
+* [Experimental Built-in Living Style Guide generator](https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522) base on stateless components ([Example](http://elm-spa-boilerplate.surge.sh/styleguide)).
+* Sitemap ([Example](http://elm-spa-boilerplate.surge.sh/sitemap))
 * Transition between pages
 
 ## Usage
