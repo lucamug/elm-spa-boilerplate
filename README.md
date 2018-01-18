@@ -1,63 +1,70 @@
 # elm-spa-boilerplate
 
+[Article about elm-spa-boilerplate]( https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2)
 
+## Characteristics
 
+* Use of pushState navigation using forward slash “/” as path separator
+* List of pages in the configuration, easy to add or remove them
+* Implementation of localStorage through ports
+* Example of Ajax request
+* Update of the Title and Meta Description of the page for [Search Engine Optimisation (SEO)](https://medium.com/@l.mugnaini/spa-and-seo-is-googlebot-able-to-render-a-single-page-application-1f74e706ab11)
+* Webpack environment (based on elm-community/elm-webpack-starter)
+* [Experimental Built-in Living Style Guide generator](https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522) base on stateless components
+* Sitemap
+* Transition between pages
 
-# To the the production version
+## Usage
 
-$ npm run server
+If you don’t have Elm yet:
+```
+$ npm install -g elm
+```
+then
+```
+$ git clone https://github.com/lucamug/elm-spa-boilerplate myproject
+$ cd myproject
+$ rm -rf .git    # To remove the boilerplate repo, on Windows:
+                 # rmdir .git /s /q
+$ npm install    # To install the necessary packages
+$ npm start      # To start the local server
+```
+Then access http://localhost:8080/, and everything should work.
 
-# To deploy in github
+Open the code, in src/elm, and poke around!
 
-Github doesn't support push-state webserver yet https://github.com/isaacs/github/issues/408
+To build the production version:
+```
+$ npm run build
+```
+The production version is built in dist/
 
-# To deploy in surge, as SPA
+## Deploy the app in Surge
 
-$ npm install --global surge
+Github doesn’t support SPA yet. If you want to check your app in production you can use Surge.
 
+If you don’t have Surge yet
+```
+$ npm install -g surge   # To install surge if you don't have it
+```
+then, from myproject folder
+
+```
 $ npm run build
 $ cd dist
 $ mv index.html 200.html
-$ surge
-
-Useful commands
-
-$ surge --domain elm-spa-boilerplate.surge.sh
+$ surge --domain myproject.surge.sh
+```
+Other useful Surge commands
+```
 $ surge list
-$ surge teardown elm-spa-boilerplate.surge.sh
+$ surge teardown myproject.surge.sh
+```
 
+## To create a new repository
 
-http://elm-spa-boilerplate.surge.sh/
-
-## Possible Enhancements
-
-- Add automatic labels to input fields
-- Add a form
-- Server Side Rendering
-- PWA
-
-## Other demos/boilerplates
-
-https://github.com/rtfeldman/elm-spa-example
-    Demo: http://rtfeldman.github.io/elm-spa-example/
-
-https://github.com/rl-king/elm-hnpwa/tree/master/src
-    Demo: https://elm-hnpwa.firebaseapp.com/
-    PWA
-
-https://github.com/zhevron/elm-spa-boilerplate
-
-https://github.com/astroash/elm-spa-boiler-plate
-    Demo: http://boiler-my-plate.surge.sh/
-
-https://github.com/chrisUsick/elm-spa-boilerplate
-    Demo: elm-live --output=elm.js src/Main.elm --pushstate --open --debug
-
-https://github.com/chrisUsick/elm-spa-mdl-boilerplate
-    Demo: elm-live --output=elm.js src/Main.elm --pushstate --open --debug
-
-https://github.com/joaobalsini/elm-spa-starter-app
-
-## Example of Style Guides
-
-https://www.familysearch.org/frontier/styleguide/
+From myproject foder:
+```
+$ git init
+$ git add .
+$ git commit -m 'first commit'

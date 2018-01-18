@@ -224,7 +224,7 @@ update msg model =
                     ( { model | apiData = Fetched data.origin }, Cmd.none )
 
                 Err data ->
-                    ( model, Cmd.none )
+                    ( { model | apiData = NoData }, Cmd.none )
 
         FetchApiData url ->
             ( { model | apiData = Fetching }
