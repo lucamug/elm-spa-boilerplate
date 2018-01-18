@@ -1,6 +1,7 @@
 # elm-spa-boilerplate
 
-[Article about elm-spa-boilerplate]( https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2)
+* Demo http://elm-spa-boilerplate.surge.sh/
+* Article https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2
 
 ## Characteristics
 
