@@ -71,3 +71,17 @@ From myproject foder:
 $ git init
 $ git add .
 $ git commit -m 'first commit'
+
+## Links
+
+http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/3.0.2/Element#el
+http://package.elm-lang.org/packages/mdgriffith/style-elements/4.2.1/Element#classifyDevice
+
+https://github.com/mdgriffith/stylish-elephants
+https://github.com/mdgriffith/style-elements
+
+https://mdgriffith.gitbooks.io/style-elements/content/
+
+https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+
+https://app.netlify.com/

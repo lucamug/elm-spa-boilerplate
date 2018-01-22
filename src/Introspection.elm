@@ -1,7 +1,16 @@
-module Introspection exposing (Introspection, view)
+module Introspection
+    exposing
+        ( Introspection
+        , Introspection2
+        , view
+        )
 
+import Color
+import Element
+import Element.Background
+import Element.Font
+import Element.Hack
 import Html exposing (..)
-import Html.Attributes exposing (..)
 
 
 type alias Introspection msg a =
@@ -9,60 +18,62 @@ type alias Introspection msg a =
     , signature : String
     , description : String
     , usage : String
-    , usageResult : Html.Html msg
-    , example : a -> Html msg
-    , types : List a
+    , types : List ( a, String )
+    , example : a -> Element.Element msg
+    , usageResult : Element.Element msg
     }
 
 
-view : Introspection msg a -> Html msg
-view introspection =
-    div
-        [ style
-            [ ( "margin-top", "50px" )
-            , ( "border-top", "1px solid #ddd" )
-            ]
+type alias Introspection2 msg =
+    { name : String
+    , signature : String
+    , description : String
+    , usage : String
+    , types : List ( Element.Element msg, String )
+    , example : Element.Element msg -> Element.Element msg
+    , usageResult : Element.Element msg
+    }
+
+
+code : List (Element.Attribute msg)
+code =
+    [ Element.Background.color <| Color.rgb 0xEE 0xEE 0xEE
+    , Element.padding 10
+    , Element.Font.family
+        [ Element.Font.monospace
         ]
-        [ h3 [] [ text introspection.name ]
-        , pre [] [ text <| "component : " ++ introspection.signature ]
-        , div [ style [ ( "padding-left", "40px" ) ] ]
-            [ p [] [ text introspection.description ]
-            , h4 [] [ text "Example code" ]
-            , pre [] [ text <| "component " ++ introspection.usage ]
-            , h4 [] [ text "Result" ]
-            , div [] [ introspection.usageResult ]
-            , h4 [] [ text ((toString <| List.length introspection.types) ++ " types of " ++ introspection.name) ]
-            , div
-                [ style
-                    [ ( "display", "flex" )
-                    , ( "flex-wrap", "wrap" )
-                    , ( "align-items", "stretch" )
-                    , ( "justify-content", "flex-start" )
-                    ]
+    ]
+
+
+view : Introspection msg a -> Element.Element msg
+view introspection =
+    Element.column []
+        [ Element.Hack.h3 [] [ text introspection.name ]
+        , Element.paragraph code [ Element.text <| introspection.signature ]
+        , Element.column []
+            [ Element.paragraph [] [ Element.text introspection.description ]
+            , Element.Hack.h4 [] [ text "Example code" ]
+            , Element.paragraph code
+                [ Element.text <|
+                    "Parts."
+                        ++ introspection.name
+                        ++ "."
+                        ++ introspection.usage
                 ]
-                (List.map
-                    (\type_ ->
-                        div
-                            [ style
-                                [ ( "margin-top", "20px" )
-                                , ( "padding-bottom", "10px" )
-                                , ( "text-align", "center" )
-                                , ( "flex", "0 1 auto" )
-                                , ( "margin-right", "10px" )
+            , Element.Hack.h4 [] [ text "Result" ]
+            , Element.el [] introspection.usageResult
+            , Element.Hack.h4 [] [ text ((toString <| List.length introspection.types) ++ " types of " ++ introspection.name) ]
+            , Element.paragraph []
+                [ Element.column []
+                    (List.map
+                        (\( type_, name ) ->
+                            Element.column []
+                                [ Element.el [] <| introspection.example type_
+                                , Element.el [] <| Element.text <| name
                                 ]
-                            ]
-                            [ div [] [ introspection.example type_ ]
-                            , div
-                                [ class "code"
-                                , style
-                                    [ ( "padding-top", "10px" )
-                                    , ( "margin-top", "10px" )
-                                    ]
-                                ]
-                                [ text <| toString type_ ]
-                            ]
+                        )
+                        introspection.types
                     )
-                    introspection.types
-                )
+                ]
             ]
         ]

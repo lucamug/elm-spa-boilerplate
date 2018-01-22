@@ -1,8 +1,9 @@
-import './main.css';
+// import './main.css';
 import {
     Main
 } from './Main.elm';
 import registerServiceWorker from './registerServiceWorker';
+import bannerSrc from "./Images/skyline.webp";
 
 const pack = require('../package.json');
 const packElm = require('../elm-package.json');
@@ -13,6 +14,9 @@ const elmSpa = Main.fullscreen({
     localStorage: (localStorage.getItem("spa") || ""),
     packVersion: pack.version,
     packElmVersion: packElm.version,
+    bannerSrc: bannerSrc,
+    width: window.innerWidth,
+    height: window.innerHeight
 });
 
 elmSpa.ports.urlChange.subscribe(function(title) {
