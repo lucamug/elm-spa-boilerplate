@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "summary": "Example using `elm-webpack-loader`.",
+    "summary": "Elm Spa Bolierplate",
     "repository": "https://github.com/lucamug/elm-spa-boilerplate.git",
     "license": "MIT",
     "source-directories": [
