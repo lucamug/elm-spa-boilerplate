@@ -45,12 +45,26 @@ style style =
     Element.attribute (Html.Attributes.style style)
 
 
+value : String -> Element.Attribute msg
+value value =
+    Element.attribute (Html.Attributes.value value)
+
+
 headersCommon : List (Element.Element msg) -> Element.Element msg
 headersCommon elements =
     Element.paragraph
-        [ Element.padding 20
-        ]
+        []
         elements
+
+
+link : List (Element.Attribute msg) -> Element.Link msg -> Element.Element msg
+link attributes urlLabel =
+    -- Temporary fix because link doesn't accept colors yet, it is a bug
+    Element.el
+        attributes
+    <|
+        Element.link []
+            urlLabel
 
 
 h1 : List (Html.Attribute msg) -> List (Html.Html msg) -> Element.Element msg

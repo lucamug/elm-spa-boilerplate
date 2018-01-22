@@ -23,34 +23,23 @@ import Parts.Color
 introspection : Introspection.Introspection2 msg
 introspection =
     { name = "Button"
-    , signature = "List (Html.Attribute msg) -> String -> Element.Element msg"
+    , signature = "String -> Maybe msg -> Element.Element msg"
     , description = "Button accept a type, an Html.Attribute msg that can be attribute that return a messages, such as onClick, and a string that is used inside the button."
-    , usage = "small [] \"I am a button\""
-    , usageResult = common small
+    , usage = """small "I am an usage example" Nothing"""
+    , usageResult = small "I am an usage example" Nothing
     , types = types
     , example = identity
     }
 
 
-common :
-    (List (Element.Attribute msg)
-     -> Element.Element msg
-     -> Maybe msg
-     -> Element.Element msg
-    )
-    -> Element.Element msg
-common type_ =
-    type_ [] (Element.text "I am a button") Nothing
-
-
 types : List ( Element.Element msg, String )
 types =
-    [ ( common small, "small" )
-    , ( common smallImportant, "smallImportant" )
-    , ( common large, "large" )
-    , ( common largeImportant, "largeImportant" )
-    , ( common largeWithSpinner, "largeWithSpinner" )
-    , ( common largeImportantWithSpinner, "largeImportantWithSpinner" )
+    [ ( small "Button" Nothing, "small" )
+    , ( large "Button" Nothing, "large" )
+    , ( largeWithSpinner "Button" Nothing, "largeWithSpinner" )
+    , ( smallImportant "Button" Nothing, "smallImportant" )
+    , ( largeImportant "Button" Nothing, "largeImportant" )
+    , ( largeImportantWithSpinner "Button" Nothing, "largeImportantWithSpinner" )
     ]
 
 
@@ -101,38 +90,38 @@ sizeToInt size =
             32
 
 
-small : List (Element.Attribute msg) -> Element.Element msg -> Maybe msg -> Element.Element msg
-small attributes label onPress =
-    component attributes label onPress Small
+small : String -> Maybe msg -> Element.Element msg
+small label onPress =
+    component label onPress Small
 
 
-smallImportant : List (Element.Attribute msg) -> Element.Element msg -> Maybe msg -> Element.Element msg
-smallImportant attributes label onPress =
-    component attributes label onPress SmallImportant
+smallImportant : String -> Maybe msg -> Element.Element msg
+smallImportant label onPress =
+    component label onPress SmallImportant
 
 
-large : List (Element.Attribute msg) -> Element.Element msg -> Maybe msg -> Element.Element msg
-large attributes label onPress =
-    component attributes label onPress Large
+large : String -> Maybe msg -> Element.Element msg
+large label onPress =
+    component label onPress Large
 
 
-largeImportant : List (Element.Attribute msg) -> Element.Element msg -> Maybe msg -> Element.Element msg
-largeImportant attributes label onPress =
-    component attributes label onPress LargeImportant
+largeImportant : String -> Maybe msg -> Element.Element msg
+largeImportant label onPress =
+    component label onPress LargeImportant
 
 
-largeWithSpinner : List (Element.Attribute msg) -> Element.Element msg -> Maybe msg -> Element.Element msg
-largeWithSpinner attributes label onPress =
-    component attributes label onPress LargeWithSpinner
+largeWithSpinner : String -> Maybe msg -> Element.Element msg
+largeWithSpinner label onPress =
+    component label onPress LargeWithSpinner
 
 
-largeImportantWithSpinner : List (Element.Attribute msg) -> Element.Element msg -> Maybe msg -> Element.Element msg
-largeImportantWithSpinner attributes label onPress =
-    component attributes label onPress LargeImportantWithSpinner
+largeImportantWithSpinner : String -> Maybe msg -> Element.Element msg
+largeImportantWithSpinner label onPress =
+    component label onPress LargeImportantWithSpinner
 
 
-component : List (Element.Attribute msg) -> Element.Element msg -> Maybe msg -> Type -> Element.Element msg
-component attributes label onPress type_ =
+component : String -> Maybe msg -> Type -> Element.Element msg
+component label onPress type_ =
     let
         { size, bgColor, spinner } =
             case type_ of
@@ -184,48 +173,49 @@ component attributes label onPress type_ =
             sizeToInt size
 
         spinnerElement =
-            Element.paragraph [ Element.padding sizeInt ]
+            Element.paragraph [ Element.padding <| sizeInt - 5 ]
                 [ Element.Hack.styleElement "@keyframes spinner { to { transform: rotate(360deg); } }"
                 , Element.el
-                    [ Element.center
+                    [ Element.Font.size 30
+
+                    --, Element.moveUp 0
                     , Element.Hack.style
                         [ ( "animation", "spinner .6s linear infinite" )
                         ]
                     ]
                   <|
-                    Element.text "↻"
+                    -- Element.text "🌸"
+                    Element.text "🏵"
                 ]
     in
     Element.Input.button
-        ([ Element.inFront spinner spinnerElement
-         , Element.Background.color <| typeToColor bgColor
-         , Element.Font.color <| typeToColor textColor
-         , Element.Border.rounded 10
-         , Element.Border.width 1
-         , Element.Border.color <| typeToColor textColor
-         , Element.Hack.style [ ( "transition", "all .3s" ) ]
-         , Element.centerY
-         , if spinner then
+        [ Element.inFront spinner spinnerElement
+        , Element.Background.color <| typeToColor bgColor
+        , Element.Font.color <| typeToColor textColor
+        , Element.Border.rounded 10
+        , Element.Border.width 1
+        , Element.Border.color <| typeToColor textColor
+        , Element.Hack.style [ ( "transition", "all .3s" ) ]
+        , Element.centerY
+        , if spinner then
             Element.Hack.style [ ( "cursor", "progress" ) ]
-           else
+          else
             Element.Hack.style [ ( "cursor", "pointer" ) ]
-         , if spinner then
+        , if spinner then
             Element.paddingEach
                 { top = sizeInt
                 , left = sizeInt * 2 + 10
                 , bottom = sizeInt
                 , right = sizeInt * 2 - 10
                 }
-           else
+          else
             Element.paddingEach
                 { top = sizeInt
                 , left = sizeInt * 2
                 , bottom = sizeInt
                 , right = sizeInt * 2
                 }
-         ]
-            ++ attributes
-        )
+        ]
         { onPress = onPress
-        , label = label
+        , label = Element.text label
         }

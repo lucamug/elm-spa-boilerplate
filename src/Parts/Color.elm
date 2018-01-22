@@ -10,9 +10,12 @@ module Parts.Color
         )
 
 import Color
+import Color.Accessibility
 import Color.Convert
 import Element
 import Element.Background
+import Element.Border
+import Element.Font
 import Introspection
 
 
@@ -43,15 +46,20 @@ types =
 
 
 example : Color.Color -> Element.Element msg
-example type_ =
+example color =
     Element.el
-        [ Element.Background.color type_
+        [ Element.Background.color color
         , Element.width <| Element.px 100
         , Element.height <| Element.px 100
+        , Element.padding 10
+        , Element.Border.rounded 10
+        , Element.Border.width 1
+        , Element.Border.color Color.gray
+        , Element.Font.color <| Maybe.withDefault Color.black <| Color.Accessibility.maximumContrast color [ Color.white, Color.black ]
         ]
     <|
         Element.text <|
-            Color.Convert.colorToHex type_
+            Color.Convert.colorToHex color
 
 
 
@@ -70,7 +78,7 @@ lightOrange =
 
 fontColor : Color.Color
 fontColor =
-    Color.rgb 0x00 0x00 0x00
+    Color.rgb 0x33 0x33 0x33
 
 
 black : Color.Color

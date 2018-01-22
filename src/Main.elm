@@ -3,8 +3,10 @@ port module Main exposing (main)
 import Color
 import Element
 import Element.Background
+import Element.Border
 import Element.Font
 import Element.Hack
+import Element.Input
 import Html
 import Html.Attributes
 import Html.Events
@@ -511,7 +513,11 @@ viewDebug model =
             (\( item, name ) ->
                 Element.paragraph []
                     [ Element.Hack.h4 [] [ Html.text name ]
-                    , Element.text item
+                    , Element.paragraph
+                        [ Element.Background.color <| Color.rgb 0xEE 0xEE 0xEE
+                        , Element.padding 10
+                        ]
+                        [ Element.text item ]
                     ]
             )
          <|
@@ -521,18 +527,19 @@ viewDebug model =
 
 viewTop : Model -> Element.Element Msg
 viewTop model =
-    Element.column []
+    Element.column [ Element.spacing 20 ]
         [ Element.paragraph [] [ Element.text "This is a boilerplate for an Elm Single Page Application." ]
         , Element.paragraph []
-            [ Element.text "Find a detailed post at "
-            , Element.link []
+            [ Element.text "Find a detailed post in "
+            , Element.Hack.link [ Element.Font.color Parts.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2"
-                , label = Element.text "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2"
+                , label = Element.text "Medium"
                 }
             ]
         , Element.paragraph []
             [ Element.text "The code is at "
-            , Element.link [] { url = "https://github.com/lucamug/elm-spa-boilerplate2", label = Element.text "https://github.com/lucamug/elm-spa-boilerplate2" }
+            , Element.Hack.link [ Element.Font.color Parts.Color.elmOrange ]
+                { url = "https://github.com/lucamug/elm-spa-boilerplate2", label = Element.text "github.com/lucamug/elm-spa-boilerplate" }
             ]
         , Element.Hack.h3 [] [ Html.text "Ajax request example" ]
         , case model.apiData of
@@ -540,8 +547,7 @@ viewTop model =
                 Element.column []
                     [ Element.paragraph []
                         [ Parts.Button.largeImportant
-                            []
-                            (Element.text "My IP is...")
+                            "My IP is..."
                           <|
                             Just (FetchApiData "https://httpbin.org/delay/1")
                         ]
@@ -552,8 +558,7 @@ viewTop model =
                 Element.column []
                     [ Element.paragraph []
                         [ Parts.Button.largeImportantWithSpinner
-                            []
-                            (Element.text "My IP is...")
+                            "My IP is..."
                             Nothing
                         ]
                     , Element.paragraph [] [ Element.text <| "Your IP is ..." ]
@@ -563,8 +568,7 @@ viewTop model =
                 Element.column []
                     [ Element.paragraph []
                         [ Parts.Button.largeImportant
-                            []
-                            (Element.text "My IP is...")
+                            "My IP is..."
                           <|
                             Just <|
                                 FetchApiData "https://httpbin.org/delay/1"
@@ -573,24 +577,29 @@ viewTop model =
                     ]
         , Element.Hack.h3 [] [ Html.text "Local Storage" ]
         , Element.paragraph [] [ Element.text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
-        , Element.html
-            (Html.label []
-                [ Html.text "localStorage"
-                , Html.input
-                    [ Html.Attributes.style [ ( "font-size", "18px" ), ( "padding", "10px 14px" ) ]
-                    , Html.Attributes.value model.localStorage
-                    , Html.Events.onInput UpdateLocalStorage
-                    ]
-                    []
-                ]
-            )
+        , Element.Input.text
+            [ Element.Hack.value model.localStorage
+
+            -- This hack is need because there is a border-with: 0 that is
+            -- overwriting Element.Border.width
+            , Element.Hack.style [ ( "border", "1px solid gray" ) ]
+            , Element.Border.width 10
+            , Element.Border.color Color.gray
+            , Element.Border.rounded 10
+            ]
+            { onChange = Just UpdateLocalStorage
+            , text = "ciao"
+            , placeholder = Nothing
+            , label = Element.Input.labelLeft [] <| Element.text "Local Storage"
+            , notice = Nothing
+            }
         ]
 
 
 viewStyleguide : Model -> Element.Element Msg
 viewStyleguide model =
     Element.column []
-        [ Element.text "This is a Living Style Guide automatically generated from the code."
+        [ Element.paragraph [] [ Element.text "This is a Living Style Guide automatically generated from the code." ]
         , Introspection.view Parts.Button.introspection
         , Introspection.view Parts.Color.introspection
         , Introspection.view Parts.LogoElm.introspection
