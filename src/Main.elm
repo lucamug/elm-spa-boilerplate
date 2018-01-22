@@ -155,6 +155,13 @@ locationToRoute location =
 -- PORTS
 
 
+type alias Flag =
+    { localStorage : String
+    , packVersion : String
+    , packElmVersion : String
+    }
+
+
 port urlChange : String -> Cmd msg
 
 
@@ -184,6 +191,8 @@ type alias Model =
     , location : Navigation.Location
     , title : String
     , localStorage : String
+    , packVersion : String
+    , packElmVersion : String
     }
 
 
@@ -199,7 +208,7 @@ type ApiData
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case Debug.log "msg" msg of
+    case msg of
         ChangeLocation location ->
             ( model, Navigation.newUrl location )
 
@@ -247,14 +256,16 @@ update msg model =
 -- INIT
 
 
-initModel : String -> Navigation.Location -> Model
-initModel val location =
+initModel : Flag -> Navigation.Location -> Model
+initModel flag location =
     { route = locationToRoute location
     , history = [ location.pathname ]
     , apiData = NoData
     , location = location
     , title = "Elm Spa Boilerplate"
-    , localStorage = val
+    , localStorage = flag.localStorage
+    , packVersion = flag.packVersion
+    , packElmVersion = flag.packElmVersion
     }
 
 
@@ -263,11 +274,11 @@ initCmd model location =
     Cmd.none
 
 
-init : String -> Navigation.Location -> ( Model, Cmd Msg )
-init val location =
+init : Flag -> Navigation.Location -> ( Model, Cmd Msg )
+init flag location =
     let
         model =
-            initModel val location
+            initModel flag location
 
         cmd =
             initCmd model location
@@ -315,7 +326,12 @@ view model =
             , br [] []
             , text model.title
             ]
-        , img [ src "/static/img/skyline.png", style [ ( "width", "100%" ) ] ] []
+        , img
+            [ src "/img/skyline.jpg"
+            , alt "Skyline"
+            , style [ ( "width", "100%" ) ]
+            ]
+            []
         , div [ class "menu" ]
             [ ul []
                 (List.map
@@ -328,7 +344,16 @@ view model =
             , routeView model.route model
             ]
         , div [ class "footer" ]
-            [ div [ class "footerContainer" ] [ madeByLucamug ]
+            [ div [ class "footerContainer" ]
+                [ madeByLucamug
+                , div [ class "version" ]
+                    [ text <|
+                        "ver. "
+                            ++ model.packVersion
+                            ++ " elm-ver. "
+                            ++ model.packElmVersion
+                    ]
+                ]
             ]
         , forkMe
         ]
@@ -362,10 +387,13 @@ viewTop : Model -> Html Msg
 viewTop model =
     div []
         [ p [] [ text "This is a boilerplate for an Elm Single Page Application." ]
-        , p [] [ text "Find a detailed post at..." ]
+        , p []
+            [ text "Find a detailed post at "
+            , a [ href "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2" ] [ text "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2" ]
+            ]
         , p []
             [ text "The code is at "
-            , a [ href "https://github.com/lucamug/elm-spa-boilerplate" ] [ text "https://github.com/lucamug/elm-spa-boilerplate" ]
+            , a [ href "https://github.com/lucamug/elm-spa-boilerplate2" ] [ text "https://github.com/lucamug/elm-spa-boilerplate2" ]
             ]
         , h3 [] [ text "Ajax request example" ]
         , case model.apiData of
@@ -388,12 +416,15 @@ viewTop model =
                     ]
         , h3 [] [ text "Local Storage" ]
         , p [] [ text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
-        , input
-            [ style [ ( "font-size", "18px" ), ( "padding", "10px 14px" ) ]
-            , value model.localStorage
-            , onInput UpdateLocalStorage
+        , label []
+            [ text "localStorage"
+            , input
+                [ style [ ( "font-size", "18px" ), ( "padding", "10px 14px" ) ]
+                , value model.localStorage
+                , onInput UpdateLocalStorage
+                ]
+                []
             ]
-            []
         ]
 
 
@@ -480,7 +511,7 @@ secondElement list =
 -- MAIN
 
 
-main : Program String Model Msg
+main : Program Flag Model Msg
 main =
     Navigation.programWithFlags UrlChange
         { init = init
@@ -496,7 +527,7 @@ main =
 
 forkMe : Html msg
 forkMe =
-    a [ href "https://github.com/lucamug/elm-spa-boilerplate" ]
+    a [ href "https://github.com/lucamug/elm-spa-boilerplate2" ]
         [ img
             [ src "https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67"
             , alt "Fork me on GitHub"

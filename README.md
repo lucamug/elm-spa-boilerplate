@@ -10,7 +10,7 @@
 * Implementation of localStorage through ports
 * Example of Ajax request
 * Update of the Title and Meta Description of the page for [Search Engine Optimisation (SEO)](https://medium.com/@l.mugnaini/spa-and-seo-is-googlebot-able-to-render-a-single-page-application-1f74e706ab11)
-* Webpack environment (based on elm-community/elm-webpack-starter)
+* Webpack environment (based on https://github.com/halfzebra/create-elm-app)
 * [Experimental Built-in Living Style Guide generator](https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522) base on stateless components ([Example](http://elm-spa-boilerplate.surge.sh/styleguide)).
 * Sitemap ([Example](http://elm-spa-boilerplate.surge.sh/sitemap))
 * Transition between pages
@@ -21,24 +21,27 @@ If you don’t have Elm yet:
 ```
 $ npm install -g elm
 ```
+If you don’t have create-elm-app yet:
+```
+$ npm install -g create-elm-app
+```
 then
 ```
-$ git clone https://github.com/lucamug/elm-spa-boilerplate myproject
+$ git clone https://github.com/lucamug/elm-spa-boilerplate2 myproject
 $ cd myproject
 $ rm -rf .git    # To remove the boilerplate repo, on Windows:
                  # rmdir .git /s /q
-$ npm install    # To install the necessary packages
-$ npm start      # To start the local server
+$ elm-app start  # To start the local server
 ```
-Then access http://localhost:8080/, and everything should work.
+Then access http://localhost:3000/, and everything should work.
 
-Open the code, in src/elm, and poke around!
+Open the code, in `src`, and poke around!
 
 To build the production version:
 ```
-$ npm run build
+$ elm-app build
 ```
-The production version is built in dist/
+The production version is built in build/
 
 ## Deploy the app in Surge
 
@@ -46,15 +49,14 @@ Github doesn’t support SPA yet. If you want to check your app in production yo
 
 If you don’t have Surge yet
 ```
-$ npm install -g surge   # To install surge if you don't have it
+$ npm install -g surge
 ```
-then, from myproject folder
+then:
 
 ```
-$ npm run build
-$ cd dist
-$ mv index.html 200.html
-$ surge --domain myproject.surge.sh
+$ elm-app build
+$ mv build/index.html build/200.html
+$ surge build myproject.surge.sh
 ```
 Other useful Surge commands
 ```

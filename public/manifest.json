@@ -1,0 +1,20 @@
+{
+    "short_name": "Elm Spa",
+    "name": "A boilerplate to easily create Spa in Elm",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "192x192",
+            "type": "image/ico"
+        },
+        {
+            "src": "favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "./",
+    "display": "standalone",
+    "theme_color": "#f0ad00",
+    "background_color": "#f0ad00"
+}

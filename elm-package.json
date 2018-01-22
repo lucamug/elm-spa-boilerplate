@@ -1,10 +1,10 @@
 {
-    "version": "1.0.0",
+    "version": "0.0.3",
     "summary": "Elm Spa Bolierplate",
-    "repository": "https://github.com/lucamug/elm-spa-boilerplate.git",
-    "license": "MIT",
+    "repository": "https://github.com/lucamug/elm-spa-boilerplate2.git",
+    "license": "BSD3",
     "source-directories": [
-        "src/elm"
+        "src"
     ],
     "exposed-modules": [],
     "dependencies": {
