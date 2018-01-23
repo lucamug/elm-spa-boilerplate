@@ -1,8 +1,5 @@
 port module Main exposing (main)
 
--- import Element.Debug
-
-import Color
 import Element
 import Element.Background
 import Element.Border
@@ -10,7 +7,6 @@ import Element.Font
 import Element.Hack
 import Element.Input
 import Html
-import Html.Attributes
 import Html.Events
 import Http
 import Introspection
@@ -25,39 +21,6 @@ import UrlParser exposing ((</>))
 import Window
 
 
-{-
-   <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
-       <defs>
-           <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
-               <stop stop-color="#fff" stop-opacity="0" offset="0%"/>
-               <stop stop-color="#fff" stop-opacity=".631" offset="63.146%"/>
-               <stop stop-color="#fff" offset="100%"/>
-           </linearGradient>
-       </defs>
-       <g fill="none" fill-rule="evenodd">
-           <g transform="translate(1 1)">
-               <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
-                   <animateTransform
-                       attributeName="transform"
-                       type="rotate"
-                       from="0 18 18"
-                       to="360 18 18"
-                       dur="0.9s"
-                       repeatCount="indefinite" />
-               </path>
-               <circle fill="#fff" cx="36" cy="18" r="1">
-                   <animateTransform
-                       attributeName="transform"
-                       type="rotate"
-                       from="0 18 18"
-                       to="360 18 18"
-                       dur="0.9s"
-                       repeatCount="indefinite" />
-               </circle>
-           </g>
-       </g>
-   </svg>
--}
 -- ROUTES
 
 
@@ -438,19 +401,19 @@ viewLinkMenu model route =
 viewMenu : Model -> Element.Element Msg
 viewMenu model =
     let
-        element =
-            if model.device.width < menuBreakPoint then
-                Element.column
-            else
-                Element.row
+        menuList =
+            List.map
+                (\route -> viewLinkMenu model route)
+                routes
     in
-    element
-        [ Element.Background.color Parts.Color.lightOrange
-        ]
-        (List.map
-            (\route -> viewLinkMenu model route)
-            routes
-        )
+    if model.device.width < menuBreakPoint then
+        Element.column
+            [ Element.Background.color Parts.Color.lightOrange ]
+            menuList
+    else
+        Element.row
+            [ Element.Background.color Parts.Color.lightOrange ]
+            menuList
 
 
 viewTopPart : Model -> Element.Element Msg
@@ -461,19 +424,18 @@ viewTopPart model =
         ]
         [ Element.el [ Element.padding 10 ] <| Parts.LogoElm.orange 50
         , Element.Hack.h1
-            [ Html.Attributes.style
-                [ ( "text-shadow", "1px 0 1px black" )
-                , ( "text-align", "center" )
-                ]
+            [ Element.center
+            , Element.Font.shadow { offset = ( 1, 0 ), blur = 1, color = Parts.Color.black }
             ]
-            [ Html.text "Elm Spa Boilerplate" ]
+          <|
+            Element.text "Elm Spa Boilerplate"
         ]
 
 
 viewMiddelPart : Model -> Element.Element Msg
 viewMiddelPart model =
     Element.column [ Element.padding 30 ]
-        [ Element.Hack.h2 [] [ Html.text <| routeName model.route ]
+        [ Element.Hack.h2 [] <| Element.text <| routeName model.route
         , routeView model.route model
         ]
 
@@ -519,8 +481,9 @@ view model =
                 }
             , Element.Font.sansSerif
             ]
+        , Element.Font.size 16
         , Element.Font.color Parts.Color.fontColor
-        , Element.Background.color Color.white
+        , Element.Background.color Parts.Color.white
         ]
     <|
         Element.column []
@@ -544,13 +507,13 @@ onLinkClickSE url =
 
 viewDebug : Model -> Element.Element msg
 viewDebug model =
-    Element.paragraph []
+    Element.column []
         (List.map
             (\( item, name ) ->
-                Element.paragraph []
-                    [ Element.Hack.h4 [] [ Html.text name ]
+                Element.column []
+                    [ Element.Hack.h4 [] <| Element.text name
                     , Element.paragraph
-                        [ Element.Background.color <| Color.rgb 0xEE 0xEE 0xEE
+                        [ Element.Background.color <| Parts.Color.lightGray
                         , Element.padding 10
                         ]
                         [ Element.text item ]
@@ -571,13 +534,15 @@ viewTop model =
                 { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2"
                 , label = Element.text "Medium"
                 }
+            , Element.text "."
             ]
         , Element.paragraph []
             [ Element.text "The code is at "
             , Element.Hack.link [ Element.Font.color Parts.Color.elmOrange ]
                 { url = "https://github.com/lucamug/elm-spa-boilerplate2", label = Element.text "github.com/lucamug/elm-spa-boilerplate" }
+            , Element.text "."
             ]
-        , Element.Hack.h3 [] [ Html.text "Ajax request example" ]
+        , Element.Hack.h3 [] <| Element.text "Ajax request example"
         , case model.apiData of
             NoData ->
                 Element.column []
@@ -611,14 +576,14 @@ viewTop model =
                         ]
                     , Element.paragraph [] [ Element.text <| "Your IP is " ++ ip ]
                     ]
-        , Element.Hack.h3 [] [ Html.text "Local Storage" ]
+        , Element.Hack.h3 [] <| Element.text "Local Storage"
         , Element.paragraph [] [ Element.text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
         , Element.Input.text
             [ -- This hack is need because there is a border-with: 0 that is
               -- overwriting Element.Border.width
               Element.Hack.style [ ( "border", "1px solid gray" ) ]
             , Element.Border.width 10
-            , Element.Border.color Color.gray
+            , Element.Border.color <| Parts.Color.lightGray
             , Element.Border.rounded 10
             ]
             { onChange = Just UpdateLocalStorage
@@ -633,7 +598,14 @@ viewTop model =
 viewStyleguide : Model -> Element.Element Msg
 viewStyleguide model =
     Element.column []
-        [ Element.paragraph [] [ Element.text "This is a Living Style Guide automatically generated from the code." ]
+        [ Element.paragraph []
+            [ Element.text "This is a Living Style Guide automatically generated from the code. Read more about it in "
+            , Element.Hack.link [ Element.Font.color Parts.Color.elmOrange ]
+                { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
+                , label = Element.text "Medium"
+                }
+            , Element.text "."
+            ]
         , Introspection.view Parts.Spinner.introspection
         , Introspection.view Parts.Button.introspection
         , Introspection.view Parts.Color.introspection
@@ -750,7 +722,7 @@ forkMe =
 made : String -> String -> Element.Element msg
 made with by =
     Element.link
-        [ Element.Font.color Color.white
+        [ Element.Font.color <| Parts.Color.white
         , Element.Hack.class "made-by"
         ]
         { url = "https://github.com/" ++ by
@@ -759,7 +731,7 @@ made with by =
                 [ Element.Hack.styleElement ".made-by:hover .made-by-spin {transform: rotate(0deg);}"
                 , Element.text "made with "
                 , Element.el
-                    [ Element.Font.color Color.red
+                    [ Element.Font.color <| Parts.Color.red
                     , Element.rotate <| degrees 60
                     , Element.padding 4
                     , Element.Hack.class "made-by-spin"

@@ -4,6 +4,7 @@ module Parts.Color
         , elmOrange
         , fontColor
         , introspection
+        , lightGray
         , lightOrange
         , red
         , white
@@ -36,12 +37,13 @@ introspection =
 
 types : List ( Color.Color, String )
 types =
-    [ ( elmOrange, "elmOrange" )
-    , ( lightOrange, "lightOrange" )
+    [ ( black, "black" )
+    , ( elmOrange, "elmOrange" )
     , ( fontColor, "fontColor" )
-    , ( black, "black" )
-    , ( white, "white" )
+    , ( lightGray, "lightGray" )
+    , ( lightOrange, "lightOrange" )
     , ( red, "red" )
+    , ( white, "white" )
     ]
 
 
@@ -74,6 +76,11 @@ elmOrange =
 lightOrange : Color.Color
 lightOrange =
     Color.rgb 0xF8 0xCA 0x83
+
+
+lightGray : Color.Color
+lightGray =
+    Color.rgb 0xEE 0xEE 0xEE
 
 
 fontColor : Color.Color

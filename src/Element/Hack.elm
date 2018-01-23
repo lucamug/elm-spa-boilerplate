@@ -3,6 +3,8 @@ module Element.Hack exposing (..)
 --import Element.Font
 
 import Element
+import Element.Area
+import Element.Font
 import Html
 import Html.Attributes
 import Window
@@ -51,13 +53,6 @@ value value =
     Element.attribute (Html.Attributes.value value)
 
 
-headersCommon : List (Element.Element msg) -> Element.Element msg
-headersCommon elements =
-    Element.paragraph
-        []
-        elements
-
-
 link : List (Element.Attribute msg) -> Element.Link msg -> Element.Element msg
 link attributes urlLabel =
     -- Temporary fix because link doesn't accept colors yet, it is a bug
@@ -68,33 +63,61 @@ link attributes urlLabel =
             urlLabel
 
 
-h1 : List (Html.Attribute msg) -> List (Html.Html msg) -> Element.Element msg
-h1 attributes children =
-    headersCommon
-        [ Element.html <|
-            Html.h1 attributes children
-        ]
+goldenRatio : Float
+goldenRatio =
+    1.618
 
 
-h2 : List (Html.Attribute msg) -> List (Html.Html msg) -> Element.Element msg
-h2 attributes children =
-    headersCommon
-        [ Element.html <|
-            Html.h2 attributes children
-        ]
+genericRatio : Float
+genericRatio =
+    1.4
 
 
-h3 : List (Html.Attribute msg) -> List (Html.Html msg) -> Element.Element msg
-h3 attributes children =
-    headersCommon
-        [ Element.html <|
-            Html.h3 attributes children
-        ]
+scaledFontSize : Int -> Int
+scaledFontSize n =
+    round (16 * (genericRatio ^ toFloat n))
 
 
-h4 : List (Html.Attribute msg) -> List (Html.Html msg) -> Element.Element msg
-h4 attributes children =
-    headersCommon
-        [ Element.html <|
-            Html.h4 attributes children
-        ]
+header :
+    number
+    -> List (Element.Attribute msg)
+    -> Element.Element msg
+    -> Element.Element msg
+header level attributes child =
+    let
+        fontLevel =
+            abs (level - 4)
+
+        fontSize =
+            scaledFontSize fontLevel
+    in
+    Element.el
+        ([ Element.Area.heading level
+         , Element.Font.size fontSize
+         , Element.paddingEach { top = fontSize, right = 0, bottom = fontSize, left = 0 }
+         , Element.alignLeft
+         , Element.Font.weight 800
+         ]
+            ++ attributes
+        )
+        child
+
+
+h1 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h1 =
+    header 1
+
+
+h2 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h2 =
+    header 2
+
+
+h3 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h3 =
+    header 3
+
+
+h4 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h4 =
+    header 4

@@ -24,7 +24,7 @@ introspection : Introspection.Introspection2 msg
 introspection =
     { name = "Spinner"
     , signature = "Int -> Element msg"
-    , description = "Spinner are used when the app is on hold, for example when waiting for an http request to come back."
+    , description = "Spinner are used when the app is on hold, for example when waiting for an http request to come back. They are also embedded in other Parts, like button."
     , usage = "black 128"
     , usageResult = example <| black 128
     , types = types
