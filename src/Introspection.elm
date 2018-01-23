@@ -53,18 +53,12 @@ view introspection =
         , Element.Border.color Color.gray
         , Element.paddingEach { top = 60, right = 0, bottom = 30, left = 0 }
         ]
-        [ Element.Hack.h3 [] [ text introspection.name ]
+        [ Element.Hack.h3 [] [ text <| "► " ++ introspection.name ]
         , Element.paragraph [] [ Element.text introspection.description ]
         , Element.Hack.h4 [] [ text "Signature" ]
         , Element.paragraph codeAttributes [ Element.text <| introspection.signature ]
         , Element.Hack.h4 [] [ text "Code Example" ]
-        , Element.paragraph codeAttributes
-            [ Element.text <|
-                "Parts."
-                    ++ introspection.name
-                    ++ "."
-                    ++ introspection.usage
-            ]
+        , Element.paragraph codeAttributes [ Element.text <| introspection.usage ]
         , Element.Hack.h4 [] [ text "Result" ]
         , Element.paragraph [] [ introspection.usageResult ]
         , Element.Hack.h4 [] [ text ((toString <| List.length introspection.types) ++ " types of " ++ introspection.name) ]

@@ -18,12 +18,13 @@ import Element.Hack
 import Element.Input
 import Introspection
 import Parts.Color
+import Parts.Spinner
 
 
 introspection : Introspection.Introspection2 msg
 introspection =
     { name = "Button"
-    , signature = "String -> Maybe msg -> Element.Element msg"
+    , signature = "String -> Maybe msg -> Element msg"
     , description = "Button accept a type, an Html.Attribute msg that can be attribute that return a messages, such as onClick, and a string that is used inside the button."
     , usage = """small "I am an usage example" Nothing"""
     , usageResult = small "I am an usage example" Nothing
@@ -92,36 +93,36 @@ sizeToInt size =
 
 small : String -> Maybe msg -> Element.Element msg
 small label onPress =
-    component label onPress Small
+    part label onPress Small
 
 
 smallImportant : String -> Maybe msg -> Element.Element msg
 smallImportant label onPress =
-    component label onPress SmallImportant
+    part label onPress SmallImportant
 
 
 large : String -> Maybe msg -> Element.Element msg
 large label onPress =
-    component label onPress Large
+    part label onPress Large
 
 
 largeImportant : String -> Maybe msg -> Element.Element msg
 largeImportant label onPress =
-    component label onPress LargeImportant
+    part label onPress LargeImportant
 
 
 largeWithSpinner : String -> Maybe msg -> Element.Element msg
 largeWithSpinner label onPress =
-    component label onPress LargeWithSpinner
+    part label onPress LargeWithSpinner
 
 
 largeImportantWithSpinner : String -> Maybe msg -> Element.Element msg
 largeImportantWithSpinner label onPress =
-    component label onPress LargeImportantWithSpinner
+    part label onPress LargeImportantWithSpinner
 
 
-component : String -> Maybe msg -> Type -> Element.Element msg
-component label onPress type_ =
+part : String -> Maybe msg -> Type -> Element.Element msg
+part label onPress type_ =
     let
         { size, bgColor, spinner } =
             case type_ of
@@ -173,20 +174,12 @@ component label onPress type_ =
             sizeToInt size
 
         spinnerElement =
-            Element.paragraph [ Element.padding <| sizeInt - 5 ]
-                [ Element.Hack.styleElement "@keyframes spinner { to { transform: rotate(360deg); } }"
-                , Element.el
-                    [ Element.Font.size 30
+            case bgColor of
+                Regular ->
+                    Element.paragraph [ Element.padding <| sizeInt - 3 ] [ Parts.Spinner.black 28 ]
 
-                    --, Element.moveUp 0
-                    , Element.Hack.style
-                        [ ( "animation", "spinner .6s linear infinite" )
-                        ]
-                    ]
-                  <|
-                    -- Element.text "🌸"
-                    Element.text "🏵"
-                ]
+                _ ->
+                    Element.paragraph [ Element.padding <| sizeInt - 3 ] [ Parts.Spinner.white 28 ]
     in
     Element.Input.button
         [ Element.inFront spinner spinnerElement

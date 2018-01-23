@@ -26,9 +26,9 @@ import Svg.Attributes
 introspection : Introspection.Introspection2 msg
 introspection =
     { name = "LogoElm"
-    , signature = "Int -> Element.Element msg"
+    , signature = "Int -> Element msg"
     , description = ""
-    , usage = "colorOrange 128"
+    , usage = "orange 128"
     , usageResult = example <| orange 128
     , types = types
     , example = example
@@ -70,37 +70,37 @@ example type_ =
 
 orange : Int -> Element.Element msg
 orange size =
-    component size (Color Orange)
+    part size (Color Orange)
 
 
 green : Int -> Element.Element msg
 green size =
-    component size (Color Green)
+    part size (Color Green)
 
 
 lightBlue : Int -> Element.Element msg
 lightBlue size =
-    component size (Color LightBlue)
+    part size (Color LightBlue)
 
 
 blue : Int -> Element.Element msg
 blue size =
-    component size (Color Blue)
+    part size (Color Blue)
 
 
 white : Int -> Element.Element msg
 white size =
-    component size (Color White)
+    part size (Color White)
 
 
 black : Int -> Element.Element msg
 black size =
-    component size (Color Black)
+    part size (Color Black)
 
 
 colorful : Int -> Element.Element msg
 colorful size =
-    component size Colorful
+    part size Colorful
 
 
 
@@ -157,8 +157,8 @@ cssRgb color =
             Color.rgb 0x00 0x00 0x00
 
 
-component : Size -> Type -> Element.Element msg
-component height type_ =
+part : Size -> Type -> Element.Element msg
+part height type_ =
     let
         f =
             Svg.Attributes.fill

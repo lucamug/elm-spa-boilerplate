@@ -1,7 +1,8 @@
 module Element.Hack exposing (..)
 
+--import Element.Font
+
 import Element
-import Element.Font
 import Html
 import Html.Attributes
 import Window
