@@ -390,8 +390,7 @@ viewLinkMenu model route =
             (Element.text <| routeName route)
     else
         Element.link
-            ([ Element.Font.color Parts.Color.white
-             , onLinkClickSE url
+            ([ onLinkClickSE url
              ]
                 ++ common
             )
@@ -436,15 +435,15 @@ viewTopPart model =
 
 viewMiddlePart : Model -> Element.Element Msg
 viewMiddlePart model =
-    Element.el [] <|
-        Element.column
+    Element.row [ Element.width Element.fill ]
+        [ Element.column
             [ Element.padding 30
             , Element.Hack.style [ ( "max-width", toString menuBreakPoint ++ "px" ) ]
-            , Element.center
             ]
             [ Element.Hack.h2 [] <| Element.text <| routeName model.route
             , routeView model.route model
             ]
+        ]
 
 
 menuBreakPoint : Int
@@ -463,11 +462,10 @@ viewFooter model =
     in
     element
         [ Element.spaceEvenly
-        , Element.Background.color Parts.Color.elmOrange
+        , Element.Background.color Parts.Color.lightOrange
         , Element.padding 30
-        , Element.Font.color Parts.Color.white
         ]
-        [ made "凸" "lucamug"
+        [ viewMade "凸" "lucamug"
         , Element.el [] <|
             Element.text <|
                 "ver. "
@@ -523,7 +521,7 @@ viewDebug model =
                         [ Element.Background.color <| Parts.Color.lightGray
                         , Element.padding 10
                         ]
-                        [ Element.text item ]
+                        (List.map (\line -> Element.paragraph [] [ Element.text <| line ]) <| String.split "," item)
                     ]
             )
          <|
@@ -644,7 +642,7 @@ viewSitemap model =
             data
         , columns =
             [ { header = Element.text ""
-              , view = \row -> Element.paragraph [ Element.Background.color Parts.Color.elmOrange ] [ row.link1 ]
+              , view = \row -> Element.paragraph [] [ row.link1 ]
               }
             , { header = Element.text ""
               , view = \row -> Element.paragraph [ Element.padding 10 ] [ row.link2 ]
@@ -729,11 +727,10 @@ forkMe =
 -- MADE BY LUCAMUG
 
 
-made : String -> String -> Element.Element msg
-made with by =
+viewMade : String -> String -> Element.Element msg
+viewMade with by =
     Element.link
-        [ Element.Font.color <| Parts.Color.white
-        , Element.Hack.class "made-by"
+        [ Element.Hack.class "made-by"
         ]
         { url = "https://github.com/" ++ by
         , label =
