@@ -1,5 +1,7 @@
 port module Main exposing (main)
 
+-- import Element.Debug exposing (redBorder)
+
 import Element
 import Element.Background
 import Element.Border
@@ -269,7 +271,7 @@ update msg model =
                     ( { model | apiData = Fetched data.origin }, Cmd.none )
 
                 Err data ->
-                    ( { model | apiData = NoData }, Cmd.none )
+                    ( { model | apiData = Fetched <| toString data }, Cmd.none )
 
         FetchApiData url ->
             ( { model | apiData = Fetching }
@@ -388,7 +390,7 @@ viewLinkMenu model route =
             (Element.text <| routeName route)
     else
         Element.link
-            ([ Element.Font.color Parts.Color.red
+            ([ Element.Font.color Parts.Color.white
              , onLinkClickSE url
              ]
                 ++ common
@@ -432,12 +434,17 @@ viewTopPart model =
         ]
 
 
-viewMiddelPart : Model -> Element.Element Msg
-viewMiddelPart model =
-    Element.column [ Element.padding 30 ]
-        [ Element.Hack.h2 [] <| Element.text <| routeName model.route
-        , routeView model.route model
-        ]
+viewMiddlePart : Model -> Element.Element Msg
+viewMiddlePart model =
+    Element.el [] <|
+        Element.column
+            [ Element.padding 30
+            , Element.Hack.style [ ( "max-width", toString menuBreakPoint ++ "px" ) ]
+            , Element.center
+            ]
+            [ Element.Hack.h2 [] <| Element.text <| routeName model.route
+            , routeView model.route model
+            ]
 
 
 menuBreakPoint : Int
@@ -489,7 +496,7 @@ view model =
         Element.column []
             [ viewTopPart model
             , viewMenu model
-            , viewMiddelPart model
+            , viewMiddlePart model
             , viewFooter model
             ]
 
@@ -511,7 +518,7 @@ viewDebug model =
         (List.map
             (\( item, name ) ->
                 Element.column []
-                    [ Element.Hack.h4 [] <| Element.text name
+                    [ Element.Hack.h3 [] <| Element.text <| "► " ++ name
                     , Element.paragraph
                         [ Element.Background.color <| Parts.Color.lightGray
                         , Element.padding 10
@@ -530,7 +537,7 @@ viewTop model =
         [ Element.paragraph [] [ Element.text "This is a boilerplate for an Elm Single Page Application." ]
         , Element.paragraph []
             [ Element.text "Find a detailed post in "
-            , Element.Hack.link [ Element.Font.color Parts.Color.elmOrange ]
+            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2"
                 , label = Element.text "Medium"
                 }
@@ -538,7 +545,7 @@ viewTop model =
             ]
         , Element.paragraph []
             [ Element.text "The code is at "
-            , Element.Hack.link [ Element.Font.color Parts.Color.elmOrange ]
+            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
                 { url = "https://github.com/lucamug/elm-spa-boilerplate2", label = Element.text "github.com/lucamug/elm-spa-boilerplate" }
             , Element.text "."
             ]
@@ -558,7 +565,7 @@ viewTop model =
             Fetching ->
                 Element.column []
                     [ Element.paragraph []
-                        [ Parts.Button.largeImportantWithSpinner
+                        [ Parts.Button.largeWithSpinner
                             "My IP is..."
                             Nothing
                         ]
@@ -579,17 +586,20 @@ viewTop model =
         , Element.Hack.h3 [] <| Element.text "Local Storage"
         , Element.paragraph [] [ Element.text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
         , Element.Input.text
-            [ -- This hack is need because there is a border-with: 0 that is
-              -- overwriting Element.Border.width
-              Element.Hack.style [ ( "border", "1px solid gray" ) ]
-            , Element.Border.width 10
-            , Element.Border.color <| Parts.Color.lightGray
+            [ Element.Border.width 1
+            , Element.Border.color <| Parts.Color.fontColor
             , Element.Border.rounded 10
+            , Element.padding 8
             ]
             { onChange = Just UpdateLocalStorage
             , text = model.localStorage
             , placeholder = Nothing
-            , label = Element.Input.labelLeft [] <| Element.text "Local Storage"
+            , label =
+                Element.Input.labelLeft [] <|
+                    Element.paragraph
+                        [ Element.paddingEach { top = 8, right = 20, bottom = 8, left = 0 }
+                        ]
+                        [ Element.text "Local Storage" ]
             , notice = Nothing
             }
         ]
@@ -600,7 +610,7 @@ viewStyleguide model =
     Element.column []
         [ Element.paragraph []
             [ Element.text "This is a Living Style Guide automatically generated from the code. Read more about it in "
-            , Element.Hack.link [ Element.Font.color Parts.Color.elmOrange ]
+            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
                 , label = Element.text "Medium"
                 }
@@ -634,10 +644,10 @@ viewSitemap model =
             data
         , columns =
             [ { header = Element.text ""
-              , view = \row -> row.link1
+              , view = \row -> Element.paragraph [ Element.Background.color Parts.Color.elmOrange ] [ row.link1 ]
               }
             , { header = Element.text ""
-              , view = \row -> row.link2
+              , view = \row -> Element.paragraph [ Element.padding 10 ] [ row.link2 ]
               }
             ]
         }

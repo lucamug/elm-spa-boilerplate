@@ -6,14 +6,13 @@ module Element.Debug exposing (..)
 --import Html.Attributes
 --import Window
 
-import Color
 import Element
 import Element.Border
+import Parts.Color
 
 
-addTestBorder : List (Element.Attribute msg) -> List (Element.Attribute msg)
-addTestBorder attributes =
+redBorder : List (Element.Attribute msg)
+redBorder =
     [ Element.Border.width 1
-    , Element.Border.color Color.red
+    , Element.Border.color Parts.Color.red
     ]
-        ++ attributes

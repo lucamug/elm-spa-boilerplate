@@ -53,14 +53,17 @@ value value =
     Element.attribute (Html.Attributes.value value)
 
 
-link : List (Element.Attribute msg) -> Element.Link msg -> Element.Element msg
-link attributes urlLabel =
-    -- Temporary fix because link doesn't accept colors yet, it is a bug
-    Element.el
-        attributes
-    <|
-        Element.link []
-            urlLabel
+
+{-
+   link : List (Element.Attribute msg) -> Element.Link msg -> Element.Element msg
+   link attributes urlLabel =
+       -- Temporary fix because link doesn't accept colors yet, it is a bug
+       Element.el
+           attributes
+       <|
+           Element.link []
+               urlLabel
+-}
 
 
 goldenRatio : Float

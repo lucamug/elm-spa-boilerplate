@@ -7,6 +7,7 @@ text-align: center -> Element.center
 
 text-shadow 1px 0px 1px black -> Element.Font.shadow { offset = ( 1, 0 ), blur = 1, color = Parts.Color.black }
 
+<a href = ""> -> link
 
 <h1> -> el [ Area.heading 1 ] (text "Super important stuff")
 
