@@ -544,7 +544,7 @@ viewTop model =
         , Element.paragraph []
             [ Element.text "The code is at "
             , Element.link [ Element.Font.color Parts.Color.elmOrange ]
-                { url = "https://github.com/lucamug/elm-spa-boilerplate2", label = Element.text "github.com/lucamug/elm-spa-boilerplate" }
+                { url = "https://github.com/lucamug/elm-spa-boilerplate", label = Element.text "github.com/lucamug/elm-spa-boilerplate" }
             , Element.text "."
             ]
         , Element.Hack.h3 [] <| Element.text "Ajax request example"
@@ -718,7 +718,7 @@ main =
 forkMe : Element.Element msg
 forkMe =
     Element.link []
-        { url = "https://github.com/lucamug/elm-spa-boilerplate2"
+        { url = "https://github.com/lucamug/elm-spa-boilerplate"
         , label = Element.text "Fork me on GitHub"
         }
 
