@@ -21,7 +21,10 @@ import Parts.Color
 import Parts.Spinner
 
 
-introspection : Introspection.Introspection2 msg
+-- INTROSPECTION
+
+
+introspection : Introspection.Introspection msg
 introspection =
     { name = "Button"
     , signature = "String -> Maybe msg -> Element msg"
@@ -29,7 +32,7 @@ introspection =
     , usage = """small "I am an usage example" Nothing"""
     , usageResult = small "I am an usage example" Nothing
     , types = types
-    , example = identity
+    , boxed = False
     }
 
 
@@ -42,6 +45,10 @@ types =
     , ( largeImportant "Button" Nothing, "largeImportant" )
     , ( largeImportantWithSpinner "Button" Nothing, "largeImportantWithSpinner" )
     ]
+
+
+
+-- TYPES
 
 
 type Type

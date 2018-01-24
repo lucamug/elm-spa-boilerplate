@@ -23,40 +23,38 @@ import Introspection
 -- INTROSPECTION
 
 
-introspection : Introspection.Introspection msg Color.Color
+introspection : Introspection.Introspection msg
 introspection =
     { name = "Color"
     , signature = "Color.Color"
     , description = "List of colors used in the app."
     , usage = "elmOrange"
-    , usageResult = example elmOrange
+    , usageResult = usageWrapper elmOrange
     , types = types
-    , example = example
+    , boxed = True
     }
 
 
-types : List ( Color.Color, String )
+types : List ( Element.Element msg, String )
 types =
-    [ ( black, "black" )
-    , ( elmOrange, "elmOrange" )
-    , ( fontColor, "fontColor" )
-    , ( lightGray, "lightGray" )
-    , ( lightOrange, "lightOrange" )
-    , ( red, "red" )
-    , ( white, "white" )
+    [ ( usageWrapper black, "black" )
+    , ( usageWrapper elmOrange, "elmOrange" )
+    , ( usageWrapper fontColor, "fontColor" )
+    , ( usageWrapper lightGray, "lightGray" )
+    , ( usageWrapper lightOrange, "lightOrange" )
+    , ( usageWrapper red, "red" )
+    , ( usageWrapper white, "white" )
     ]
 
 
-example : Color.Color -> Element.Element msg
-example color =
+usageWrapper : Color.Color -> Element.Element msg
+usageWrapper color =
     Element.el
         [ Element.Background.color color
         , Element.width <| Element.px 100
         , Element.height <| Element.px 100
         , Element.padding 10
-        , Element.Border.rounded 10
-        , Element.Border.width 1
-        , Element.Border.color Color.gray
+        , Element.Border.rounded 5
         , Element.Font.color <| Maybe.withDefault Color.black <| Color.Accessibility.maximumContrast color [ Color.white, Color.black ]
         ]
     <|

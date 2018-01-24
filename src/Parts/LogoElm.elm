@@ -13,8 +13,6 @@ module Parts.LogoElm
 import Color
 import Color.Convert
 import Element
-import Element.Background
-import Element.Border
 import Introspection
 import Svg
 import Svg.Attributes
@@ -23,15 +21,15 @@ import Svg.Attributes
 -- INTROSPECTION
 
 
-introspection : Introspection.Introspection2 msg
+introspection : Introspection.Introspection msg
 introspection =
     { name = "LogoElm"
     , signature = "Int -> Element msg"
     , description = ""
     , usage = "orange 128"
-    , usageResult = example <| orange 128
+    , usageResult = orange 128
     , types = types
-    , example = example
+    , boxed = True
     }
 
 
@@ -45,23 +43,6 @@ types =
     , ( black 64, "black" )
     , ( colorful 64, "colorful" )
     ]
-
-
-
--- example : Color.Color -> Element.Element msg
-
-
-example : Element.Element msg -> Element.Element msg
-example type_ =
-    Element.el
-        [ Element.Background.color <| Color.rgb 0xDD 0xDD 0xDD
-        , Element.padding 10
-        , Element.Border.rounded 10
-        , Element.Border.width 1
-        , Element.Border.color Color.gray
-        ]
-    <|
-        type_
 
 
 

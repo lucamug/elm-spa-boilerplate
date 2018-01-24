@@ -9,8 +9,6 @@ module Parts.Spinner
 import Color
 import Color.Convert
 import Element
-import Element.Background
-import Element.Border
 import Html
 import Introspection
 import Svg
@@ -20,15 +18,15 @@ import Svg.Attributes
 -- INTROSPECTION
 
 
-introspection : Introspection.Introspection2 msg
+introspection : Introspection.Introspection msg
 introspection =
     { name = "Spinner"
     , signature = "Int -> Element msg"
     , description = "Spinner are used when the app is on hold, for example when waiting for an http request to come back. They are also embedded in other Parts, like button."
     , usage = "black 128"
-    , usageResult = example <| black 128
+    , usageResult = black 128
     , types = types
-    , example = example
+    , boxed = True
     }
 
 
@@ -38,23 +36,6 @@ types =
     , ( white 64, "white" )
     , ( black 64, "black" )
     ]
-
-
-
--- example : Color.Color -> Element.Element msg
-
-
-example : Element.Element msg -> Element.Element msg
-example part =
-    Element.el
-        [ Element.Background.color <| Color.rgb 0xDD 0xDD 0xDD
-        , Element.padding 10
-        , Element.Border.rounded 10
-        , Element.Border.width 1
-        , Element.Border.color Color.gray
-        ]
-    <|
-        part
 
 
 
