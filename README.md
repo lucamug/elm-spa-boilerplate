@@ -1,6 +1,6 @@
 # elm-spa-boilerplate
 
-* Demo http://elm-spa-boilerplate.surge.sh/
+* Demo http://elm-spa-boilerplate.guupa.com/
 * Article https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2
 
 ## Characteristics
@@ -27,7 +27,7 @@ $ npm install -g create-elm-app
 ```
 then
 ```
-$ git clone https://github.com/lucamug/elm-spa-boilerplate2 myproject
+$ git clone https://github.com/lucamug/elm-spa-boilerplate myproject
 $ cd myproject
 $ rm -rf .git    # To remove the boilerplate repo, on Windows:
                  # rmdir .git /s /q
@@ -71,11 +71,12 @@ From myproject foder:
 $ git init
 $ git add .
 $ git commit -m 'first commit'
+```
 
 ## Links
 
-http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/3.0.2/Element#el
-http://package.elm-lang.org/packages/mdgriffith/style-elements/4.2.1/Element#classifyDevice
+http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/
+http://package.elm-lang.org/packages/mdgriffith/style-elements/4.2.1/
 
 https://github.com/mdgriffith/stylish-elephants
 https://github.com/mdgriffith/style-elements
@@ -86,12 +87,13 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
 https://app.netlify.com/
 
-## Line of code
+## Lines of code
 
 ```
 cloc src > loc.txt
 ```
 
+```
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
@@ -100,3 +102,4 @@ JavaScript                       2             15             27            107
 -------------------------------------------------------------------------------
 SUM:                            11            387             71           1401
 -------------------------------------------------------------------------------
+```
