@@ -752,3 +752,24 @@ viewMade with by =
                 , Element.text <| " by " ++ by
                 ]
         }
+
+
+
+-- Server Side Rendering
+-- From https://medium.com/@l.mugnaini/server-side-rendering-with-elm-9064170eb3cf
+
+
+initLocation : Navigation.Location
+initLocation =
+    { hash = ""
+    , host = "localhost:3000"
+    , hostname = "localhost"
+    , href = "http://localhost:3000/"
+    , origin = "http://localhost:3000"
+    , password = "XXX"
+    , pathname = "/"
+    , port_ = "3000"
+    , protocol = "http:"
+    , search = ""
+    , username = ""
+    }
