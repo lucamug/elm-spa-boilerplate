@@ -422,6 +422,7 @@ viewTopPart model =
     Element.column
         [ Element.Background.fittedImage model.bannerSrc
         , Element.Font.color Parts.Color.white
+        , Element.height <| Element.px 200
         ]
         [ Element.el [ Element.padding 10 ] <| Parts.LogoElm.orange 50
         , Element.Hack.h1
@@ -489,6 +490,8 @@ view model =
         , Element.Font.size 16
         , Element.Font.color Parts.Color.fontColor
         , Element.Background.color Parts.Color.white
+
+        -- , Element.Hack.style [ ( "min-height", toString model.device.height ++ "px" ) ]
         ]
     <|
         Element.column []
