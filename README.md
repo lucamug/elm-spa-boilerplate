@@ -90,7 +90,7 @@ https://app.netlify.com/
 ## Lines of code
 
 ```
-cloc src > loc.txt
+$ cloc src > loc.txt
 ```
 
 ```
