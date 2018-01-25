@@ -17,13 +17,13 @@ view model =
                 { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
                 , label = text "mdgriffith/stylish-elephants"
                 }
-            , text ". Examples are in pseudo-code. For real code have a look at "
+            , text ". The code is actually some kind of pseudo-code. For real code have a look at "
             , link [ Font.color orange ]
                 { url = "https://github.com/lucamug/elm-spa-boilerplate/blob/master/src/Pages/Examples.elm", label = text "Examples.elm" }
             , text "."
             ]
         , paragraph []
-            [ text "Unless otherwise specified, element have padding and spacing of 5px so to make the examples clearer."
+            [ text "Unless otherwise specified, elements have padding and spacing of 5px so to make the examples clearer."
             ]
 
         --
@@ -48,30 +48,29 @@ view model =
         , row dummyA2 [ el dummyA dummyT, el dummyA dummyT, el dummyA dummyT ]
 
         --
-        , section "Align"
+        , section "Alignment"
         , row dummyA2 [ el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT, el dummyA dummyT ]
         , row dummyA2 [ el (dummyA ++ [ alignRight ]) <| text "alignRight", el dummyA dummyT, el dummyA dummyT ]
         , row dummyA2 [ el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT, el (dummyA ++ [ alignRight ]) <| text "alignRight" ]
         , row dummyA2 [ el (dummyA ++ [ alignRight ]) <| text "alignRight", el dummyA dummyT, el (dummyA ++ [ alignLeft ]) <| text "alignLeft" ]
         , row dummyA2 [ el dummyA dummyT, el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT ]
         , row (dummyA2 ++ [ height <| px 100 ]) [ el (dummyA ++ [ alignTop ]) <| text "alignTop", el dummyA dummyT, el (dummyA ++ [ alignBottom ]) <| text "alignBottom" ]
-
-        --
         , section "Height, three elements in a tall row"
         , code "row [ height px 80 ] [ el, el, el ]"
         , row (dummyA2 ++ [ height <| px 80 ]) [ el dummyA dummyT, el dummyA dummyT, el dummyA dummyT ]
         , row (dummyA2 ++ [ height <| px 80 ]) [ el (dummyA ++ [ height fill ]) <| text "height fill", el dummyA dummyT, el dummyA dummyT ]
         , row (dummyA2 ++ [ height <| px 80 ]) [ el (dummyA ++ [ height <| px 40 ]) <| text "height px 40", el dummyA dummyT, el dummyA dummyT ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el (dummyA ++ [ width fill, height fill ]) <| text "width fill, height fill", el dummyA dummyT, el dummyA dummyT ]
+        , row (dummyA2 ++ [ height <| px 80 ])
+            [ el (dummyA ++ [ width fill, height fill ]) <| text "width fill, height fill", el dummyA dummyT, el dummyA dummyT ]
 
         --
-        , section "Width"
+        , section "Width (1x = width fillPortion 1)"
         , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT, el dummyA dummyT ]
         , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT ]
         , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el (dummyA ++ [ width fill ]) <| text "width fill", el (dummyA ++ [ width fill ]) <| text "width fill" ]
         , row dummyA2 [ el (dummyA ++ [ width <| px 100 ]) <| text "width px 100", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ width <| fillPortion 1 ]) <| text "width fillPortion 1", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ width <| fillPortion 1 ]) <| text "width fillPortion 1", el (dummyA ++ [ width <| fillPortion 2 ]) <| text "width fillPortion 2", el dummyA dummyT ]
+        , row dummyA2 [ el (dummyA ++ [ width <| fillPortion 1 ]) <| text "1x", el dummyA dummyT, el dummyA dummyT ]
+        , row dummyA2 [ el (dummyA ++ [ width <| fillPortion 1 ]) <| text "1x", el (dummyA ++ [ width <| fillPortion 2 ]) <| text "2x", el dummyA dummyT ]
 
         --
         , section "Nearby Elements"
@@ -86,14 +85,14 @@ view model =
         , row (dummyA2 ++ [ height <| px 80 ]) [ el [ below True (el [ onRight True (el dummyC <| text "onRight") ] (el dummyB <| text "below")) ] (el dummyA dummyT) ]
 
         --
-        , section "row with many items (non wrapping)"
-        , code "row [] [ repeat 9 el ] (non wrapping)"
-        , row dummyA2 (List.repeat 9 (el dummyA dummyT))
-
+        -- I removed this example because it doesn't fit in the page, maybe a bug?
+        --, section "row with many items (non wrapping)"
+        --, code "row [] [ repeat 20 el ] (non wrapping)"
+        --, row (dummyA2 ++ [ clipX, scrollbarX ]) (List.repeat 20 (el dummyA dummyT))
         --
         , section "paragraph with many items (wrapping)"
-        , code "paragraph [] [ repeat 9 el ] (wrapping)"
-        , paragraph dummyA2 (List.repeat 9 (el dummyA dummyT))
+        , code "paragraph [] [ repeat 20 el ] (wrapping)"
+        , paragraph dummyA2 (List.repeat 20 (el dummyA dummyT))
 
         --
         , section "Three elements in a column"
@@ -101,6 +100,31 @@ view model =
         , column dummyA2 (List.repeat 3 (el dummyA dummyT))
         , column dummyA2 [ el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT, el (dummyA ++ [ alignRight ]) <| text "alignRight" ]
         , column dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT, el (dummyA ++ [ width <| px 200, alignRight ]) <| text "alignRight, width px 200" ]
+
+        --
+        , section "Three elements in a tall column"
+        , code "col [height px 160] [ el, el, el ]"
+        , column (dummyA2 ++ [ height <| px 160 ]) (List.repeat 3 (el dummyA dummyT))
+        , column (dummyA2 ++ [ height <| px 160 ]) [ el (dummyA ++ [ centerY ]) <| text "centerY", el dummyA dummyT, el (dummyA ++ [ alignBottom ]) <| text "alignBottom" ]
+        , column (dummyA2 ++ [ height <| px 160 ]) [ el (dummyA ++ [ width fill, height fill ]) <| text "width fill, height fill", el dummyA dummyT, el dummyA dummyT ]
+
+        --
+        , section "Adjustment"
+        , row dummyA2
+            [ el (dummyA ++ [ moveUp 5 ]) <| text "moveUp"
+            , el (dummyA ++ [ moveDown 5 ]) <| text "moveDown"
+            ]
+        , row dummyA2
+            [ el (dummyA ++ [ moveLeft 5 ]) <| text "moveLeft"
+            , el (dummyA ++ [ moveRight 5 ]) <| text "moveRight"
+            ]
+        , row dummyA2
+            [ el (dummyA ++ [ rotate <| pi / 4 ]) <| text "rotate"
+            , el (dummyA ++ [ scale 0.7 ]) <| text "scale"
+            ]
+        , row dummyA2
+            [ el (dummyA ++ [ scale 0.7, mouseOverScale 1.2 ]) <| text "mouseOverScale"
+            ]
 
         --
         , section "Paragraph"
@@ -112,6 +136,13 @@ view model =
         , paragraph (dummyA2 ++ [ spacing 20 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), lorem ]
         , code "paragraph [] [ el, el, el ]"
         , paragraph dummyA2 (List.repeat 3 (el dummyA lorem))
+
+        --
+        , section "Attributes"
+        , row dummyA2
+            [ el (dummyA ++ [ description "description" ]) <| text "description"
+            , el (dummyA ++ [ pointer ]) <| text "pointer"
+            ]
         ]
 
 
