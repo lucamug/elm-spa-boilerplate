@@ -303,7 +303,7 @@ initModel flag location =
     , history = [ location.pathname ]
     , apiData = NoData
     , location = location
-    , title = "Elm Spa Boilerplate"
+    , title = "Spa Boilerplate"
     , localStorage = flag.localStorage
     , packVersion = flag.packVersion
     , packElmVersion = flag.packElmVersion
@@ -384,6 +384,7 @@ viewLinkMenu model route =
     if model.route == route then
         Element.el
             ([ Element.Background.color Parts.Color.white
+             , Element.Font.color Parts.Color.font
              ]
                 ++ common
             )
@@ -409,11 +410,15 @@ viewMenu model =
     in
     if model.device.width < menuBreakPoint then
         Element.column
-            [ Element.Background.color Parts.Color.lightOrange ]
+            [ Element.Background.color Parts.Color.background
+            , Element.Font.color Parts.Color.onBackground
+            ]
             menuList
     else
         Element.row
-            [ Element.Background.color Parts.Color.lightOrange ]
+            [ Element.Background.color Parts.Color.background
+            , Element.Font.color Parts.Color.onBackground
+            ]
             menuList
 
 
@@ -430,7 +435,7 @@ viewTopPart model =
             , Element.Font.shadow { offset = ( 1, 0 ), blur = 1, color = Parts.Color.black }
             ]
           <|
-            Element.text "Elm Spa Boilerplate"
+            Element.text model.title
         ]
 
 
@@ -463,7 +468,8 @@ viewFooter model =
     in
     element
         [ Element.spaceEvenly
-        , Element.Background.color Parts.Color.lightOrange
+        , Element.Background.color Parts.Color.background
+        , Element.Font.color Parts.Color.onBackground
         , Element.padding 30
         ]
         [ viewMade "凸" "lucamug"
@@ -471,8 +477,6 @@ viewFooter model =
             Element.text <|
                 "ver. "
                     ++ model.packVersion
-                    ++ " elm-ver. "
-                    ++ model.packElmVersion
         , forkMe
         ]
 
@@ -488,7 +492,7 @@ view model =
             , Element.Font.sansSerif
             ]
         , Element.Font.size 16
-        , Element.Font.color Parts.Color.fontColor
+        , Element.Font.color Parts.Color.font
         , Element.Background.color Parts.Color.white
 
         -- , Element.Hack.style [ ( "min-height", toString model.device.height ++ "px" ) ]
@@ -535,19 +539,22 @@ viewDebug model =
 viewTop : Model -> Element.Element Msg
 viewTop model =
     Element.column [ Element.spacing 20 ]
-        [ Element.paragraph [] [ Element.text "This is a boilerplate for an Elm Single Page Application." ]
+        [ Element.paragraph []
+            [ Element.text "This is a boilerplate for writing a Single Page Application. It is written in "
+            , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "http://elm-lang.org/", label = Element.text "Elm" }
+            , Element.text " and "
+            , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = Element.text "style-elements v5" }
+            , Element.text " this means: No HTML, No CSS and No Javascript. It also means N0-runtime-exceptions-in-practice™, If-it-compiles-it-works™, etc."
+            ]
         , Element.paragraph []
             [ Element.text "Find a detailed post in "
             , Element.link [ Element.Font.color Parts.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2"
                 , label = Element.text "Medium"
                 }
-            , Element.text "."
-            ]
-        , Element.paragraph []
-            [ Element.text "The code is at "
+            , Element.text ", the code is in "
             , Element.link [ Element.Font.color Parts.Color.elmOrange ]
-                { url = "https://github.com/lucamug/elm-spa-boilerplate", label = Element.text "github.com/lucamug/elm-spa-boilerplate" }
+                { url = "https://github.com/lucamug/elm-spa-boilerplate", label = Element.text "Github" }
             , Element.text "."
             ]
         , Element.Hack.h3 [] <| Element.text "Ajax request example"
@@ -588,7 +595,7 @@ viewTop model =
         , Element.paragraph [] [ Element.text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
         , Element.Input.text
             [ Element.Border.width 1
-            , Element.Border.color <| Parts.Color.fontColor
+            , Element.Border.color <| Parts.Color.font
             , Element.Border.rounded 10
             , Element.padding 8
             ]

@@ -78,7 +78,7 @@ typeToColor color =
             Parts.Color.elmOrange
 
         TextOnRegular ->
-            Parts.Color.fontColor
+            Parts.Color.font
 
         TextOnImportant ->
             Parts.Color.white

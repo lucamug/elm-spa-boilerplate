@@ -143,7 +143,7 @@ dummyA2 : List (Attribute msg)
 dummyA2 =
     [ padding 5
     , spacing 5
-    , Background.color orange
+    , Background.color <| rgb 0x65 0x8D 0xB5
     , Font.color white
     ]
 

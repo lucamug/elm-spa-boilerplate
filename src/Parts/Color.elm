@@ -1,11 +1,13 @@
 module Parts.Color
     exposing
-        ( black
+        ( background
+        , black
         , elmOrange
-        , fontColor
+        , font
         , introspection
         , lightGray
         , lightOrange
+        , onBackground
         , red
         , white
         )
@@ -34,7 +36,8 @@ introspection =
     , types =
         [ ( usageWrapper black, "black" )
         , ( usageWrapper elmOrange, "elmOrange" )
-        , ( usageWrapper fontColor, "fontColor" )
+        , ( usageWrapper font, "font" )
+        , ( usageWrapper background, "background" )
         , ( usageWrapper lightGray, "lightGray" )
         , ( usageWrapper lightOrange, "lightOrange" )
         , ( usageWrapper red, "red" )
@@ -62,6 +65,11 @@ usageWrapper color =
 -- TYPES
 
 
+maximumContrast : Color.Color -> Color.Color
+maximumContrast color =
+    Maybe.withDefault font <| Color.Accessibility.maximumContrast color [ white, font ]
+
+
 elmOrange : Color.Color
 elmOrange =
     Color.rgb 0xF0 0xAD 0x00
@@ -77,9 +85,19 @@ lightGray =
     Color.rgb 0xEE 0xEE 0xEE
 
 
-fontColor : Color.Color
-fontColor =
+font : Color.Color
+font =
     Color.rgb 0x33 0x33 0x33
+
+
+background : Color.Color
+background =
+    Color.rgb 0x65 0x8D 0xB5
+
+
+onBackground : Color.Color
+onBackground =
+    maximumContrast font
 
 
 black : Color.Color
