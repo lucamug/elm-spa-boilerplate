@@ -28,23 +28,19 @@ introspection : Introspection.Introspection msg
 introspection =
     { name = "Button"
     , signature = "String -> Maybe msg -> Element msg"
-    , description = "Button accept a type, an Html.Attribute msg that can be attribute that return a messages, such as onClick, and a string that is used inside the button."
+    , description = "Buttons accept a string and a Maybe message."
     , usage = """small "I am an usage example" Nothing"""
     , usageResult = small "I am an usage example" Nothing
-    , types = types
     , boxed = False
+    , types =
+        [ ( small "Button" Nothing, "small" )
+        , ( large "Button" Nothing, "large" )
+        , ( largeWithSpinner "Button" Nothing, "largeWithSpinner" )
+        , ( smallImportant "Button" Nothing, "smallImportant" )
+        , ( largeImportant "Button" Nothing, "largeImportant" )
+        , ( largeImportantWithSpinner "Button" Nothing, "largeImportantWithSpinner" )
+        ]
     }
-
-
-types : List ( Element.Element msg, String )
-types =
-    [ ( small "Button" Nothing, "small" )
-    , ( large "Button" Nothing, "large" )
-    , ( largeWithSpinner "Button" Nothing, "largeWithSpinner" )
-    , ( smallImportant "Button" Nothing, "smallImportant" )
-    , ( largeImportant "Button" Nothing, "largeImportant" )
-    , ( largeImportantWithSpinner "Button" Nothing, "largeImportantWithSpinner" )
-    ]
 
 
 

@@ -14,7 +14,7 @@ import Http
 import Introspection
 import Json.Decode as Decode
 import Navigation
-import Pages.Page1
+import Pages.Examples
 import Parts.Button
 import Parts.Color
 import Parts.LogoElm
@@ -30,9 +30,9 @@ routes : List Route
 routes =
     [ Top
     , Styleguide
+    , Examples
     , Sitemap
     , Debug
-    , Page1
     , Page2
     , Page2_1
     ]
@@ -43,7 +43,7 @@ type Route
     | Styleguide
     | Sitemap
     | Debug
-    | Page1
+    | Examples
     | Page2
     | Page2_1
     | NotFound
@@ -83,10 +83,10 @@ routeData route =
             , view = viewDebug
             }
 
-        Page1 ->
-            { name = "Page one"
-            , path = [ "page1" ]
-            , view = Pages.Page1.view
+        Examples ->
+            { name = "Examples"
+            , path = [ "examples" ]
+            , view = Pages.Examples.view
             }
 
         Page2 ->

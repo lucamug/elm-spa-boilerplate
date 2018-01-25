@@ -25,17 +25,13 @@ introspection =
     , description = "Spinner are used when the app is on hold, for example when waiting for an http request to come back. They are also embedded in other Parts, like button."
     , usage = "black 128"
     , usageResult = black 128
-    , types = types
     , boxed = True
+    , types =
+        [ ( orange 64, "orange" )
+        , ( white 64, "white" )
+        , ( black 64, "black" )
+        ]
     }
-
-
-types : List ( Element.Element msg, String )
-types =
-    [ ( orange 64, "orange" )
-    , ( white 64, "white" )
-    , ( black 64, "black" )
-    ]
 
 
 

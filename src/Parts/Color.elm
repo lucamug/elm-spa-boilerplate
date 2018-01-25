@@ -30,21 +30,17 @@ introspection =
     , description = "List of colors used in the app."
     , usage = "elmOrange"
     , usageResult = usageWrapper elmOrange
-    , types = types
     , boxed = True
+    , types =
+        [ ( usageWrapper black, "black" )
+        , ( usageWrapper elmOrange, "elmOrange" )
+        , ( usageWrapper fontColor, "fontColor" )
+        , ( usageWrapper lightGray, "lightGray" )
+        , ( usageWrapper lightOrange, "lightOrange" )
+        , ( usageWrapper red, "red" )
+        , ( usageWrapper white, "white" )
+        ]
     }
-
-
-types : List ( Element.Element msg, String )
-types =
-    [ ( usageWrapper black, "black" )
-    , ( usageWrapper elmOrange, "elmOrange" )
-    , ( usageWrapper fontColor, "fontColor" )
-    , ( usageWrapper lightGray, "lightGray" )
-    , ( usageWrapper lightOrange, "lightOrange" )
-    , ( usageWrapper red, "red" )
-    , ( usageWrapper white, "white" )
-    ]
 
 
 usageWrapper : Color.Color -> Element.Element msg

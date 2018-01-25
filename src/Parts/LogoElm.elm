@@ -28,21 +28,17 @@ introspection =
     , description = ""
     , usage = "orange 128"
     , usageResult = orange 128
-    , types = types
     , boxed = True
+    , types =
+        [ ( orange 64, "orange" )
+        , ( green 64, "green" )
+        , ( lightBlue 64, "lightBlue" )
+        , ( blue 64, "blue" )
+        , ( white 64, "white" )
+        , ( black 64, "black" )
+        , ( colorful 64, "colorful" )
+        ]
     }
-
-
-types : List ( Element.Element msg, String )
-types =
-    [ ( orange 64, "orange" )
-    , ( green 64, "green" )
-    , ( lightBlue 64, "lightBlue" )
-    , ( blue 64, "blue" )
-    , ( white 64, "white" )
-    , ( black 64, "black" )
-    , ( colorful 64, "colorful" )
-    ]
 
 
 
