@@ -11,182 +11,187 @@ view model =
     column
         [ spacing 5
         ]
-        [ paragraph []
-            [ text "Examples of "
-            , link [ Font.color orange ]
-                { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
-                , label = text "mdgriffith/stylish-elephants"
-                }
-            , text ". The code is actually some kind of pseudo-code. For real code have a look at "
-            , link [ Font.color orange ]
-                { url = "https://github.com/lucamug/elm-spa-boilerplate/blob/master/src/Pages/Examples.elm", label = text "Examples.elm" }
-            , text "."
-            ]
-        , paragraph []
-            [ text "Unless otherwise specified, elements have padding and spacing of 5px so to make the examples clearer."
-            ]
+        [ header
 
         --
         , section "Empty"
         , code "el|row|column|paragraph [] [ text ]"
-        , el dummyA2 empty
-        , row dummyA2 [ empty ]
-        , column dummyA2 [ empty ]
-        , paragraph dummyA2 [ empty ]
+        , el attrCont empty
+        , row attrCont [ empty ]
+        , column attrCont [ empty ]
+        , paragraph attrCont [ empty ]
 
         --
         , section "Text"
         , code "el|row|column|paragraph [] [ text ]"
-        , el dummyA2 <| text "text in el"
-        , row dummyA2 [ text "text in row" ]
-        , column dummyA2 [ text "text in column" ]
-        , paragraph dummyA2 [ text "text in paragraph" ]
+        , el attrCont <| text "text in el"
+        , row attrCont [ text "text in row" ]
+        , column attrCont [ text "text in column" ]
+        , paragraph attrCont [ text "text in paragraph" ]
 
         --
         , section "Three elements in a row"
         , code "row [] [ el, el, el ]"
-        , row dummyA2 [ el dummyA dummyT, el dummyA dummyT, el dummyA dummyT ]
+        , row attrCont [ el attrA dummyT, el attrA dummyT, el attrA dummyT ]
 
         --
         , section "Alignment"
-        , row dummyA2 [ el (alignLeft :: dummyA) <| text "alignLeft", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (alignRight :: dummyA) <| text "alignRight", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (alignLeft :: dummyA) <| text "alignLeft", el dummyA dummyT, el (alignRight :: dummyA) <| text "alignRight" ]
-        , row dummyA2 [ el (alignRight :: dummyA) <| text "alignRight", el dummyA dummyT, el (alignLeft :: dummyA) <| text "alignLeft" ]
-        , row dummyA2 [ el dummyA dummyT, el (alignLeft :: dummyA) <| text "alignLeft", el dummyA dummyT ]
-        , row (dummyA2 ++ [ height <| px 100 ]) [ el (dummyA ++ [ alignTop ]) <| text "alignTop", el dummyA dummyT, el (dummyA ++ [ alignBottom ]) <| text "alignBottom" ]
+        , row attrCont [ el (alignLeft :: attrA) <| text "alignLeft", el attrA dummyT, el attrA dummyT ]
+        , row attrCont [ el (alignRight :: attrA) <| text "alignRight", el attrA dummyT, el attrA dummyT ]
+        , row attrCont [ el (alignLeft :: attrA) <| text "alignLeft", el attrA dummyT, el (alignRight :: attrA) <| text "alignRight" ]
+        , row attrCont [ el (alignRight :: attrA) <| text "alignRight", el attrA dummyT, el (alignLeft :: attrA) <| text "alignLeft" ]
+        , row attrCont [ el attrA dummyT, el (alignLeft :: attrA) <| text "alignLeft", el attrA dummyT ]
+        , row (height (px 100) :: attrCont) [ el (attrA ++ [ alignTop ]) <| text "alignTop", el attrA dummyT, el (attrA ++ [ alignBottom ]) <| text "alignBottom" ]
+
+        --
         , section "Height, three elements in a tall row"
         , code "row [ height px 80 ] [ el, el, el ]"
-        , row (height (px 80) :: dummyA2) [ el dummyA dummyT, el dummyA dummyT, el dummyA dummyT ]
-        , row (height (px 80) :: dummyA2) [ el (height fill :: dummyA) <| text "height fill", el dummyA dummyT, el dummyA dummyT ]
-        , row (height (px 80) :: dummyA2) [ el (height (px 40) :: dummyA) <| text "height px 40", el dummyA dummyT, el dummyA dummyT ]
-        , row (height (px 80) :: dummyA2)
-            [ el (dummyA ++ [ width fill, height fill ]) <| text "width fill, height fill", el dummyA dummyT, el dummyA dummyT ]
+        , row (height (px 80) :: attrCont) [ el attrA dummyT, el attrA dummyT, el attrA dummyT ]
+        , row (height (px 80) :: attrCont) [ el (height fill :: attrA) <| text "height fill", el attrA dummyT, el attrA dummyT ]
+        , row (height (px 80) :: attrCont) [ el (height (px 40) :: attrA) <| text "height px 40", el attrA dummyT, el attrA dummyT ]
+        , row (height (px 80) :: attrCont) [ el (attrA ++ [ width fill, height fill ]) <| text "width fill, height fill", el attrA dummyT, el attrA dummyT ]
 
         --
         , section "Width shrink"
         , code "column [ height px 80 ] [ column [ heigh shrink ] [ text ] ]"
-        , column (height (px 80) :: dummyA2) [ column dummyA [ el [] dummyT ] ]
-        , column (height (px 80) :: dummyA2) [ column (height shrink :: dummyA) [ el [] <| text "height shrink" ] ]
+        , column (height (px 80) :: attrCont) [ column attrA [ el [] dummyT ] ]
+        , column (height (px 80) :: attrCont) [ column (height shrink :: attrA) [ el [] <| text "height shrink" ] ]
 
         --
         , section "Width (1x = width fillPortion 1)"
-        , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el (dummyA ++ [ width fill ]) <| text "width fill", el (dummyA ++ [ width fill ]) <| text "width fill" ]
-        , row dummyA2 [ el (dummyA ++ [ width <| px 100 ]) <| text "width px 100", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ width <| fillPortion 1 ]) <| text "1x", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ width <| fillPortion 1 ]) <| text "1x", el (dummyA ++ [ width <| fillPortion 2 ]) <| text "2x", el dummyA dummyT ]
+        , row attrCont [ el (attrA ++ [ width fill ]) <| text "width fill", el attrA dummyT, el attrA dummyT ]
+        , row attrCont [ el (attrA ++ [ width fill ]) <| text "width fill", el (attrA ++ [ width fill ]) <| text "width fill", el attrA dummyT ]
+        , row attrCont [ el (attrA ++ [ width fill ]) <| text "width fill", el (attrA ++ [ width fill ]) <| text "width fill", el (attrA ++ [ width fill ]) <| text "width fill" ]
+        , row attrCont [ el (attrA ++ [ width <| px 100 ]) <| text "width px 100", el attrA dummyT, el attrA dummyT ]
+        , row attrCont [ el (attrA ++ [ width <| fillPortion 1 ]) <| text "1x", el attrA dummyT, el attrA dummyT ]
+        , row attrCont [ el (attrA ++ [ width <| fillPortion 1 ]) <| text "1x", el (attrA ++ [ width <| fillPortion 2 ]) <| text "2x", el attrA dummyT ]
 
         --
         , section "Nearby Elements"
         , code "row [ height px 80 ] [ el [ below ], el ]"
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el [ below True (el dummyB <| text "below") ] (el dummyA dummyT) ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el [ above True (el dummyB <| text "above") ] (el dummyA dummyT) ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el [ onRight True (el dummyB <| text "onRight") ] (el dummyA dummyT) ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el [ onLeft True (el dummyB <| text "onLeft") ] (el dummyA dummyT) ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el [ inFront True (el dummyB <| text "inFront") ] (el dummyA dummyT) ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el [ behind True (el dummyB <| text "behind") ] (el dummyA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ below True (el attrB <| text "below") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ above True (el attrB <| text "above") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ onRight True (el attrB <| text "onRight") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ onLeft True (el attrB <| text "onLeft") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ inFront True (el attrB <| text "inFront") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ behind True (el attrB <| text "behind") ] (el attrA dummyT) ]
         , code "row [ height px 80 ] [ el [ below [ onRight ] ] ]"
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el [ below True (el [ onRight True (el dummyC <| text "onRight") ] (el dummyB <| text "below")) ] (el dummyA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ below True (el [ onRight True (el attrC <| text "onRight") ] (el attrB <| text "below")) ] (el attrA dummyT) ]
 
         --
-        -- I removed this example because it doesn't fit in the page, maybe a bug?
-        --, section "row with many items (non wrapping)"
-        --, code "row [] [ repeat 20 el ] (non wrapping)"
-        --, row (dummyA2 ++ [ clipX, scrollbarX ]) (List.repeat 20 (el dummyA dummyT))
+        , section "row with many items (non wrapping, is not working with \"width fill\" so it needs fixed with otherwise doesn't fit in the parent element)"
+        , code "row [ width px 200 ] [ repeat 20 el ] (non wrapping)"
+        , row (width (px 200) :: clipX :: scrollbarX :: attrCont) (List.repeat 20 (el attrA dummyT))
+
         --
         , section "paragraph with many items (wrapping)"
         , code "paragraph [] [ repeat 20 el ] (wrapping)"
-        , paragraph dummyA2 (List.repeat 20 (el dummyA dummyT))
+        , paragraph attrCont (List.repeat 20 (el attrA dummyT))
 
         --
         , section "Three elements in a column"
         , code "col [] [ el, el, el ]"
-        , column dummyA2 (List.repeat 3 (el dummyA dummyT))
-        , column dummyA2 [ el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT, el (dummyA ++ [ alignRight ]) <| text "alignRight" ]
-        , column dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT, el (dummyA ++ [ width <| px 200, alignRight ]) <| text "alignRight, width px 200" ]
+        , column attrCont (List.repeat 3 (el attrA dummyT))
+        , column attrCont [ el (attrA ++ [ alignLeft ]) <| text "alignLeft", el attrA dummyT, el (attrA ++ [ alignRight ]) <| text "alignRight" ]
+        , column attrCont [ el (attrA ++ [ width fill ]) <| text "width fill", el attrA dummyT, el (attrA ++ [ width <| px 200, alignRight ]) <| text "alignRight, width px 200" ]
 
         --
         , section "Three elements in a tall column"
         , code "col [height px 160] [ el, el, el ]"
-        , column (dummyA2 ++ [ height <| px 160 ]) (List.repeat 3 (el dummyA dummyT))
-        , column (dummyA2 ++ [ height <| px 160 ]) [ el (dummyA ++ [ centerY ]) <| text "centerY", el dummyA dummyT, el (dummyA ++ [ alignBottom ]) <| text "alignBottom" ]
-        , column (dummyA2 ++ [ height <| px 160 ]) [ el (dummyA ++ [ width fill, height fill ]) <| text "width fill, height fill", el dummyA dummyT, el dummyA dummyT ]
+        , column (height (px 160) :: attrCont) (List.repeat 3 (el attrA dummyT))
+        , column (height (px 160) :: attrCont) [ el (attrA ++ [ centerY ]) <| text "centerY", el attrA dummyT, el (attrA ++ [ alignBottom ]) <| text "alignBottom" ]
+        , column (height (px 160) :: attrCont) [ el (attrA ++ [ width fill, height fill ]) <| text "width fill, height fill", el attrA dummyT, el attrA dummyT ]
 
         --
         , section "Adjustment"
-        , row dummyA2
-            [ el (dummyA ++ [ moveUp 5 ]) <| text "moveUp"
-            , el (dummyA ++ [ moveDown 5 ]) <| text "moveDown"
-            ]
-        , row dummyA2
-            [ el (dummyA ++ [ moveLeft 5 ]) <| text "moveLeft"
-            , el (dummyA ++ [ moveRight 5 ]) <| text "moveRight"
-            ]
-        , row dummyA2
-            [ el (dummyA ++ [ rotate <| pi / 4 ]) <| text "rotate"
-            , el (dummyA ++ [ scale 0.7 ]) <| text "scale"
-            ]
-        , row dummyA2
-            [ el (dummyA ++ [ scale 0.7, mouseOverScale 1.2 ]) <| text "mouseOverScale"
-            ]
+        , row attrCont [ el (attrA ++ [ moveUp 5 ]) <| text "moveUp", el (attrA ++ [ moveDown 5 ]) <| text "moveDown" ]
+        , row attrCont [ el (attrA ++ [ moveLeft 5 ]) <| text "moveLeft", el (attrA ++ [ moveRight 5 ]) <| text "moveRight" ]
+        , row attrCont [ el (attrA ++ [ rotate <| pi / 4 ]) <| text "rotate", el (attrA ++ [ scale 0.7 ]) <| text "scale" ]
+        , row attrCont [ el (attrA ++ [ scale 0.7, mouseOverScale 1.2 ]) <| text "mouseOverScale" ]
 
         --
         , section "Paragraph"
         , code "paragraph [] [ text, text, text ]"
-        , paragraph dummyA2 (List.repeat 3 lorem)
+        , paragraph attrCont (List.repeat 3 loremT)
         , code "paragraph [ spacing 0 ] [ text, el, text ]"
-        , paragraph (dummyA2 ++ [ spacing 0 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), lorem ]
-        , paragraph (dummyA2 ++ [ spacing 0 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] lorem, lorem ]
+        , paragraph (spacing 0 :: attrCont) [ loremT, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), loremT ]
+        , paragraph (spacing 0 :: attrCont) [ loremT, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] loremT, loremT ]
         , code "paragraph [ spacing 20 ] [ text, el, text ]"
-        , paragraph (dummyA2 ++ [ spacing 20 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), lorem ]
+        , paragraph (spacing 20 :: attrCont) [ loremT, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), loremT ]
         , code "paragraph [] [ el, el, el ]"
-        , paragraph dummyA2 (List.repeat 3 (el dummyA lorem))
-        , paragraph (padding 5 :: blueBackground) [ el [ alignLeft, paddingEach { top = 0, right = 6, bottom = 0, left = 0 }, Font.lineHeight 1, Font.size 40 ] (text "S"), lorem, lorem, lorem ]
+        , paragraph attrCont (List.repeat 3 (el attrA loremT))
+        , paragraph (padding 5 :: attrBackground) [ el [ alignLeft, paddingEach { top = 0, right = 6, bottom = 0, left = 0 }, Font.lineHeight 1, Font.size 40 ] (text "S"), loremT, loremT, loremT ]
+
+        --
+        , section "column vs. textColumn"
+        , code "textColumn [width fill] [ paragraph, paragraph [alignLeft], paragraph ]"
+        , textColumn (width fill :: attrCont) [ paragraph attrA [ loremT ], paragraph (alignLeft :: width (px 100) :: attrB) [ loremT ], paragraph attrA [ loremT ] ]
+        , code "column [] [ paragraph, paragraph [alignLeft], paragraph ]"
+        , column attrCont [ paragraph attrA [ loremT ], paragraph (alignLeft :: width (px 100) :: attrB) [ loremT ], paragraph attrA [ loremT ] ]
+        , code "textColumn [width fill] [ paragraph, paragraph ]"
+        , textColumn (width fill :: attrCont) (List.repeat 2 (paragraph attrA [ loremT ]))
+        , code "column [width fill] [ paragraph, paragraph ]"
+        , column attrCont (List.repeat 2 (paragraph attrA [ loremT ]))
 
         --
         , section "Attributes"
-        , row dummyA2
-            [ el (dummyA ++ [ description "description" ]) <| text "description"
-            , el (dummyA ++ [ pointer ]) <| text "pointer"
-            ]
+        , row attrCont [ el (attrA ++ [ description "description" ]) <| text "description", el (attrA ++ [ pointer ]) <| text "pointer" ]
+
+        --
+        , section "Tables"
+        , code "table [] { data, columns } "
+        , table attrCont
+            { data = cells
+            , columns =
+                [ { header = el (width fill :: attrA) <| text "Header 1", view = \cell -> el (width fill :: attrB) <| text cell.cell1 }
+                , { header = el (width fill :: attrA) <| text "Header 2", view = \cell -> el (width fill :: attrB) <| text cell.cell2 }
+                ]
+            }
+        , code "indexTable [] { data, columns } "
+        , indexedTable attrCont
+            { data = cells
+            , columns =
+                [ { header = el (width fill :: attrA) <| text "Index", view = \index cell -> el (width fill :: attrC) <| text <| toString index }
+                , { header = el (width fill :: attrA) <| text "Header 1", view = \index cell -> el (width fill :: attrB) <| text cell.cell1 }
+                , { header = el (width fill :: attrA) <| text "Header 2", view = \index cell -> el (width fill :: attrB) <| text cell.cell2 }
+                ]
+            }
         ]
 
 
-blueBackground : List (Element.Attribute msg)
-blueBackground =
+attrBackground : List (Element.Attribute msg)
+attrBackground =
     [ Background.color <| rgb 0x65 0x8D 0xB5
     , Font.color white
     ]
 
 
-dummyA : List (Attribute msg)
-dummyA =
+attrCont : List (Attribute msg)
+attrCont =
+    [ padding 5
+    , spacing 5
+    ]
+        ++ attrBackground
+
+
+attrA : List (Attribute msg)
+attrA =
     [ Background.color lightGray
     , Font.color black
     , padding 5
     ]
 
 
-dummyA2 : List (Attribute msg)
-dummyA2 =
-    [ padding 5
-    , spacing 5
-    ]
-        ++ blueBackground
-
-
-dummyB : List (Attribute msg)
-dummyB =
+attrB : List (Attribute msg)
+attrB =
     [ Background.color lightYellow
     , Font.color black
     , padding 1
     ]
 
 
-dummyC : List (Attribute msg)
-dummyC =
+attrC : List (Attribute msg)
+attrC =
     [ Background.color lightGreen
     , Font.color black
     , padding 1
@@ -196,6 +201,11 @@ dummyC =
 dummyT : Element msg
 dummyT =
     text "___"
+
+
+loremT : Element msg
+loremT =
+    text "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent luctus sed tellus et placerat."
 
 
 code : String -> Element msg
@@ -216,6 +226,38 @@ section string =
         [ text string ]
 
 
-lorem : Element msg
-lorem =
-    text "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent luctus sed tellus et placerat."
+header : Element msg
+header =
+    column []
+        [ paragraph []
+            [ text "Examples of "
+            , link [ Font.color orange ]
+                { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
+                , label = text "mdgriffith/stylish-elephants"
+                }
+            , text ". The code is actually some kind of pseudo-code. For real code have a look at "
+            , link [ Font.color orange ]
+                { url = "https://github.com/lucamug/elm-spa-boilerplate/blob/master/src/Pages/Examples.elm", label = text "Examples.elm" }
+            , text "."
+            ]
+        , paragraph []
+            [ text "Unless otherwise specified, elements have padding and spacing of 5px so to make the examples clearer."
+            ]
+        ]
+
+
+type alias Cell =
+    { cell1 : String
+    , cell2 : String
+    }
+
+
+cells : List Cell
+cells =
+    [ { cell1 = "Cell 1.1"
+      , cell2 = "Cell 2.1"
+      }
+    , { cell1 = "Cell 1.2"
+      , cell2 = "Cell 2.2"
+      }
+    ]
