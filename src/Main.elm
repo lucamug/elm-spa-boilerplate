@@ -544,7 +544,9 @@ viewTop model =
             , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "http://elm-lang.org/", label = Element.text "Elm" }
             , Element.text " and "
             , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = Element.text "style-elements v5" }
-            , Element.text " this means: No HTML, No CSS and No Javascript. It also means N0-runtime-exceptions-in-practice™, If-it-compiles-it-works™, etc."
+            , Element.text " this means: "
+            , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = Element.text "No HTML, No CSS, No Javascript" }
+            , Element.text "."
             ]
         , Element.paragraph []
             [ Element.text "Find a detailed post in "

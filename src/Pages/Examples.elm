@@ -49,18 +49,18 @@ view model =
 
         --
         , section "Alignment"
-        , row dummyA2 [ el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ alignRight ]) <| text "alignRight", el dummyA dummyT, el dummyA dummyT ]
-        , row dummyA2 [ el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT, el (dummyA ++ [ alignRight ]) <| text "alignRight" ]
-        , row dummyA2 [ el (dummyA ++ [ alignRight ]) <| text "alignRight", el dummyA dummyT, el (dummyA ++ [ alignLeft ]) <| text "alignLeft" ]
-        , row dummyA2 [ el dummyA dummyT, el (dummyA ++ [ alignLeft ]) <| text "alignLeft", el dummyA dummyT ]
+        , row dummyA2 [ el (alignLeft :: dummyA) <| text "alignLeft", el dummyA dummyT, el dummyA dummyT ]
+        , row dummyA2 [ el (alignRight :: dummyA) <| text "alignRight", el dummyA dummyT, el dummyA dummyT ]
+        , row dummyA2 [ el (alignLeft :: dummyA) <| text "alignLeft", el dummyA dummyT, el (alignRight :: dummyA) <| text "alignRight" ]
+        , row dummyA2 [ el (alignRight :: dummyA) <| text "alignRight", el dummyA dummyT, el (alignLeft :: dummyA) <| text "alignLeft" ]
+        , row dummyA2 [ el dummyA dummyT, el (alignLeft :: dummyA) <| text "alignLeft", el dummyA dummyT ]
         , row (dummyA2 ++ [ height <| px 100 ]) [ el (dummyA ++ [ alignTop ]) <| text "alignTop", el dummyA dummyT, el (dummyA ++ [ alignBottom ]) <| text "alignBottom" ]
         , section "Height, three elements in a tall row"
         , code "row [ height px 80 ] [ el, el, el ]"
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el dummyA dummyT, el dummyA dummyT, el dummyA dummyT ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el (dummyA ++ [ height fill ]) <| text "height fill", el dummyA dummyT, el dummyA dummyT ]
-        , row (dummyA2 ++ [ height <| px 80 ]) [ el (dummyA ++ [ height <| px 40 ]) <| text "height px 40", el dummyA dummyT, el dummyA dummyT ]
-        , row (dummyA2 ++ [ height <| px 80 ])
+        , row (height (px 80) :: dummyA2) [ el dummyA dummyT, el dummyA dummyT, el dummyA dummyT ]
+        , row (height (px 80) :: dummyA2) [ el (height fill :: dummyA) <| text "height fill", el dummyA dummyT, el dummyA dummyT ]
+        , row (height (px 80) :: dummyA2) [ el (height (px 40) :: dummyA) <| text "height px 40", el dummyA dummyT, el dummyA dummyT ]
+        , row (height (px 80) :: dummyA2)
             [ el (dummyA ++ [ width fill, height fill ]) <| text "width fill, height fill", el dummyA dummyT, el dummyA dummyT ]
 
         --
@@ -132,6 +132,7 @@ view model =
         , paragraph dummyA2 (List.repeat 3 lorem)
         , code "paragraph [ spacing 0 ] [ text, el, text ]"
         , paragraph (dummyA2 ++ [ spacing 0 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), lorem ]
+        , paragraph (dummyA2 ++ [ spacing 0 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] lorem, lorem ]
         , code "paragraph [ spacing 20 ] [ text, el, text ]"
         , paragraph (dummyA2 ++ [ spacing 20 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), lorem ]
         , code "paragraph [] [ el, el, el ]"
