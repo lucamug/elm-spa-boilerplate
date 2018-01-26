@@ -143,6 +143,7 @@ view model =
         , paragraph (dummyA2 ++ [ spacing 20 ]) [ lorem, el [ Font.bold, Background.color lightGray, Font.color black, paddingXY 4 0 ] (text "This is bold."), lorem ]
         , code "paragraph [] [ el, el, el ]"
         , paragraph dummyA2 (List.repeat 3 (el dummyA lorem))
+        , paragraph (padding 5 :: blueBackground) [ el [ alignLeft, paddingEach { top = 0, right = 6, bottom = 0, left = 0 }, Font.lineHeight 1, Font.size 40 ] (text "S"), lorem, lorem, lorem ]
 
         --
         , section "Attributes"
@@ -151,6 +152,13 @@ view model =
             , el (dummyA ++ [ pointer ]) <| text "pointer"
             ]
         ]
+
+
+blueBackground : List (Element.Attribute msg)
+blueBackground =
+    [ Background.color <| rgb 0x65 0x8D 0xB5
+    , Font.color white
+    ]
 
 
 dummyA : List (Attribute msg)
@@ -165,9 +173,8 @@ dummyA2 : List (Attribute msg)
 dummyA2 =
     [ padding 5
     , spacing 5
-    , Background.color <| rgb 0x65 0x8D 0xB5
-    , Font.color white
     ]
+        ++ blueBackground
 
 
 dummyB : List (Attribute msg)
