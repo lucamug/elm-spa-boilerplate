@@ -14,6 +14,22 @@ view model =
         [ header
 
         --
+        , section "Links"
+        , code "el [] [ link { url, label} ]"
+        , el (width fill :: attrCont) <| link attrA { url = "http://example.com", label = text "link" }
+        , code "el [] [ newTabLink { url, label} ]"
+        , el (width fill :: attrCont) <| newTabLink attrA { url = "http://example.com", label = text "newTabLink" }
+        , code "el [] [ download { url, label} ]"
+        , el (width fill :: attrCont) <| download attrA { url = "http://example.com", label = text "download" }
+        , code "el [] [ downloadAs { url, label} ]"
+        , el (width fill :: attrCont) <| downloadAs attrA { url = "http://example.com", label = text "downloadAs", filename = "filename" }
+
+        --
+        , section "Images"
+        , code "el [] [ image ]"
+        , code "el [] [ decorativeImage ]"
+
+        --
         , section "Empty"
         , code "el|row|column|paragraph [] [ text ]"
         , el attrCont empty
