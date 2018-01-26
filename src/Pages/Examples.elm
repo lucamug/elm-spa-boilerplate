@@ -64,6 +64,12 @@ view model =
             [ el (dummyA ++ [ width fill, height fill ]) <| text "width fill, height fill", el dummyA dummyT, el dummyA dummyT ]
 
         --
+        , section "Width shrink"
+        , code "column [ height px 80 ] [ column [ heigh shrink ] [ text ] ]"
+        , column (height (px 80) :: dummyA2) [ column dummyA [ el [] dummyT ] ]
+        , column (height (px 80) :: dummyA2) [ column (height shrink :: dummyA) [ el [] <| text "height shrink" ] ]
+
+        --
         , section "Width (1x = width fillPortion 1)"
         , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT, el dummyA dummyT ]
         , row dummyA2 [ el (dummyA ++ [ width fill ]) <| text "width fill", el (dummyA ++ [ width fill ]) <| text "width fill", el dummyA dummyT ]
@@ -155,6 +161,15 @@ dummyA =
     ]
 
 
+dummyA2 : List (Attribute msg)
+dummyA2 =
+    [ padding 5
+    , spacing 5
+    , Background.color <| rgb 0x65 0x8D 0xB5
+    , Font.color white
+    ]
+
+
 dummyB : List (Attribute msg)
 dummyB =
     [ Background.color lightYellow
@@ -168,15 +183,6 @@ dummyC =
     [ Background.color lightGreen
     , Font.color black
     , padding 1
-    ]
-
-
-dummyA2 : List (Attribute msg)
-dummyA2 =
-    [ padding 5
-    , spacing 5
-    , Background.color <| rgb 0x65 0x8D 0xB5
-    , Font.color white
     ]
 
 
