@@ -270,9 +270,9 @@ header =
 
 issue : String -> Element msg
 issue url =
-    paragraph [ paddingXY 10 0 ]
+    paragraph (paddingXY 10 0 :: Font.color red :: [])
         [ text "Issue: "
-        , link [ Font.color orange ]
+        , link [ Font.color red ]
             { url = url
             , label = text url
             }

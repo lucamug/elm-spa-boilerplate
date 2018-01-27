@@ -8,6 +8,7 @@ import Element.Border
 import Element.Font
 import Element.Hack
 import Element.Input
+import Framework.Button
 import Html
 import Html.Events
 import Http
@@ -19,6 +20,7 @@ import Parts.Button
 import Parts.Color
 import Parts.LogoElm
 import Parts.Spinner
+import Styleguide
 import UrlParser exposing ((</>))
 import Window
 
@@ -29,6 +31,7 @@ import Window
 routes : List Route
 routes =
     [ Top
+    , Framework
     , Styleguide
     , Examples
     , Sitemap
@@ -40,6 +43,7 @@ routes =
 
 type Route
     = Top
+    | Framework
     | Styleguide
     | Sitemap
     | Debug
@@ -63,6 +67,12 @@ routeData route =
             { name = "Intro"
             , path = []
             , view = viewTop
+            }
+
+        Framework ->
+            { name = "Framework"
+            , path = [ "framework" ]
+            , view = viewFramework
             }
 
         Styleguide ->
@@ -612,6 +622,21 @@ viewTop model =
                         [ Element.text "Local Storage" ]
             , notice = Nothing
             }
+        ]
+
+
+viewFramework : Model -> Element.Element Msg
+viewFramework model =
+    Element.column []
+        [ Element.paragraph []
+            [ Element.text "This is a Living Style Guide automatically generated from the code. Read more about it in "
+            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
+                { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
+                , label = Element.text "Medium"
+                }
+            , Element.text "."
+            ]
+        , Styleguide.generate Framework.Button.introspection
         ]
 
 
