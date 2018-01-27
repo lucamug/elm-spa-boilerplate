@@ -2,6 +2,7 @@ module Pages.Examples exposing (view)
 
 import Color exposing (..)
 import Element exposing (..)
+import Element.Area as Area
 import Element.Background as Background
 import Element.Font as Font
 
@@ -15,14 +16,21 @@ view model =
 
         --
         , section "Links"
-        , code "el [] [ link { url, label} ]"
+        , code "link [] { url, label }"
         , el (width fill :: attrCont) <| link attrA { url = "http://example.com", label = text "link" }
-        , code "el [] [ newTabLink { url, label} ]"
+        , code "newTabLink [] { url, label }"
         , el (width fill :: attrCont) <| newTabLink attrA { url = "http://example.com", label = text "newTabLink" }
-        , code "el [] [ download { url, label} ]"
+        , code "download [] { url, label }"
         , el (width fill :: attrCont) <| download attrA { url = "http://example.com", label = text "download" }
-        , code "el [] [ downloadAs { url, label} ]"
+        , code "downloadAs [] { url, label }"
         , el (width fill :: attrCont) <| downloadAs attrA { url = "http://example.com", label = text "downloadAs", filename = "filename" }
+
+        --
+        , section "Area Annotations"
+        , code "link [ Area.heading 1 ] { url, label }"
+        , el (width fill :: attrCont) <| link (Area.heading 1 :: attrA) { url = "http://example.com", label = text "h1 link" }
+        , code "el [ Area.heading 1 ] text"
+        , el (width fill :: attrCont) <| el (Area.heading 1 :: attrA) <| text "h1 text"
 
         --
         , section "Images"
@@ -95,7 +103,8 @@ view model =
         , row (height (px 80) :: attrCont) [ el [ below True (el [ onRight True (el attrC <| text "onRight") ] (el attrB <| text "below")) ] (el attrA dummyT) ]
 
         --
-        , section "row with many items (non wrapping, is not working with \"width fill\" so it needs fixed with otherwise doesn't fit in the parent element)"
+        , section "row with many items (non wrapping, is not working with \"width fill\" so it needs fixed with otherwise doesn't fit in the parent element. The elements are centered...)"
+        , issue "https://github.com/mdgriffith/stylish-elephants/issues/27"
         , code "row [ width px 200 ] [ repeat 20 el ] (non wrapping)"
         , row (width (px 200) :: clipX :: scrollbarX :: attrCont) (List.repeat 20 (el attrA dummyT))
 
@@ -192,7 +201,7 @@ attrCont =
 
 attrA : List (Attribute msg)
 attrA =
-    [ Background.color lightGray
+    [ Background.color <| rgb 0xD1 0xE5 0xFA
     , Font.color black
     , padding 5
     ]
@@ -236,10 +245,7 @@ code string =
 
 section : String -> Element msg
 section string =
-    paragraph
-        [ paddingXY 10 20
-        ]
-        [ text string ]
+    paragraph [ paddingXY 10 20 ] [ text string ]
 
 
 header : Element msg
@@ -259,6 +265,17 @@ header =
         , paragraph []
             [ text "Unless otherwise specified, elements have padding and spacing of 5px so to make the examples clearer."
             ]
+        ]
+
+
+issue : String -> Element msg
+issue url =
+    paragraph [ paddingXY 10 0 ]
+        [ text "Issue: "
+        , link [ Font.color orange ]
+            { url = url
+            , label = text url
+            }
         ]
 
 
