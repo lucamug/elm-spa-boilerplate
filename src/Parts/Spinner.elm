@@ -10,7 +10,7 @@ import Color
 import Color.Convert
 import Element
 import Html
-import Introspection
+import Styleguide
 import Svg
 import Svg.Attributes
 
@@ -18,7 +18,7 @@ import Svg.Attributes
 -- INTROSPECTION
 
 
-introspection : Introspection.Introspection msg
+introspection : Styleguide.Data msg
 introspection =
     { name = "Spinner"
     , signature = "Int -> Element msg"
@@ -27,9 +27,12 @@ introspection =
     , usageResult = black 128
     , boxed = True
     , types =
-        [ ( orange 64, "orange" )
-        , ( white 64, "white" )
-        , ( black 64, "black" )
+        [ ( "Spinners"
+          , [ ( orange 64, "orange" )
+            , ( white 64, "white" )
+            , ( black 64, "black" )
+            ]
+          )
         ]
     }
 

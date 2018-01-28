@@ -10,21 +10,21 @@ module Parts.Button
         )
 
 import Color
-import Element
-import Element.Background
-import Element.Border
-import Element.Font
-import Element.Hack
-import Element.Input
-import Introspection
+import Element exposing (..)
+import Element.Background as Background
+import Element.Border as Border
+import Element.Font as Font
+import Element.Hack as Hack
+import Element.Input as Input
 import Parts.Color
 import Parts.Spinner
+import Styleguide
 
 
 -- INTROSPECTION
 
 
-introspection : Introspection.Introspection msg
+introspection : Styleguide.Data msg
 introspection =
     { name = "Button"
     , signature = "String -> Maybe msg -> Element msg"
@@ -33,12 +33,15 @@ introspection =
     , usageResult = small "I am an usage example" Nothing
     , boxed = False
     , types =
-        [ ( small "Button" Nothing, "small" )
-        , ( large "Button" Nothing, "large" )
-        , ( largeWithSpinner "Button" Nothing, "largeWithSpinner" )
-        , ( smallImportant "Button" Nothing, "smallImportant" )
-        , ( largeImportant "Button" Nothing, "largeImportant" )
-        , ( largeImportantWithSpinner "Button" Nothing, "largeImportantWithSpinner" )
+        [ ( "Buttons"
+          , [ ( small "Button" Nothing, "small" )
+            , ( large "Button" Nothing, "large" )
+            , ( largeWithSpinner "Button" Nothing, "largeWithSpinner" )
+            , ( smallImportant "Button" Nothing, "smallImportant" )
+            , ( largeImportant "Button" Nothing, "largeImportant" )
+            , ( largeImportantWithSpinner "Button" Nothing, "largeImportantWithSpinner" )
+            ]
+          )
         ]
     }
 
@@ -184,28 +187,28 @@ part label onPress type_ =
                 _ ->
                     Element.paragraph [ Element.padding <| sizeInt - 3 ] [ Parts.Spinner.white 28 ]
     in
-    Element.Input.button
-        [ Element.inFront spinner spinnerElement
-        , Element.Background.color <| typeToColor bgColor
-        , Element.Font.color <| typeToColor textColor
-        , Element.Border.rounded 10
-        , Element.Border.width 1
-        , Element.Border.color <| typeToColor textColor
-        , Element.Hack.style [ ( "transition", "all .3s" ) ]
-        , Element.centerY
+    Input.button
+        [ inFront spinner spinnerElement
+        , Background.color <| typeToColor bgColor
+        , Font.color <| typeToColor textColor
+        , Border.rounded 10
+        , Border.width 1
+        , Border.color <| typeToColor textColor
+        , Hack.style [ ( "transition", "all .3s" ) ]
+        , centerY
         , if spinner then
-            Element.Hack.style [ ( "cursor", "progress" ) ]
+            Hack.style [ ( "cursor", "progress" ) ]
           else
-            Element.Hack.style [ ( "cursor", "pointer" ) ]
+            Hack.style [ ( "cursor", "pointer" ) ]
         , if spinner then
-            Element.paddingEach
+            paddingEach
                 { top = sizeInt
                 , left = sizeInt * 2 + 10
                 , bottom = sizeInt
                 , right = sizeInt * 2 - 10
                 }
           else
-            Element.paddingEach
+            paddingEach
                 { top = sizeInt
                 , left = sizeInt * 2
                 , bottom = sizeInt
@@ -213,5 +216,5 @@ part label onPress type_ =
                 }
         ]
         { onPress = onPress
-        , label = Element.text label
+        , label = text label
         }

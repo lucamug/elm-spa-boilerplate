@@ -1,10 +1,6 @@
 module Element.Hack exposing (..)
 
---import Element.Font
-
 import Element
-import Element.Area
-import Element.Font
 import Html
 import Html.Attributes
 import Window
@@ -64,63 +60,3 @@ value value =
            Element.link []
                urlLabel
 -}
-
-
-goldenRatio : Float
-goldenRatio =
-    1.618
-
-
-genericRatio : Float
-genericRatio =
-    1.4
-
-
-scaledFontSize : Int -> Int
-scaledFontSize n =
-    round (16 * (genericRatio ^ toFloat n))
-
-
-header :
-    number
-    -> List (Element.Attribute msg)
-    -> Element.Element msg
-    -> Element.Element msg
-header level attributes child =
-    let
-        fontLevel =
-            abs (level - 4)
-
-        fontSize =
-            scaledFontSize fontLevel
-    in
-    Element.el
-        ([ Element.Area.heading level
-         , Element.Font.size fontSize
-         , Element.paddingEach { top = fontSize, right = 0, bottom = fontSize, left = 0 }
-         , Element.alignLeft
-         , Element.Font.weight 800
-         ]
-            ++ attributes
-        )
-        child
-
-
-h1 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
-h1 =
-    header 1
-
-
-h2 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
-h2 =
-    header 2
-
-
-h3 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
-h3 =
-    header 3
-
-
-h4 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
-h4 =
-    header 4

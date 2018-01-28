@@ -1,8 +1,7 @@
 port module Main exposing (main)
 
--- import Debug exposing (redBorder)
-
 import Element exposing (..)
+import Element.Area as Area
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
@@ -13,7 +12,6 @@ import Framework.Color
 import Html
 import Html.Events
 import Http
-import Introspection
 import Json.Decode as Decode
 import Navigation
 import Pages.Examples
@@ -319,8 +317,6 @@ initModel flag location =
     , packVersion = flag.packVersion
     , packElmVersion = flag.packElmVersion
     , bannerSrc = flag.bannerSrc
-
-    -- Initial windowSize should come with a flag
     , device = Hack.classifyDevice <| Window.Size flag.width flag.height
     }
 
@@ -441,7 +437,7 @@ viewTopPart model =
         , height <| px 200
         ]
         [ el [ padding 10 ] <| Parts.LogoElm.orange 50
-        , Hack.h1
+        , h1
             [ center
             , Font.shadow { offset = ( 1, 0 ), blur = 1, color = Parts.Color.black }
             ]
@@ -457,7 +453,7 @@ viewMiddlePart model =
             [ padding 30
             , Hack.style [ ( "max-width", toString menuBreakPoint ++ "px" ) ]
             ]
-            [ Hack.h2 [] <| text <| routeName model.route
+            [ h2 [] <| text <| routeName model.route
             , routeView model.route model
             ]
         ]
@@ -505,8 +501,6 @@ view model =
         , Font.size 16
         , Font.color Parts.Color.font
         , Background.color Parts.Color.white
-
-        -- , Hack.style [ ( "min-height", toString model.device.height ++ "px" ) ]
         ]
     <|
         column []
@@ -534,7 +528,7 @@ viewDebug model =
         (List.map
             (\( item, name ) ->
                 column []
-                    [ Hack.h3 [] <| text <| "► " ++ name
+                    [ h3 [] <| text <| "► " ++ name
                     , paragraph
                         [ Background.color <| Parts.Color.lightGray
                         , padding 10
@@ -570,7 +564,7 @@ viewTop model =
                 { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "Github" }
             , text "."
             ]
-        , Hack.h3 [] <| text "Ajax request example"
+        , h3 [] <| text "Ajax request example"
         , case model.apiData of
             NoData ->
                 column []
@@ -604,7 +598,7 @@ viewTop model =
                         ]
                     , paragraph [] [ text <| "Your IP is " ++ ip ]
                     ]
-        , Hack.h3 [] <| text "Local Storage"
+        , h3 [] <| text "Local Storage"
         , paragraph [] [ text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
         , Input.text
             [ Border.width 1
@@ -676,10 +670,10 @@ viewStyleguide model =
                 }
             , text "."
             ]
-        , Introspection.view Parts.Spinner.introspection
-        , Introspection.view Parts.Button.introspection
-        , Introspection.view Parts.Color.introspection
-        , Introspection.view Parts.LogoElm.introspection
+        , Styleguide.section Parts.Spinner.introspection
+        , Styleguide.section Parts.Button.introspection
+        , Styleguide.section Parts.Color.introspection
+        , Styleguide.section Parts.LogoElm.introspection
         ]
 
 
@@ -773,20 +767,12 @@ main =
         }
 
 
-
--- FORK ME ON GITHUB
-
-
 forkMe : Element msg
 forkMe =
     link []
         { url = "https://github.com/lucamug/elm-spa-boilerplate"
         , label = text "Fork me on GitHub"
         }
-
-
-
--- MADE BY LUCAMUG
 
 
 viewMade : String -> String -> Element msg
@@ -811,3 +797,63 @@ viewMade with by =
                 , text <| " by " ++ by
                 ]
         }
+
+
+header :
+    number
+    -> List (Element.Attribute msg)
+    -> Element.Element msg
+    -> Element.Element msg
+header level attributes child =
+    let
+        fontLevel =
+            abs (level - 4)
+
+        fontSize =
+            scaledFontSize fontLevel
+    in
+    Element.el
+        ([ Area.heading level
+         , Font.size fontSize
+         , paddingEach { top = fontSize, right = 0, bottom = fontSize, left = 0 }
+         , alignLeft
+         , Font.weight 800
+         ]
+            ++ attributes
+        )
+        child
+
+
+h1 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h1 =
+    header 1
+
+
+h2 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h2 =
+    header 2
+
+
+h3 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h3 =
+    header 3
+
+
+h4 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
+h4 =
+    header 4
+
+
+goldenRatio : Float
+goldenRatio =
+    1.618
+
+
+genericRatio : Float
+genericRatio =
+    1.4
+
+
+scaledFontSize : Int -> Int
+scaledFontSize n =
+    round (16 * (genericRatio ^ toFloat n))

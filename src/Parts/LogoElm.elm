@@ -13,7 +13,7 @@ module Parts.LogoElm
 import Color
 import Color.Convert
 import Element
-import Introspection
+import Styleguide
 import Svg
 import Svg.Attributes
 
@@ -21,7 +21,7 @@ import Svg.Attributes
 -- INTROSPECTION
 
 
-introspection : Introspection.Introspection msg
+introspection : Styleguide.Data msg
 introspection =
     { name = "LogoElm"
     , signature = "Int -> Element msg"
@@ -30,13 +30,16 @@ introspection =
     , usageResult = orange 128
     , boxed = True
     , types =
-        [ ( orange 64, "orange" )
-        , ( green 64, "green" )
-        , ( lightBlue 64, "lightBlue" )
-        , ( blue 64, "blue" )
-        , ( white 64, "white" )
-        , ( black 64, "black" )
-        , ( colorful 64, "colorful" )
+        [ ( "Logos"
+          , [ ( orange 64, "orange" )
+            , ( green 64, "green" )
+            , ( lightBlue 64, "lightBlue" )
+            , ( blue 64, "blue" )
+            , ( white 64, "white" )
+            , ( black 64, "black" )
+            , ( colorful 64, "colorful" )
+            ]
+          )
         ]
     }
 

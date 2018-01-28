@@ -15,17 +15,17 @@ module Parts.Color
 import Color
 import Color.Accessibility
 import Color.Convert
-import Element
-import Element.Background
-import Element.Border
-import Element.Font
-import Introspection
+import Element exposing (..)
+import Element.Background as Background
+import Element.Border as Border
+import Element.Font as Font
+import Styleguide
 
 
 -- INTROSPECTION
 
 
-introspection : Introspection.Introspection msg
+introspection : Styleguide.Data msg
 introspection =
     { name = "Color"
     , signature = "Color.Color"
@@ -34,14 +34,17 @@ introspection =
     , usageResult = usageWrapper elmOrange
     , boxed = True
     , types =
-        [ ( usageWrapper black, "black" )
-        , ( usageWrapper elmOrange, "elmOrange" )
-        , ( usageWrapper font, "font" )
-        , ( usageWrapper background, "background" )
-        , ( usageWrapper lightGray, "lightGray" )
-        , ( usageWrapper lightOrange, "lightOrange" )
-        , ( usageWrapper red, "red" )
-        , ( usageWrapper white, "white" )
+        [ ( "Colors"
+          , [ ( usageWrapper black, "black" )
+            , ( usageWrapper elmOrange, "elmOrange" )
+            , ( usageWrapper font, "font" )
+            , ( usageWrapper background, "background" )
+            , ( usageWrapper lightGray, "lightGray" )
+            , ( usageWrapper lightOrange, "lightOrange" )
+            , ( usageWrapper red, "red" )
+            , ( usageWrapper white, "white" )
+            ]
+          )
         ]
     }
 
@@ -49,12 +52,12 @@ introspection =
 usageWrapper : Color.Color -> Element.Element msg
 usageWrapper color =
     Element.el
-        [ Element.Background.color color
-        , Element.width <| Element.px 100
-        , Element.height <| Element.px 100
-        , Element.padding 10
-        , Element.Border.rounded 5
-        , Element.Font.color <| Maybe.withDefault Color.black <| Color.Accessibility.maximumContrast color [ Color.white, Color.black ]
+        [ Background.color color
+        , width <| px 100
+        , height <| px 100
+        , padding 10
+        , Border.rounded 5
+        , Font.color <| Maybe.withDefault Color.black <| Color.Accessibility.maximumContrast color [ Color.white, Color.black ]
         ]
     <|
         Element.text <|
