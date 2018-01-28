@@ -1,14 +1,15 @@
 port module Main exposing (main)
 
--- import Element.Debug exposing (redBorder)
+-- import Debug exposing (redBorder)
 
-import Element
-import Element.Background
-import Element.Border
-import Element.Font
-import Element.Hack
-import Element.Input
+import Element exposing (..)
+import Element.Background as Background
+import Element.Border as Border
+import Element.Font as Font
+import Element.Hack as Hack
+import Element.Input as Input
 import Framework.Button
+import Framework.Color
 import Html
 import Html.Events
 import Http
@@ -32,8 +33,8 @@ routes : List Route
 routes =
     [ Top
     , Framework
-    , Styleguide
     , Examples
+    , Styleguide
     , Sitemap
     , Debug
     , Page2
@@ -56,7 +57,7 @@ type Route
 type alias RouteData =
     { name : String
     , path : List String
-    , view : Model -> Element.Element Msg
+    , view : Model -> Element Msg
     }
 
 
@@ -114,7 +115,7 @@ routeData route =
         NotFound ->
             { name = "Page Not Found"
             , path = []
-            , view = \_ -> Element.text "Page not found"
+            , view = \_ -> text "Page not found"
             }
 
 
@@ -138,7 +139,7 @@ routeName route =
     .name <| routeData route
 
 
-routeView : Route -> Model -> Element.Element Msg
+routeView : Route -> Model -> Element Msg
 routeView route =
     .view <| routeData route
 
@@ -225,7 +226,7 @@ type alias Model =
     , packVersion : String
     , packElmVersion : String
     , bannerSrc : String
-    , device : Element.Hack.Device
+    , device : Hack.Device
     }
 
 
@@ -300,7 +301,7 @@ update msg model =
             ( { model | localStorage = value }, storeLocalStorage <| Just value )
 
         WindowSize wsize ->
-            ( { model | device = Element.Hack.classifyDevice <| wsize }, Cmd.none )
+            ( { model | device = Hack.classifyDevice <| wsize }, Cmd.none )
 
 
 
@@ -320,7 +321,7 @@ initModel flag location =
     , bannerSrc = flag.bannerSrc
 
     -- Initial windowSize should come with a flag
-    , device = Element.Hack.classifyDevice <| Window.Size flag.width flag.height
+    , device = Hack.classifyDevice <| Window.Size flag.width flag.height
     }
 
 
@@ -376,7 +377,7 @@ subscriptions model =
 -- VIEWS
 
 
-viewLinkMenu : Model -> Route -> Element.Element Msg
+viewLinkMenu : Model -> Route -> Element Msg
 viewLinkMenu model route =
     let
         url =
@@ -384,33 +385,33 @@ viewLinkMenu model route =
 
         common =
             if model.device.width < menuBreakPoint then
-                [ Element.padding 10
-                , Element.width Element.fill
+                [ padding 10
+                , width fill
                 ]
             else
-                [ Element.padding 10
+                [ padding 10
                 ]
     in
     if model.route == route then
-        Element.el
-            ([ Element.Background.color Parts.Color.white
-             , Element.Font.color Parts.Color.font
+        el
+            ([ Background.color Parts.Color.white
+             , Font.color Parts.Color.font
              ]
                 ++ common
             )
-            (Element.text <| routeName route)
+            (text <| routeName route)
     else
-        Element.link
+        link
             ([ onLinkClickSE url
              ]
                 ++ common
             )
             { url = url
-            , label = Element.text <| routeName route
+            , label = text <| routeName route
             }
 
 
-viewMenu : Model -> Element.Element Msg
+viewMenu : Model -> Element Msg
 viewMenu model =
     let
         menuList =
@@ -419,44 +420,44 @@ viewMenu model =
                 routes
     in
     if model.device.width < menuBreakPoint then
-        Element.column
-            [ Element.Background.color Parts.Color.background
-            , Element.Font.color Parts.Color.onBackground
+        column
+            [ Background.color Parts.Color.background
+            , Font.color Parts.Color.onBackground
             ]
             menuList
     else
-        Element.row
-            [ Element.Background.color Parts.Color.background
-            , Element.Font.color Parts.Color.onBackground
+        row
+            [ Background.color Parts.Color.background
+            , Font.color Parts.Color.onBackground
             ]
             menuList
 
 
-viewTopPart : Model -> Element.Element Msg
+viewTopPart : Model -> Element Msg
 viewTopPart model =
-    Element.column
-        [ Element.Background.fittedImage model.bannerSrc
-        , Element.Font.color Parts.Color.white
-        , Element.height <| Element.px 200
+    column
+        [ Background.fittedImage model.bannerSrc
+        , Font.color Parts.Color.white
+        , height <| px 200
         ]
-        [ Element.el [ Element.padding 10 ] <| Parts.LogoElm.orange 50
-        , Element.Hack.h1
-            [ Element.center
-            , Element.Font.shadow { offset = ( 1, 0 ), blur = 1, color = Parts.Color.black }
+        [ el [ padding 10 ] <| Parts.LogoElm.orange 50
+        , Hack.h1
+            [ center
+            , Font.shadow { offset = ( 1, 0 ), blur = 1, color = Parts.Color.black }
             ]
           <|
-            Element.text model.title
+            text model.title
         ]
 
 
-viewMiddlePart : Model -> Element.Element Msg
+viewMiddlePart : Model -> Element Msg
 viewMiddlePart model =
-    Element.row [ Element.width Element.fill ]
-        [ Element.column
-            [ Element.padding 30
-            , Element.Hack.style [ ( "max-width", toString menuBreakPoint ++ "px" ) ]
+    row [ width fill ]
+        [ column
+            [ padding 30
+            , Hack.style [ ( "max-width", toString menuBreakPoint ++ "px" ) ]
             ]
-            [ Element.Hack.h2 [] <| Element.text <| routeName model.route
+            [ Hack.h2 [] <| text <| routeName model.route
             , routeView model.route model
             ]
         ]
@@ -467,24 +468,24 @@ menuBreakPoint =
     670
 
 
-viewFooter : Model -> Element.Element msg
+viewFooter : Model -> Element msg
 viewFooter model =
     let
         element =
             if model.device.width < menuBreakPoint then
-                Element.column
+                column
             else
-                Element.row
+                row
     in
     element
-        [ Element.spaceEvenly
-        , Element.Background.color Parts.Color.background
-        , Element.Font.color Parts.Color.onBackground
-        , Element.padding 30
+        [ spaceEvenly
+        , Background.color Parts.Color.background
+        , Font.color Parts.Color.onBackground
+        , padding 30
         ]
         [ viewMade "凸" "lucamug"
-        , Element.el [] <|
-            Element.text <|
+        , el [] <|
+            text <|
                 "ver. "
                     ++ model.packVersion
         , forkMe
@@ -493,22 +494,22 @@ viewFooter model =
 
 view : Model -> Html.Html Msg
 view model =
-    Element.layout
-        [ Element.Font.family
-            [ Element.Font.external
+    layout
+        [ Font.family
+            [ Font.external
                 { name = "Source Sans Pro"
                 , url = "https://fonts.googleapis.com/css?family=Source+Sans+Pro"
                 }
-            , Element.Font.sansSerif
+            , Font.sansSerif
             ]
-        , Element.Font.size 16
-        , Element.Font.color Parts.Color.font
-        , Element.Background.color Parts.Color.white
+        , Font.size 16
+        , Font.color Parts.Color.font
+        , Background.color Parts.Color.white
 
-        -- , Element.Hack.style [ ( "min-height", toString model.device.height ++ "px" ) ]
+        -- , Hack.style [ ( "min-height", toString model.device.height ++ "px" ) ]
         ]
     <|
-        Element.column []
+        column []
             [ viewTopPart model
             , viewMenu model
             , viewMiddlePart model
@@ -516,9 +517,9 @@ view model =
             ]
 
 
-onLinkClickSE : String -> Element.Attribute Msg
+onLinkClickSE : String -> Attribute Msg
 onLinkClickSE url =
-    Element.attribute
+    attribute
         (Html.Events.onWithOptions "click"
             { stopPropagation = False
             , preventDefault = True
@@ -527,18 +528,18 @@ onLinkClickSE url =
         )
 
 
-viewDebug : Model -> Element.Element msg
+viewDebug : Model -> Element msg
 viewDebug model =
-    Element.column []
+    column []
         (List.map
             (\( item, name ) ->
-                Element.column []
-                    [ Element.Hack.h3 [] <| Element.text <| "► " ++ name
-                    , Element.paragraph
-                        [ Element.Background.color <| Parts.Color.lightGray
-                        , Element.padding 10
+                column []
+                    [ Hack.h3 [] <| text <| "► " ++ name
+                    , paragraph
+                        [ Background.color <| Parts.Color.lightGray
+                        , padding 10
                         ]
-                        (List.map (\line -> Element.paragraph [] [ Element.text <| line ]) <| String.split "," item)
+                        (List.map (\line -> paragraph [] [ text <| line ]) <| String.split "," item)
                     ]
             )
          <|
@@ -546,110 +547,134 @@ viewDebug model =
         )
 
 
-viewTop : Model -> Element.Element Msg
+viewTop : Model -> Element Msg
 viewTop model =
-    Element.column [ Element.spacing 20 ]
-        [ Element.paragraph []
-            [ Element.text "This is a boilerplate for writing a Single Page Application. It is written in "
-            , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "http://elm-lang.org/", label = Element.text "Elm" }
-            , Element.text " and "
-            , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = Element.text "style-elements v5" }
-            , Element.text " this means: "
-            , Element.link [ Element.Font.color Parts.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = Element.text "No HTML, No CSS, No Javascript" }
-            , Element.text "."
+    column [ spacing 20 ]
+        [ paragraph []
+            [ text "This is a boilerplate for writing a Single Page Application. It is written in "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "http://elm-lang.org/", label = text "Elm" }
+            , text " and "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = text "style-elements v5" }
+            , text " this means: "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = text "No HTML, No CSS, No Javascript" }
+            , text "."
             ]
-        , Element.paragraph []
-            [ Element.text "Find a detailed post in "
-            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
+        , paragraph []
+            [ text "Find a detailed post in "
+            , link [ Font.color Parts.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2"
-                , label = Element.text "Medium"
+                , label = text "Medium"
                 }
-            , Element.text ", the code is in "
-            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
-                { url = "https://github.com/lucamug/elm-spa-boilerplate", label = Element.text "Github" }
-            , Element.text "."
+            , text ", the code is in "
+            , link [ Font.color Parts.Color.elmOrange ]
+                { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "Github" }
+            , text "."
             ]
-        , Element.Hack.h3 [] <| Element.text "Ajax request example"
+        , Hack.h3 [] <| text "Ajax request example"
         , case model.apiData of
             NoData ->
-                Element.column []
-                    [ Element.paragraph []
+                column []
+                    [ paragraph []
                         [ Parts.Button.largeImportant
                             "My IP is..."
                           <|
                             Just (FetchApiData "https://httpbin.org/delay/1")
                         ]
-                    , Element.paragraph [] [ Element.text <| "Your IP is ..." ]
+                    , paragraph [] [ text <| "Your IP is ..." ]
                     ]
 
             Fetching ->
-                Element.column []
-                    [ Element.paragraph []
+                column []
+                    [ paragraph []
                         [ Parts.Button.largeWithSpinner
                             "My IP is..."
                             Nothing
                         ]
-                    , Element.paragraph [] [ Element.text <| "Your IP is ..." ]
+                    , paragraph [] [ text <| "Your IP is ..." ]
                     ]
 
             Fetched ip ->
-                Element.column []
-                    [ Element.paragraph []
+                column []
+                    [ paragraph []
                         [ Parts.Button.largeImportant
                             "My IP is..."
                           <|
                             Just <|
                                 FetchApiData "https://httpbin.org/delay/1"
                         ]
-                    , Element.paragraph [] [ Element.text <| "Your IP is " ++ ip ]
+                    , paragraph [] [ text <| "Your IP is " ++ ip ]
                     ]
-        , Element.Hack.h3 [] <| Element.text "Local Storage"
-        , Element.paragraph [] [ Element.text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
-        , Element.Input.text
-            [ Element.Border.width 1
-            , Element.Border.color <| Parts.Color.font
-            , Element.Border.rounded 10
-            , Element.padding 8
+        , Hack.h3 [] <| text "Local Storage"
+        , paragraph [] [ text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
+        , Input.text
+            [ Border.width 1
+            , Border.color <| Parts.Color.font
+            , Border.rounded 10
+            , padding 8
             ]
             { onChange = Just UpdateLocalStorage
             , text = model.localStorage
             , placeholder = Nothing
             , label =
-                Element.Input.labelLeft [] <|
-                    Element.paragraph
-                        [ Element.paddingEach { top = 8, right = 20, bottom = 8, left = 0 }
+                Input.labelLeft [] <|
+                    paragraph
+                        [ paddingEach { top = 8, right = 20, bottom = 8, left = 0 }
                         ]
-                        [ Element.text "Local Storage" ]
+                        [ text "Local Storage" ]
             , notice = Nothing
             }
         ]
 
 
-viewFramework : Model -> Element.Element Msg
-viewFramework model =
-    Element.column []
-        [ Element.paragraph []
-            [ Element.text "This is a Living Style Guide automatically generated from the code. Read more about it in "
-            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
+introduction : Element msg
+introduction =
+    el [ paddingXY 0 0, alignLeft ] <|
+        paragraph []
+            [ text "This is a "
+            , link [ Font.color Parts.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
-                , label = Element.text "Medium"
+                , label = text "Living Style Guide"
                 }
-            , Element.text "."
+            , text " of "
+            , link [ Font.color Parts.Color.elmOrange ]
+                { url = "https://github.com/lucamug/elm-style-framework"
+                , label = text "elm-style-framework"
+                }
+            , text " (built on top of "
+            , link [ Font.color Parts.Color.elmOrange ]
+                { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
+                , label = text "style-elements v.4.alpha"
+                }
+            , text ") automatically generated from Elm code using "
+            , link [ Font.color Parts.Color.elmOrange ]
+                { url = "https://github.com/lucamug/elm-styleguide-generator"
+                , label = text "elm-styleguide-generator"
+                }
+            , text "."
             ]
-        , Styleguide.generate Framework.Button.introspection
+
+
+viewFramework : Model -> Element Msg
+viewFramework model =
+    column []
+        [ introduction
+        , Styleguide.page
+            [ Framework.Button.introspection
+            , Framework.Color.introspection
+            ]
         ]
 
 
-viewStyleguide : Model -> Element.Element Msg
+viewStyleguide : Model -> Element Msg
 viewStyleguide model =
-    Element.column []
-        [ Element.paragraph []
-            [ Element.text "This is a Living Style Guide automatically generated from the code. Read more about it in "
-            , Element.link [ Element.Font.color Parts.Color.elmOrange ]
+    column []
+        [ paragraph []
+            [ text "This is a Living Style Guide automatically generated from the code. Read more about it in "
+            , link [ Font.color Parts.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
-                , label = Element.text "Medium"
+                , label = text "Medium"
                 }
-            , Element.text "."
+            , text "."
             ]
         , Introspection.view Parts.Spinner.introspection
         , Introspection.view Parts.Button.introspection
@@ -658,7 +683,7 @@ viewStyleguide model =
         ]
 
 
-viewSitemap : Model -> Element.Element Msg
+viewSitemap : Model -> Element Msg
 viewSitemap model =
     let
         data =
@@ -669,29 +694,29 @@ viewSitemap model =
                             model.location.origin ++ routePathJoined route
                     in
                     { link1 = viewLinkMenu model route
-                    , link2 = Element.link [] { url = url, label = Element.text <| url }
+                    , link2 = link [] { url = url, label = text <| url }
                     }
                 )
                 routes
     in
-    Element.table []
+    table []
         { data =
             data
         , columns =
-            [ { header = Element.text ""
-              , view = \row -> Element.paragraph [] [ row.link1 ]
+            [ { header = text ""
+              , view = \row -> paragraph [] [ row.link1 ]
               }
-            , { header = Element.text ""
-              , view = \row -> Element.paragraph [ Element.padding 10 ] [ row.link2 ]
+            , { header = text ""
+              , view = \row -> paragraph [ padding 10 ] [ row.link2 ]
               }
             ]
         }
 
 
-viewPage2 : Model -> Element.Element Msg
+viewPage2 : Model -> Element Msg
 viewPage2 model =
-    Element.paragraph []
-        [ Element.text """I cannot well repeat how there I entered,
+    paragraph []
+        [ text """I cannot well repeat how there I entered,
 So full was I of slumber at the moment
 In which I had abandoned the true way.
 
@@ -704,10 +729,10 @@ Vested already with that planet's rays
 Which leadeth others right by every road.""" ]
 
 
-viewPage2_1 : Model -> Element.Element Msg
+viewPage2_1 : Model -> Element Msg
 viewPage2_1 model =
-    Element.paragraph []
-        [ Element.text """Then was the fear a little quieted
+    paragraph []
+        [ text """Then was the fear a little quieted
 That in my heart's lake had endured throughout
 The night, which I had passed so piteously
 
@@ -752,11 +777,11 @@ main =
 -- FORK ME ON GITHUB
 
 
-forkMe : Element.Element msg
+forkMe : Element msg
 forkMe =
-    Element.link []
+    link []
         { url = "https://github.com/lucamug/elm-spa-boilerplate"
-        , label = Element.text "Fork me on GitHub"
+        , label = text "Fork me on GitHub"
         }
 
 
@@ -764,25 +789,25 @@ forkMe =
 -- MADE BY LUCAMUG
 
 
-viewMade : String -> String -> Element.Element msg
+viewMade : String -> String -> Element msg
 viewMade with by =
-    Element.link
-        [ Element.Hack.class "made-by"
+    link
+        [ Hack.class "made-by"
         ]
         { url = "https://github.com/" ++ by
         , label =
-            Element.row []
-                [ Element.Hack.styleElement ".made-by:hover .made-by-spin {transform: rotate(0deg);}"
-                , Element.text "made with "
-                , Element.el
-                    [ Element.Font.color <| Parts.Color.red
-                    , Element.rotate <| degrees 60
-                    , Element.padding 4
-                    , Element.Hack.class "made-by-spin"
-                    , Element.Hack.style [ ( "transition", "all .4s ease-in-out" ) ]
+            row []
+                [ Hack.styleElement ".made-by:hover .made-by-spin {transform: rotate(0deg);}"
+                , text "made with "
+                , el
+                    [ Font.color <| Parts.Color.red
+                    , rotate <| degrees 60
+                    , padding 4
+                    , Hack.class "made-by-spin"
+                    , Hack.style [ ( "transition", "all .4s ease-in-out" ) ]
                     ]
                   <|
-                    Element.text with
-                , Element.text <| " by " ++ by
+                    text with
+                , text <| " by " ++ by
                 ]
         }
