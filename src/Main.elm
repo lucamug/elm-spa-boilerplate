@@ -847,14 +847,12 @@ h3 =
     header 3
 
 
-h4 : List (Element.Attribute msg) -> Element.Element msg -> Element.Element msg
-h4 =
-    header 4
 
-
-goldenRatio : Float
-goldenRatio =
-    1.618
+{-
+   goldenRatio : Float
+   goldenRatio =
+       1.618
+-}
 
 
 genericRatio : Float
