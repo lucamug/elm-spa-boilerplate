@@ -1,4 +1,4 @@
-module Parts.LogoElm
+module Framework2.LogoElm
     exposing
         ( black
         , blue

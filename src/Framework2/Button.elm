@@ -1,4 +1,4 @@
-module Parts.Button
+module Framework2.Button
     exposing
         ( introspection
         , large
@@ -16,8 +16,8 @@ import Element.Border as Border
 import Element.Font as Font
 import Element.Hack as Hack
 import Element.Input as Input
-import Parts.Color
-import Parts.Spinner
+import Framework2.Color
+import Framework2.Spinner
 import Styleguide
 
 
@@ -75,16 +75,16 @@ typeToColor : Color -> Color.Color
 typeToColor color =
     case color of
         Regular ->
-            Parts.Color.white
+            Framework2.Color.white
 
         Important ->
-            Parts.Color.elmOrange
+            Framework2.Color.elmOrange
 
         TextOnRegular ->
-            Parts.Color.font
+            Framework2.Color.font
 
         TextOnImportant ->
-            Parts.Color.white
+            Framework2.Color.white
 
 
 sizeToInt : Size -> Int
@@ -182,10 +182,10 @@ part label onPress type_ =
         spinnerElement =
             case bgColor of
                 Regular ->
-                    Element.paragraph [ Element.padding <| sizeInt - 3 ] [ Parts.Spinner.black 28 ]
+                    Element.paragraph [ Element.padding <| sizeInt - 3 ] [ Framework2.Spinner.black 28 ]
 
                 _ ->
-                    Element.paragraph [ Element.padding <| sizeInt - 3 ] [ Parts.Spinner.white 28 ]
+                    Element.paragraph [ Element.padding <| sizeInt - 3 ] [ Framework2.Spinner.white 28 ]
     in
     Input.button
         [ inFront spinner spinnerElement

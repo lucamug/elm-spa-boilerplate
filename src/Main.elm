@@ -9,16 +9,16 @@ import Element.Hack as Hack
 import Element.Input as Input
 import Framework.Button
 import Framework.Color
+import Framework2.Button
+import Framework2.Color
+import Framework2.LogoElm
+import Framework2.Spinner
 import Html
 import Html.Events
 import Http
 import Json.Decode as Decode
 import Navigation
 import Pages.Examples
-import Parts.Button
-import Parts.Color
-import Parts.LogoElm
-import Parts.Spinner
 import Styleguide
 import UrlParser exposing ((</>))
 import Window
@@ -391,8 +391,8 @@ viewLinkMenu model route =
     in
     if model.route == route then
         el
-            ([ Background.color Parts.Color.white
-             , Font.color Parts.Color.font
+            ([ Background.color Framework2.Color.white
+             , Font.color Framework2.Color.font
              ]
                 ++ common
             )
@@ -418,14 +418,14 @@ viewMenu model =
     in
     if model.device.width < menuBreakPoint then
         column
-            [ Background.color Parts.Color.background
-            , Font.color Parts.Color.onBackground
+            [ Background.color Framework2.Color.background
+            , Font.color Framework2.Color.onBackground
             ]
             menuList
     else
         row
-            [ Background.color Parts.Color.background
-            , Font.color Parts.Color.onBackground
+            [ Background.color Framework2.Color.background
+            , Font.color Framework2.Color.onBackground
             ]
             menuList
 
@@ -434,13 +434,13 @@ viewTopPart : Model -> Element Msg
 viewTopPart model =
     column
         [ Background.fittedImage model.bannerSrc
-        , Font.color Parts.Color.white
+        , Font.color Framework2.Color.white
         , height <| px 200
         ]
-        [ el [ padding 10 ] <| Parts.LogoElm.orange 50
+        [ el [ padding 10 ] <| Framework2.LogoElm.orange 50
         , h1
             [ center
-            , Font.shadow { offset = ( 1, 0 ), blur = 1, color = Parts.Color.black }
+            , Font.shadow { offset = ( 1, 0 ), blur = 1, color = Framework2.Color.black }
             ]
           <|
             text model.title
@@ -476,8 +476,8 @@ viewFooter model =
     in
     element
         [ spaceEvenly
-        , Background.color Parts.Color.background
-        , Font.color Parts.Color.onBackground
+        , Background.color Framework2.Color.background
+        , Font.color Framework2.Color.onBackground
         , padding 30
         ]
         [ viewMade "凸" "lucamug"
@@ -500,8 +500,8 @@ view model =
             , Font.sansSerif
             ]
         , Font.size 16
-        , Font.color Parts.Color.font
-        , Background.color Parts.Color.white
+        , Font.color Framework2.Color.font
+        , Background.color Framework2.Color.white
         ]
     <|
         column []
@@ -531,7 +531,7 @@ viewDebug model =
                 column []
                     [ h3 [] <| text <| "► " ++ name
                     , paragraph
-                        [ Background.color <| Parts.Color.lightGray
+                        [ Background.color <| Framework2.Color.lightGray
                         , padding 10
                         ]
                         (List.map (\line -> paragraph [] [ text <| line ]) <| String.split "," item)
@@ -547,27 +547,27 @@ viewTop model =
     column [ spacing 20 ]
         [ paragraph []
             [ text "This is a "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2", label = text "boilerplate for writing a Single Page Application" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2", label = text "boilerplate for writing a Single Page Application" }
             , text "."
             ]
         , paragraph []
             [ text "It is written using "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "http://elm-lang.org/", label = text "Elm" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://elm-lang.org/", label = text "Elm" }
             , text " + "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "https://www.npmjs.com/package/create-elm-app", label = text "elm-app" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://www.npmjs.com/package/create-elm-app", label = text "elm-app" }
             , text " + "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = text "style-elements v5.alpha" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = text "style-elements v5.alpha" }
             , text " + "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-style-framework/1.0.1", label = text "elm-style-framework" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-style-framework/1.0.1", label = text "elm-style-framework" }
             , text " + "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-styleguide-generator/1.0.1", label = text "elm-styleguide-generator" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-styleguide-generator/1.0.1", label = text "elm-styleguide-generator" }
             , text ". So "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = text "No HTML, No CSS, No Javascript" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = text "No HTML, No CSS, No Javascript" }
             , text "."
             ]
         , paragraph []
             [ text "Code: "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "elm-spa-boilerplate" }
+            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "elm-spa-boilerplate" }
             , text "."
             ]
         , h3 [] <| text "Ajax request example"
@@ -575,7 +575,7 @@ viewTop model =
             NoData ->
                 column []
                     [ paragraph []
-                        [ Parts.Button.largeImportant
+                        [ Framework2.Button.largeImportant
                             "My IP is..."
                           <|
                             Just (FetchApiData "https://httpbin.org/delay/1")
@@ -586,7 +586,7 @@ viewTop model =
             Fetching ->
                 column []
                     [ paragraph []
-                        [ Parts.Button.largeWithSpinner
+                        [ Framework2.Button.largeWithSpinner
                             "My IP is..."
                             Nothing
                         ]
@@ -596,7 +596,7 @@ viewTop model =
             Fetched ip ->
                 column []
                     [ paragraph []
-                        [ Parts.Button.largeImportant
+                        [ Framework2.Button.largeImportant
                             "My IP is..."
                           <|
                             Just <|
@@ -608,7 +608,7 @@ viewTop model =
         , paragraph [] [ text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
         , Input.text
             [ Border.width 1
-            , Border.color <| Parts.Color.font
+            , Border.color <| Framework2.Color.font
             , Border.rounded 10
             , padding 8
             ]
@@ -631,22 +631,22 @@ introduction =
     el [ paddingXY 0 0, alignLeft ] <|
         paragraph []
             [ text "This is a "
-            , link [ Font.color Parts.Color.elmOrange ]
+            , link [ Font.color Framework2.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
                 , label = text "Living Style Guide"
                 }
             , text " of "
-            , link [ Font.color Parts.Color.elmOrange ]
+            , link [ Font.color Framework2.Color.elmOrange ]
                 { url = "https://github.com/lucamug/elm-style-framework"
                 , label = text "elm-style-framework"
                 }
             , text " (built on top of "
-            , link [ Font.color Parts.Color.elmOrange ]
+            , link [ Font.color Framework2.Color.elmOrange ]
                 { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
                 , label = text "style-elements v.4.alpha"
                 }
             , text ") automatically generated from Elm code using "
-            , link [ Font.color Parts.Color.elmOrange ]
+            , link [ Font.color Framework2.Color.elmOrange ]
                 { url = "https://github.com/lucamug/elm-styleguide-generator"
                 , label = text "elm-styleguide-generator"
                 }
@@ -670,17 +670,17 @@ viewStyleguide model =
     column []
         [ paragraph []
             [ text "This is a Living Style Guide automatically generated from the code. Read more about it in "
-            , link [ Font.color Parts.Color.elmOrange ]
+            , link [ Font.color Framework2.Color.elmOrange ]
                 { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
                 , label = text "Medium"
                 }
             , text "."
             ]
         , Styleguide.page
-            [ Parts.Button.introspection
-            , Parts.Color.introspection
-            , Parts.LogoElm.introspection
-            , Parts.Spinner.introspection
+            [ Framework2.Button.introspection
+            , Framework2.Color.introspection
+            , Framework2.LogoElm.introspection
+            , Framework2.Spinner.introspection
             ]
         ]
 
@@ -728,7 +728,7 @@ Which had with consternation pierced my heart,
 
 Upward I looked, and I beheld its shoulders
 Vested already with that planet's rays
-Which leadeth others right by every road..""" ]
+Which leadeth others right by every road.""" ]
 
 
 viewPage2_1 : Model -> Element Msg
@@ -794,7 +794,7 @@ viewMade with by =
                 [ Hack.styleElement ".made-by:hover .made-by-spin {transform: rotate(0deg);}"
                 , text "made with "
                 , el
-                    [ Font.color <| Parts.Color.red
+                    [ Font.color <| Framework2.Color.red
                     , rotate <| degrees 60
                     , padding 4
                     , Hack.class "made-by-spin"

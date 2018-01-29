@@ -1,4 +1,4 @@
-module Parts.Color
+module Framework2.Color
     exposing
         ( background
         , black
