@@ -306,13 +306,13 @@ buttonAttr modifiers =
 
                 _ ->
                     backgroundColor
-                        |> Color.Manipulate.darken 0.1
-                        |> Color.Manipulate.desaturate 0.1
+                        |> Color.Manipulate.darken 0.05
+                        |> Color.Manipulate.desaturate 0.05
 
         borderMouseOverColor =
             borderColor
-                |> Color.Manipulate.darken 0.1
-                |> Color.Manipulate.desaturate 0.1
+                |> Color.Manipulate.darken 0.05
+                |> Color.Manipulate.desaturate 0.05
 
         fontMouseOverColor =
             case conf.state of
@@ -321,8 +321,8 @@ buttonAttr modifiers =
 
                 _ ->
                     fontColor
-                        |> Color.Manipulate.darken 0.1
-                        |> Color.Manipulate.desaturate 0.1
+                        |> Color.Manipulate.darken 0.05
+                        |> Color.Manipulate.desaturate 0.05
 
         backgroundColor =
             case conf.state of
