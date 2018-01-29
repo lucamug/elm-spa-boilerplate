@@ -8,7 +8,7 @@ module Parts.Spinner
 
 import Color
 import Color.Convert
-import Element
+import Element exposing (..)
 import Html
 import Styleguide
 import Svg
@@ -41,17 +41,17 @@ introspection =
 -- TYPES
 
 
-orange : Int -> Element.Element msg
+orange : Int -> Element msg
 orange size =
     part size Orange
 
 
-white : Int -> Element.Element msg
+white : Int -> Element msg
 white size =
     part size White
 
 
-black : Int -> Element.Element msg
+black : Int -> Element msg
 black size =
     part size Black
 
@@ -87,14 +87,14 @@ cssRgb color =
             Color.rgb 0x00 0x00 0x00
 
 
-part : Size -> Color -> Element.Element msg
+part : Size -> Color -> Element msg
 part =
     partElement
 
 
-partElement : Size -> Color -> Element.Element msg
+partElement : Size -> Color -> Element msg
 partElement size color =
-    Element.html <| partHtml size color
+    html <| partHtml size color
 
 
 partHtml : Size -> Color -> Html.Html msg

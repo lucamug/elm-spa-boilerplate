@@ -12,7 +12,7 @@ module Parts.LogoElm
 
 import Color
 import Color.Convert
-import Element
+import Element exposing (..)
 import Styleguide
 import Svg
 import Svg.Attributes
@@ -48,37 +48,37 @@ introspection =
 -- TYPES
 
 
-orange : Int -> Element.Element msg
+orange : Int -> Element msg
 orange size =
     part size (Color Orange)
 
 
-green : Int -> Element.Element msg
+green : Int -> Element msg
 green size =
     part size (Color Green)
 
 
-lightBlue : Int -> Element.Element msg
+lightBlue : Int -> Element msg
 lightBlue size =
     part size (Color LightBlue)
 
 
-blue : Int -> Element.Element msg
+blue : Int -> Element msg
 blue size =
     part size (Color Blue)
 
 
-white : Int -> Element.Element msg
+white : Int -> Element msg
 white size =
     part size (Color White)
 
 
-black : Int -> Element.Element msg
+black : Int -> Element msg
 black size =
     part size (Color Black)
 
 
-colorful : Int -> Element.Element msg
+colorful : Int -> Element msg
 colorful size =
     part size Colorful
 
@@ -137,7 +137,7 @@ cssRgb color =
             Color.rgb 0x00 0x00 0x00
 
 
-part : Size -> Type -> Element.Element msg
+part : Size -> Type -> Element msg
 part height type_ =
     let
         f =
@@ -165,7 +165,7 @@ part height type_ =
                     , c4 = cssRgb c
                     }
     in
-    Element.html
+    html
         (Svg.svg
             [ Svg.Attributes.version "1"
             , Svg.Attributes.viewBox "0 0 323 323"

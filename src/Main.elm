@@ -31,12 +31,13 @@ routes : List Route
 routes =
     [ Top
     , Framework
-    , Examples
     , Styleguide
+    , Examples
     , Sitemap
     , Debug
-    , Page2
-    , Page2_1
+
+    --, Page2
+    --, Page2_1
     ]
 
 
@@ -69,13 +70,13 @@ routeData route =
             }
 
         Framework ->
-            { name = "Framework"
+            { name = "Framework 1"
             , path = [ "framework" ]
             , view = viewFramework
             }
 
         Styleguide ->
-            { name = "Style Guide"
+            { name = "Framework 2"
             , path = [ "styleguide" ]
             , view = viewStyleguide
             }
@@ -93,7 +94,7 @@ routeData route =
             }
 
         Examples ->
-            { name = "Examples"
+            { name = "stylish-elephants"
             , path = [ "examples" ]
             , view = Pages.Examples.view
             }
@@ -545,23 +546,28 @@ viewTop : Model -> Element Msg
 viewTop model =
     column [ spacing 20 ]
         [ paragraph []
-            [ text "This is a boilerplate for writing a Single Page Application. It is written in "
+            [ text "This is a "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2", label = text "boilerplate for writing a Single Page Application" }
+            , text "."
+            ]
+        , paragraph []
+            [ text "It is written using "
             , link [ Font.color Parts.Color.elmOrange ] { url = "http://elm-lang.org/", label = text "Elm" }
-            , text " and "
-            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = text "style-elements v5" }
-            , text " this means: "
+            , text " + "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "https://www.npmjs.com/package/create-elm-app", label = text "elm-app" }
+            , text " + "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = text "style-elements v5.alpha" }
+            , text " + "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-style-framework/1.0.1", label = text "elm-style-framework" }
+            , text " + "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-styleguide-generator/1.0.1", label = text "elm-styleguide-generator" }
+            , text ". So "
             , link [ Font.color Parts.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = text "No HTML, No CSS, No Javascript" }
             , text "."
             ]
         , paragraph []
-            [ text "Find a detailed post in "
-            , link [ Font.color Parts.Color.elmOrange ]
-                { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2"
-                , label = text "Medium"
-                }
-            , text ", the code is in "
-            , link [ Font.color Parts.Color.elmOrange ]
-                { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "Github" }
+            [ text "Code: "
+            , link [ Font.color Parts.Color.elmOrange ] { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "elm-spa-boilerplate" }
             , text "."
             ]
         , h3 [] <| text "Ajax request example"
@@ -670,10 +676,12 @@ viewStyleguide model =
                 }
             , text "."
             ]
-        , Styleguide.section Parts.Spinner.introspection
-        , Styleguide.section Parts.Button.introspection
-        , Styleguide.section Parts.Color.introspection
-        , Styleguide.section Parts.LogoElm.introspection
+        , Styleguide.page
+            [ Parts.Button.introspection
+            , Parts.Color.introspection
+            , Parts.LogoElm.introspection
+            , Parts.Spinner.introspection
+            ]
         ]
 
 
