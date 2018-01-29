@@ -728,7 +728,7 @@ Which had with consternation pierced my heart,
 
 Upward I looked, and I beheld its shoulders
 Vested already with that planet's rays
-Which leadeth others right by every road.""" ]
+Which leadeth others right by every road..""" ]
 
 
 viewPage2_1 : Model -> Element Msg
