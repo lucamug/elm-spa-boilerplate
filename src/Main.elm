@@ -491,7 +491,15 @@ viewFooter model =
 
 view : Model -> Html.Html Msg
 view model =
-    layout
+    layoutWith
+        { options =
+            [ focusStyle
+                { borderColor = Just <| Framework.Color.color Framework.Color.Warning
+                , backgroundColor = Just <| Framework.Color.color Framework.Color.Warning
+                , shadow = Nothing
+                }
+            ]
+        }
         [ Font.family
             [ Font.external
                 { name = "Source Sans Pro"

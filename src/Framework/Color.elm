@@ -52,15 +52,16 @@ introspection =
             , ( usageWrapper Success, "color Success" )
             , ( usageWrapper Warning, "color Warning" )
             , ( usageWrapper Danger, "color Danger" )
-            , ( usageWrapper BlackBis, "color BlackBis " )
-            , ( usageWrapper BlackTer, "color BlackTer " )
+            , ( usageWrapper BlackBis, "color BlackBis" )
+            , ( usageWrapper BlackTer, "color BlackTer" )
             , ( usageWrapper GreyDarker, "color GreyDarker" )
-            , ( usageWrapper GreyDark, "color GreyDark " )
+            , ( usageWrapper GreyDark, "color GreyDark" )
             , ( usageWrapper Grey, "color Grey" )
             , ( usageWrapper GreyLight, "color GreyLight" )
             , ( usageWrapper GreyLighter, "color GreyLighter" )
             , ( usageWrapper WhiteTer, "color WhiteTer" )
-            , ( usageWrapper WhiteBis, "color WhiteBis " )
+            , ( usageWrapper WhiteBis, "color WhiteBis" )
+            , ( usageWrapper Transparent, "color Transparent" )
             ]
           )
         ]
@@ -118,6 +119,7 @@ type Color
     | WhiteTer
     | WhiteBis
     | Link
+    | Transparent
 
 
 {-| Convert a String to a Color
@@ -205,3 +207,6 @@ color color =
 
         WhiteBis ->
             conf.colors.whiteBis
+
+        Transparent ->
+            Color.hsla 0 0 0 0
