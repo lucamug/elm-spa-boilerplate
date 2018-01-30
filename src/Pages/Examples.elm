@@ -181,7 +181,7 @@ view model =
                 , { header = el (width fill :: attrA) <| text "Header 2", view = \index cell -> el (width fill :: attrB) <| text cell.cell2 }
                 ]
             }
-        , text "with alternate colors"
+        , text "with alternated colors"
         , indexedTable attrCont
             { data = cells
             , columns =
