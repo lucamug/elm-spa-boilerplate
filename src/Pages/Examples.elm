@@ -181,6 +181,15 @@ view model =
                 , { header = el (width fill :: attrA) <| text "Header 2", view = \index cell -> el (width fill :: attrB) <| text cell.cell2 }
                 ]
             }
+        , text "with alternate colors"
+        , indexedTable attrCont
+            { data = cells
+            , columns =
+                [ { header = el (width fill :: attrA) <| text "Index", view = \index cell -> el (alternateCellAttr index) <| text <| toString index }
+                , { header = el (width fill :: attrA) <| text "Header 1", view = \index cell -> el (alternateCellAttr index) <| text cell.cell1 }
+                , { header = el (width fill :: attrA) <| text "Header 2", view = \index cell -> el (alternateCellAttr index) <| text cell.cell2 }
+                ]
+            }
         ]
 
 
@@ -293,4 +302,18 @@ cells =
     , { cell1 = "Cell 1.2"
       , cell2 = "Cell 2.2"
       }
+    , { cell1 = "Cell 1.3"
+      , cell2 = "Cell 2.3"
+      }
+    , { cell1 = "Cell 1.4"
+      , cell2 = "Cell 2.4"
+      }
     ]
+
+
+alternateCellAttr : Int -> List (Attribute msg)
+alternateCellAttr index =
+    if index % 2 == 0 then
+        width fill :: attrC
+    else
+        width fill :: attrB
