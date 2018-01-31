@@ -1,5 +1,7 @@
 port module Main exposing (main)
 
+-- import Framework2.Spinner
+
 import Element exposing (..)
 import Element.Area as Area
 import Element.Background as Background
@@ -9,10 +11,10 @@ import Element.Hack as Hack
 import Element.Input as Input
 import Framework.Button
 import Framework.Color
+import Framework.Spinner
 import Framework2.Button
 import Framework2.Color
 import Framework2.LogoElm
-import Framework2.Spinner
 import Html
 import Html.Events
 import Http
@@ -31,20 +33,18 @@ routes : List Route
 routes =
     [ Top
     , Framework
-    , Styleguide
     , Examples
     , Sitemap
     , Debug
 
-    --, Page2
-    --, Page2_1
+    --, StyleguideRoute
     ]
 
 
 type Route
     = Top
     | Framework
-    | Styleguide
+    | StyleguideRoute
     | Sitemap
     | Debug
     | Examples
@@ -70,13 +70,13 @@ routeData route =
             }
 
         Framework ->
-            { name = "Framework 1"
-            , path = [ "framework" ]
+            { name = "Style Guide"
+            , path = [ "styleguide" ]
             , view = viewFramework
             }
 
-        Styleguide ->
-            { name = "Framework 2"
+        StyleguideRoute ->
+            { name = "Old Style Guide"
             , path = [ "styleguide" ]
             , view = viewStyleguide
             }
@@ -213,6 +213,7 @@ type Msg
     | SetLocalStorage (Result String String)
     | UpdateLocalStorage String
     | WindowSize Window.Size
+    | Styleguide Styleguide.Msg
 
 
 type alias Model =
@@ -225,6 +226,7 @@ type alias Model =
     , packVersion : String
     , packElmVersion : String
     , bannerSrc : String
+    , styleguide : Styleguide.Model
     , device : Hack.Device
     }
 
@@ -252,11 +254,40 @@ type ApiData
 
 
 -- UPDATE
+{-
+
+   SetDatePicker msg ->
+      let
+          ( newDatePicker, datePickerCmd, dateEvent ) =
+              DatePicker.update someSettings msg model.startDatePicker
+
+          date =
+              case dateEvent of
+                  NoChange ->
+                      model.date
+
+                  Changed newDate ->
+                      newDate |> processDate
+      in
+          { model
+              | date = date
+              , datePicker = newDatePicker
+          }
+              ! [ Cmd.map SetDatePicker datePickerCmd ]
+
+-}
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        Styleguide msg2 ->
+            let
+                ( newStyleguideModel, newStyleguideCmd ) =
+                    Styleguide.update msg2 model.styleguide
+            in
+            ( { model | styleguide = newStyleguideModel }, Cmd.none )
+
         ChangeLocation location ->
             ( model, Navigation.newUrl location )
 
@@ -319,6 +350,11 @@ initModel flag location =
     , packElmVersion = flag.packElmVersion
     , bannerSrc = flag.bannerSrc
     , device = Hack.classifyDevice <| Window.Size flag.width flag.height
+    , styleguide =
+        [ ( Framework.Button.introspection, False )
+        , ( Framework.Spinner.introspection, False )
+        , ( Framework.Color.introspection, False )
+        ]
     }
 
 
@@ -666,31 +702,33 @@ viewFramework : Model -> Element Msg
 viewFramework model =
     column []
         [ introduction
-        , Styleguide.page
-            [ Framework.Button.introspection
-            , Framework.Color.introspection
-            ]
+        , Styleguide.view model.styleguide |> Element.map Styleguide
         ]
 
 
 viewStyleguide : Model -> Element Msg
 viewStyleguide model =
-    column []
-        [ paragraph []
-            [ text "This is a Living Style Guide automatically generated from the code. Read more about it in "
-            , link [ Font.color Framework2.Color.elmOrange ]
-                { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
-                , label = text "Medium"
-                }
-            , text "."
-            ]
-        , Styleguide.page
-            [ Framework2.Button.introspection
-            , Framework2.Color.introspection
-            , Framework2.LogoElm.introspection
-            , Framework2.Spinner.introspection
-            ]
-        ]
+    el [] <| text "This Style Guide is not available. Check the new one under \"Style Guide\""
+
+
+
+{- column []
+   [ paragraph []
+       [ text "This is a Living Style Guide automatically generated from the code. Read more about it in "
+       , link [ Font.color Framework2.Color.elmOrange ]
+           { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
+           , label = text "Medium"
+           }
+       , text "."
+       ]
+   , Styleguide.page
+       [ Framework2.Button.introspection
+       , Framework2.Color.introspection
+       , Framework2.LogoElm.introspection
+       , Framework2.Spinner.introspection
+       ]
+   ]
+-}
 
 
 viewSitemap : Model -> Element Msg

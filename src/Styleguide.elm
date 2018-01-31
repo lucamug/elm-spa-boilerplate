@@ -1,4 +1,4 @@
-module Styleguide exposing (Data, htmlPage, page, section)
+module Styleguide exposing (Data, Model, Msg, htmlPage, init, page, section, update, view)
 
 {-| This simple package generates a page with Style Guides.
 It uses certain data structure that each section of the framework expose ([Example](https://lucamug.github.io/elm-styleguide-generator/), [Example source](https://github.com/lucamug/elm-styleguide-generator/blob/master/examples/Main.elm)).
@@ -20,6 +20,7 @@ import Element exposing (..)
 import Element.Area as Area
 import Element.Background as Background
 import Element.Border as Border
+import Element.Events as Events
 import Element.Font as Font
 import Html
 import Html.Attributes
@@ -53,10 +54,53 @@ type alias Data msg =
     , signature : String
     , description : String
     , usage : String
-    , usageResult : Element msg
+    , usageResult : Element Msg
     , types : List ( String, List ( Element msg, String ) )
     , boxed : Bool
     }
+
+
+type Msg
+    = ToggleSection String
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( [], Cmd.none )
+
+
+type alias Model =
+    List ( Data Msg, Bool )
+
+
+type alias SectionId =
+    String
+
+
+view : Model -> Element Msg
+view model =
+    column []
+        -- Html.input [ Html.Events.onInput ToggleSection ] []
+        (List.map (\( data, show ) -> section data) model)
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg |> Debug.log "xxx" of
+        ToggleSection section ->
+            ( model, Cmd.none )
+
+
+
+{-
+   main =
+       Html.program
+           { init = init
+           , view = view
+           , update = update
+           , subscriptions = \_ -> Sub.none
+           }
+-}
 
 
 {-| This function create a section of the page based on the input data.
@@ -66,7 +110,7 @@ Example:
     section Framework.Button.introspection
 
 -}
-section : Data msg -> Element msg
+section : Data Msg -> Element Msg
 section data =
     column
         [ Border.widthEach { top = 1, right = 0, bottom = 0, left = 0 }
@@ -74,7 +118,7 @@ section data =
         , paddingEach { top = 40, right = 0, bottom = 40, left = 0 }
         , spacing conf.spacing
         ]
-        [ el h2 <| text <| "⟩ " ++ data.name
+        [ el (h2 ++ [ Events.onClick <| ToggleSection "ciao" ]) <| text <| "⟩ " ++ data.name
         , paragraph [] [ text data.description ]
         , el h3 <| text "Signature"
         , paragraph codeAttributes [ text <| data.signature ]
@@ -113,7 +157,7 @@ Example, in your Style Guide page:
                 ]
 
 -}
-page : List (Data msg) -> Element msg
+page : List (Data Msg) -> Element Msg
 page listData =
     row [ width fill ]
         [ column
@@ -139,7 +183,7 @@ Example, in your Style Guide page:
             ]
 
 -}
-htmlPage : List (Data msg) -> Html.Html msg
+htmlPage : List (Data Msg) -> Html.Html Msg
 htmlPage listData =
     layout
         layoutAttributes
@@ -167,12 +211,12 @@ layoutAttributes =
     ]
 
 
-viewTitle : String -> Element msg
+viewTitle : String -> Element Msg
 viewTitle title =
     el h3 <| text title
 
 
-viewTypes : List ( Element msg, String ) -> Bool -> Element msg
+viewTypes : List ( Element Msg, String ) -> Bool -> Element Msg
 viewTypes list boxed =
     column [] <|
         List.map
@@ -180,7 +224,7 @@ viewTypes list boxed =
             list
 
 
-viewType : ( Element msg, String ) -> Bool -> Element msg
+viewType : ( Element Msg, String ) -> Bool -> Element Msg
 viewType ( part, name ) boxed =
     el
         [ paddingEach
