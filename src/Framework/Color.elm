@@ -237,101 +237,121 @@ color color =
             Color.hsla 0 0 0 0
 
 
+{-| -}
 link : Color.Color
 link =
     conf.colors.link
 
 
+{-| -}
 white : Color.Color
 white =
     conf.colors.white
 
 
+{-| -}
 black : Color.Color
 black =
     conf.colors.black
 
 
+{-| -}
 light : Color.Color
 light =
     conf.colors.light
 
 
+{-| -}
 dark : Color.Color
 dark =
     conf.colors.dark
 
 
+{-| -}
 primary : Color.Color
 primary =
     conf.colors.primary
 
 
+{-| -}
 info : Color.Color
 info =
     conf.colors.info
 
 
+{-| -}
 success : Color.Color
 success =
     conf.colors.success
 
 
+{-| -}
 warning : Color.Color
 warning =
     conf.colors.warning
 
 
+{-| -}
 danger : Color.Color
 danger =
     conf.colors.danger
 
 
+{-| -}
 blackBis : Color.Color
 blackBis =
     conf.colors.blackBis
 
 
+{-| -}
 blackTer : Color.Color
 blackTer =
     conf.colors.blackTer
 
 
+{-| -}
 greyDarker : Color.Color
 greyDarker =
     conf.colors.greyDarker
 
 
+{-| -}
 greyDark : Color.Color
 greyDark =
     conf.colors.greyDark
 
 
+{-| -}
 grey : Color.Color
 grey =
     conf.colors.grey
 
 
+{-| -}
 greyLight : Color.Color
 greyLight =
     conf.colors.greyLight
 
 
+{-| -}
 greyLighter : Color.Color
 greyLighter =
     conf.colors.greyLighter
 
 
+{-| -}
 whiteTer : Color.Color
 whiteTer =
     conf.colors.whiteTer
 
 
+{-| -}
 whiteBis : Color.Color
 whiteBis =
     conf.colors.whiteBis
 
 
+{-| -}
 transparent : Color.Color
 transparent =
     Color.hsla 0 0 0 0
