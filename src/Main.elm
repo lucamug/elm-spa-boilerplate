@@ -15,6 +15,7 @@ import Framework.Spinner
 import Framework2.Button
 import Framework2.Color
 import Framework2.LogoElm
+import Framework2.Spinner
 import Html
 import Html.Events
 import Http
@@ -33,6 +34,7 @@ routes : List Route
 routes =
     [ Top
     , Framework
+    , StyleguideRoute
     , Examples
     , Sitemap
     , Debug
@@ -71,7 +73,7 @@ routeData route =
 
         Framework ->
             { name = "Style Guide"
-            , path = [ "styleguide" ]
+            , path = [ "framework" ]
             , view = viewFramework
             }
 
@@ -214,6 +216,7 @@ type Msg
     | UpdateLocalStorage String
     | WindowSize Window.Size
     | Styleguide Styleguide.Msg
+    | Styleguide2 Styleguide.Msg
 
 
 type alias Model =
@@ -227,6 +230,7 @@ type alias Model =
     , packElmVersion : String
     , bannerSrc : String
     , styleguide : Styleguide.Model
+    , styleguide2 : Styleguide.Model
     , device : Hack.Device
     }
 
@@ -281,12 +285,19 @@ type ApiData
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Styleguide msg2 ->
+        Styleguide msg ->
             let
                 ( newStyleguideModel, newStyleguideCmd ) =
-                    Styleguide.update msg2 model.styleguide
+                    Styleguide.update msg model.styleguide
             in
             ( { model | styleguide = newStyleguideModel }, Cmd.none )
+
+        Styleguide2 msg ->
+            let
+                ( newStyleguideModel, newStyleguideCmd ) =
+                    Styleguide.update msg model.styleguide2
+            in
+            ( { model | styleguide2 = newStyleguideModel }, Cmd.none )
 
         ChangeLocation location ->
             ( model, Navigation.newUrl location )
@@ -354,6 +365,12 @@ initModel flag location =
         [ ( Framework.Button.introspection, False )
         , ( Framework.Spinner.introspection, False )
         , ( Framework.Color.introspection, False )
+        ]
+    , styleguide2 =
+        [ ( Framework2.Button.introspection, False )
+        , ( Framework2.Spinner.introspection, False )
+        , ( Framework2.Color.introspection, False )
+        , ( Framework2.LogoElm.introspection, False )
         ]
     }
 
@@ -708,27 +725,15 @@ viewFramework model =
 
 viewStyleguide : Model -> Element Msg
 viewStyleguide model =
+    column []
+        [ introduction
+        , Styleguide.view model.styleguide2 |> Element.map Styleguide2
+        ]
+
+
+viewStyleguide2 : Model -> Element Msg
+viewStyleguide2 model =
     el [] <| text "This Style Guide is not available. Check the new one under \"Style Guide\""
-
-
-
-{- column []
-   [ paragraph []
-       [ text "This is a Living Style Guide automatically generated from the code. Read more about it in "
-       , link [ Font.color Framework2.Color.elmOrange ]
-           { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
-           , label = text "Medium"
-           }
-       , text "."
-       ]
-   , Styleguide.page
-       [ Framework2.Button.introspection
-       , Framework2.Color.introspection
-       , Framework2.LogoElm.introspection
-       , Framework2.Spinner.introspection
-       ]
-   ]
--}
 
 
 viewSitemap : Model -> Element Msg

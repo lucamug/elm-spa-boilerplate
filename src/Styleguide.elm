@@ -11,7 +11,7 @@ For more info about the idea, see [this post](https://medium.com/@l.mugnaini/zer
 
 # Functions
 
-@docs Data, section, page, htmlPage
+@docs Data, Model, Msg, htmlPage, init, page, section, update, view
 
 -}
 
@@ -60,47 +60,51 @@ type alias Data msg =
     }
 
 
+{-| -}
 type Msg
     = ToggleSection String
 
 
+{-| -}
 init : ( Model, Cmd Msg )
 init =
     ( [], Cmd.none )
 
 
+type alias SectionData =
+    ( Data Msg, Bool )
+
+
+{-| -}
 type alias Model =
-    List ( Data Msg, Bool )
+    List SectionData
 
 
-type alias SectionId =
-    String
-
-
+{-| -}
 view : Model -> Element Msg
 view model =
     column []
         -- Html.input [ Html.Events.onInput ToggleSection ] []
-        (List.map (\( data, show ) -> section data) model)
+        (List.map (\( data, show ) -> section data show) model)
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg |> Debug.log "xxx" of
-        ToggleSection section ->
-            ( model, Cmd.none )
-
-
-
-{-
-   main =
-       Html.program
-           { init = init
-           , view = view
-           , update = update
-           , subscriptions = \_ -> Sub.none
-           }
--}
+    case msg of
+        ToggleSection dataName ->
+            let
+                newModel =
+                    model
+                        |> List.map
+                            (\( data, show ) ->
+                                if data.name == dataName then
+                                    ( data, not show )
+                                else
+                                    ( data, show )
+                            )
+            in
+            ( newModel, Cmd.none )
 
 
 {-| This function create a section of the page based on the input data.
@@ -110,31 +114,48 @@ Example:
     section Framework.Button.introspection
 
 -}
-section : Data Msg -> Element Msg
-section data =
+section : Data Msg -> Bool -> Element Msg
+section data show =
     column
         [ Border.widthEach { top = 1, right = 0, bottom = 0, left = 0 }
         , Border.color gray
         , paddingEach { top = 40, right = 0, bottom = 40, left = 0 }
         , spacing conf.spacing
         ]
-        [ el (h2 ++ [ Events.onClick <| ToggleSection "ciao" ]) <| text <| "⟩ " ++ data.name
-        , paragraph [] [ text data.description ]
-        , el h3 <| text "Signature"
-        , paragraph codeAttributes [ text <| data.signature ]
-        , el h3 <| text "Code Example"
-        , paragraph codeAttributes [ text <| data.usage ]
-        , el h3 <| text "Result"
-        , paragraph [] [ data.usageResult ]
+        [ el
+            (h2
+                ++ [ Background.mouseOverColor Color.lightGray
+                   , pointer
+                   , Events.onClick <| ToggleSection data.name
+                   , width fill
+                   ]
+            )
+          <|
+            text <|
+                "⟩ "
+                    ++ data.name
         , column []
-            (List.map
-                (\( title, types ) ->
-                    column []
-                        [ viewTitle title
-                        , viewTypes types data.boxed
-                        ]
-                )
-                data.types
+            (if show then
+                [ paragraph [] [ text data.description ]
+                , el h3 <| text "Signature"
+                , paragraph codeAttributes [ text <| data.signature ]
+                , el h3 <| text "Code Example"
+                , paragraph codeAttributes [ text <| data.usage ]
+                , el h3 <| text "Result"
+                , paragraph [] [ data.usageResult ]
+                , column []
+                    (List.map
+                        (\( title, types ) ->
+                            column []
+                                [ viewTitle title
+                                , viewTypes types data.boxed
+                                ]
+                        )
+                        data.types
+                    )
+                ]
+             else
+                []
             )
         ]
 
@@ -157,7 +178,13 @@ Example, in your Style Guide page:
                 ]
 
 -}
-page : List (Data Msg) -> Element Msg
+
+
+
+--page : List (Data Msg) -> Element Msg
+
+
+page : Model -> Element Msg
 page listData =
     row [ width fill ]
         [ column
@@ -165,7 +192,7 @@ page listData =
             , Element.attribute (Html.Attributes.style [ ( "max-width", "780px" ) ])
             ]
             ([ el h1 <| text "Style Guide" ]
-                ++ List.map section listData
+                ++ List.map (\( data, show ) -> section data show) listData
                 ++ [ generatedBy ]
             )
         ]
@@ -183,7 +210,7 @@ Example, in your Style Guide page:
             ]
 
 -}
-htmlPage : List (Data Msg) -> Html.Html Msg
+htmlPage : Model -> Html.Html Msg
 htmlPage listData =
     layout
         layoutAttributes
