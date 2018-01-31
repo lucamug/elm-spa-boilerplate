@@ -258,28 +258,6 @@ type ApiData
 
 
 -- UPDATE
-{-
-
-   SetDatePicker msg ->
-      let
-          ( newDatePicker, datePickerCmd, dateEvent ) =
-              DatePicker.update someSettings msg model.startDatePicker
-
-          date =
-              case dateEvent of
-                  NoChange ->
-                      model.date
-
-                  Changed newDate ->
-                      newDate |> processDate
-      in
-          { model
-              | date = date
-              , datePicker = newDatePicker
-          }
-              ! [ Cmd.map SetDatePicker datePickerCmd ]
-
--}
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -362,15 +340,15 @@ initModel flag location =
     , bannerSrc = flag.bannerSrc
     , device = Hack.classifyDevice <| Window.Size flag.width flag.height
     , styleguide =
-        [ ( Framework.Button.introspection, False )
-        , ( Framework.Spinner.introspection, False )
-        , ( Framework.Color.introspection, False )
+        [ ( Framework.Button.introspection, True )
+        , ( Framework.Spinner.introspection, True )
+        , ( Framework.Color.introspection, True )
         ]
     , styleguide2 =
-        [ ( Framework2.Button.introspection, False )
-        , ( Framework2.Spinner.introspection, False )
-        , ( Framework2.Color.introspection, False )
-        , ( Framework2.LogoElm.introspection, False )
+        [ ( Framework2.Button.introspection, True )
+        , ( Framework2.Spinner.introspection, True )
+        , ( Framework2.Color.introspection, True )
+        , ( Framework2.LogoElm.introspection, True )
         ]
     }
 
@@ -719,7 +697,7 @@ viewFramework : Model -> Element Msg
 viewFramework model =
     column []
         [ introduction
-        , Styleguide.view model.styleguide |> Element.map Styleguide
+        , Styleguide.viewPage model.styleguide |> Element.map Styleguide
         ]
 
 
@@ -727,7 +705,7 @@ viewStyleguide : Model -> Element Msg
 viewStyleguide model =
     column []
         [ introduction
-        , Styleguide.view model.styleguide2 |> Element.map Styleguide2
+        , Styleguide.viewPage model.styleguide2 |> Element.map Styleguide2
         ]
 
 

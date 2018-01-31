@@ -1,4 +1,4 @@
-module Styleguide exposing (Data, Model, Msg, htmlPage, init, page, section, update, view)
+module Styleguide exposing (Data, Model, Msg, init, update, viewHtmlPage, viewPage, viewSection, viewSections)
 
 {-| This simple package generates a page with Style Guides.
 It uses certain data structure that each section of the framework expose ([Example](https://lucamug.github.io/elm-styleguide-generator/), [Example source](https://github.com/lucamug/elm-styleguide-generator/blob/master/examples/Main.elm)).
@@ -11,7 +11,7 @@ For more info about the idea, see [this post](https://medium.com/@l.mugnaini/zer
 
 # Functions
 
-@docs Data, Model, Msg, htmlPage, init, page, section, update, view
+@docs Data, Model, Msg, init, update, viewHtmlPage, viewPage, viewSection, viewSections
 
 -}
 
@@ -81,14 +81,6 @@ type alias Model =
 
 
 {-| -}
-view : Model -> Element Msg
-view model =
-    column []
-        -- Html.input [ Html.Events.onInput ToggleSection ] []
-        (List.map (\( data, show ) -> section data show) model)
-
-
-{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -107,6 +99,14 @@ update msg model =
             ( newModel, Cmd.none )
 
 
+{-| -}
+viewSections : Model -> Element Msg
+viewSections model =
+    column []
+        -- Html.input [ Html.Events.onInput ToggleSection ] []
+        (List.map (\( data, show ) -> viewSection data show) model)
+
+
 {-| This function create a section of the page based on the input data.
 
 Example:
@@ -114,13 +114,13 @@ Example:
     section Framework.Button.introspection
 
 -}
-section : Data Msg -> Bool -> Element Msg
-section data show =
+viewSection : Data Msg -> Bool -> Element Msg
+viewSection data show =
     column
         [ Border.widthEach { top = 1, right = 0, bottom = 0, left = 0 }
         , Border.color gray
-        , paddingEach { top = 40, right = 0, bottom = 40, left = 0 }
-        , spacing conf.spacing
+        , paddingEach { top = 0, right = 0, bottom = 0, left = 0 }
+        , spacing 0
         ]
         [ el
             (h2
@@ -128,6 +128,7 @@ section data show =
                    , pointer
                    , Events.onClick <| ToggleSection data.name
                    , width fill
+                   , paddingEach { top = 20, right = 20, bottom = 20, left = 20 }
                    ]
             )
           <|
@@ -178,21 +179,15 @@ Example, in your Style Guide page:
                 ]
 
 -}
-
-
-
---page : List (Data Msg) -> Element Msg
-
-
-page : Model -> Element Msg
-page listData =
+viewPage : Model -> Element Msg
+viewPage model =
     row [ width fill ]
         [ column
             [ padding 10
             , Element.attribute (Html.Attributes.style [ ( "max-width", "780px" ) ])
             ]
             ([ el h1 <| text "Style Guide" ]
-                ++ List.map (\( data, show ) -> section data show) listData
+                ++ List.map (\( data, show ) -> viewSection data show) model
                 ++ [ generatedBy ]
             )
         ]
@@ -204,18 +199,18 @@ Example, in your Style Guide page:
 
     main : Html.Html msg
     main =
-        Styleguide.htmlPage
+        Styleguide.viewHtmlPage
             [ Framework.Button.introspection
             , Framework.Color.introspection
             ]
 
 -}
-htmlPage : Model -> Html.Html Msg
-htmlPage listData =
+viewHtmlPage : Model -> Html.Html Msg
+viewHtmlPage model =
     layout
         layoutAttributes
     <|
-        page listData
+        viewPage model
 
 
 
