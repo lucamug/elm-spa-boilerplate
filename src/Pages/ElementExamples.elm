@@ -1,4 +1,4 @@
-module Pages.Examples exposing (view)
+module Pages.ElementExamples exposing (view)
 
 import Color exposing (..)
 import Element exposing (..)

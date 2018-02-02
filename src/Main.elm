@@ -21,7 +21,8 @@ import Html.Events
 import Http
 import Json.Decode as Decode
 import Navigation
-import Pages.Examples
+import Pages.ElementExamples
+import Pages.ElementInputExamples
 import Styleguide
 import UrlParser exposing ((</>))
 import Window
@@ -36,6 +37,7 @@ routes =
     , Framework
     , StyleguideRoute
     , Examples
+    , Examples2
     , Sitemap
     , Debug
 
@@ -50,6 +52,7 @@ type Route
     | Sitemap
     | Debug
     | Examples
+    | Examples2
     | Page2
     | Page2_1
     | NotFound
@@ -96,9 +99,15 @@ routeData route =
             }
 
         Examples ->
-            { name = "stylish-elephants"
-            , path = [ "examples" ]
-            , view = Pages.Examples.view
+            { name = "Element Examples"
+            , path = [ "ElementExamples" ]
+            , view = Pages.ElementExamples.view
+            }
+
+        Examples2 ->
+            { name = "Element Input Examples"
+            , path = [ "ElementInputExamples" ]
+            , view = Pages.ElementInputExamples.view
             }
 
         Page2 ->
