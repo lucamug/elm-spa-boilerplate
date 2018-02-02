@@ -553,9 +553,11 @@ view model =
         ]
     <|
         column []
-            [ viewTopPart model
-            , viewMenu model
-            , viewMiddlePart model
+            [ column []
+                [ viewTopPart model
+                , viewMenu model
+                , viewMiddlePart model
+                ]
             , viewFooter model
             ]
 
