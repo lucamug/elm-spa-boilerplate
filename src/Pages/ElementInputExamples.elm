@@ -114,12 +114,12 @@ view model =
         , table attrCont
             { data = cells2
             , columns =
-                [ { header = paragraph (width fill :: attrA) [ text "Type" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.type_ ] }
-                , { header = paragraph (width fill :: attrA) [ text "label" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.label ] }
-                , { header = paragraph (width fill :: attrA) [ text "on..." ], view = \cell -> paragraph (width fill :: attrB) [ text cell.msg ] }
-                , { header = paragraph (width fill :: attrA) [ text "Value" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.value ] }
-                , { header = paragraph (width fill :: attrA) [ text "notice" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.notice ] }
-                , { header = paragraph (width fill :: attrA) [ text "p.holder" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.placeholder ] }
+                [ { header = paragraph (height fill :: width fill :: attrA) [ text "Type" ], view = \cell -> paragraph (height fill :: width fill :: attrB) [ text cell.type_ ] }
+                , { header = paragraph (height fill :: width fill :: attrA) [ text "label" ], view = \cell -> paragraph (height fill :: width fill :: attrB) [ text cell.label ] }
+                , { header = paragraph (height fill :: width fill :: attrA) [ text "on..." ], view = \cell -> paragraph (height fill :: width fill :: attrB) [ text cell.msg ] }
+                , { header = paragraph (height fill :: width fill :: attrA) [ text "Value" ], view = \cell -> paragraph (height fill :: width fill :: attrB) [ text cell.value ] }
+                , { header = paragraph (height fill :: width fill :: attrA) [ text "notice" ], view = \cell -> paragraph (height fill :: width fill :: attrB) [ text cell.notice ] }
+                , { header = paragraph (height fill :: width fill :: attrA) [ text "p.holder" ], view = \cell -> paragraph (height fill :: width fill :: attrB) [ text cell.placeholder ] }
                 ]
             }
 
