@@ -172,6 +172,20 @@ view model =
                     ]
                 }
             ]
+        , code "radioRow [] { label, onChange, notice, selected, options }"
+        , paragraph attrCont
+            [ Input.radioRow attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Radio
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , selected = model.radio
+                , options =
+                    [ Input.option "A" (text "Radio A")
+                    , Input.option "B" (text "Radio B")
+                    , Input.option "C" (text "Radio C")
+                    ]
+                }
+            ]
 
         --
         , code "select [] { label, onChange, notice, selected, menu, placeholder }"
@@ -189,6 +203,79 @@ view model =
                         , Input.option "C" (text "Select C")
                         ]
                 , placeholder = Just <| text "Place Holder"
+                }
+            ]
+
+        --
+        , section "Variation of Input.text"
+        , code "username [] { label, onChange, notice, placeholder, text }"
+        , paragraph attrCont
+            [ Input.username attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
+                }
+            ]
+        , code "newPassword [] { label, onChange, notice, placeholder, text }"
+        , paragraph attrCont
+            [ Input.newPassword attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
+                }
+            ]
+        , code "currentPassword [] { label, onChange, notice, placeholder, text }"
+        , paragraph attrCont
+            [ Input.currentPassword attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
+                }
+            ]
+        , code "email [] { label, onChange, notice, placeholder, text }"
+        , paragraph attrCont
+            [ Input.email attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
+                }
+            ]
+        , code "search [] { label, onChange, notice, placeholder, text }"
+        , paragraph attrCont
+            [ Input.search attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
+                }
+            ]
+        , code "multiline [] { label, onChange, notice, placeholder, text }"
+        , paragraph attrCont
+            [ Input.multiline attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
+                }
+            ]
+        , code "spellcheckedMultiline [] { label, onChange, notice, placeholder, text }"
+        , paragraph attrCont
+            [ Input.spellcheckedMultiline attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
                 }
             ]
         ]
