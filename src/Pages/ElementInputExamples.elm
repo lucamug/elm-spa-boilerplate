@@ -7,6 +7,7 @@ import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
 import Element.Input as Input
+import Html
 
 
 type alias Model =
@@ -61,35 +62,35 @@ cells2 : List Cell2
 cells2 =
     [ { type_ = "button"
       , label = "✓"
-      , msg = "onPress"
-      , notice = "n/a"
-      , value = "n/a"
-      , placeholder = "n/a"
+      , msg = "Press"
+      , notice = "-"
+      , value = "-"
+      , placeholder = "-"
       }
     , { type_ = "text"
       , label = "✓"
-      , msg = "onChange (String)"
+      , msg = "Change (String)"
       , notice = "✓"
       , value = "text (String)"
       , placeholder = "✓"
       }
     , { type_ = "checkbox"
       , label = "✓"
-      , msg = "onChange (Bool)"
+      , msg = "Change (Bool)"
       , notice = "✓"
       , value = "checked (Bool)"
-      , placeholder = "n/a"
+      , placeholder = "-"
       }
     , { type_ = "radio"
       , label = "✓"
-      , msg = "onChange (option)"
+      , msg = "Change (option)"
       , notice = "✓"
       , value = "selected (Maybe option)"
-      , placeholder = "n/a"
+      , placeholder = "-"
       }
     , { type_ = "select"
       , label = "✓"
-      , msg = "onChange (option)"
+      , msg = "Change (option)"
       , notice = "✓"
       , value = "selected (Maybe option)"
       , placeholder = "✓"
@@ -113,12 +114,12 @@ view model =
         , table attrCont
             { data = cells2
             , columns =
-                [ { header = el (width fill :: attrA) <| text "Type", view = \cell -> el (width fill :: attrB) <| text cell.type_ }
-                , { header = el (width fill :: attrA) <| text "label", view = \cell -> el (width fill :: attrB) <| text cell.label }
-                , { header = el (width fill :: attrA) <| text "Msg", view = \cell -> el (width fill :: attrB) <| text cell.msg }
-                , { header = el (width fill :: attrA) <| text "Value", view = \cell -> el (width fill :: attrB) <| text cell.value }
-                , { header = el (width fill :: attrA) <| text "notice", view = \cell -> el (width fill :: attrB) <| text cell.notice }
-                , { header = el (width fill :: attrA) <| text "p.holder", view = \cell -> el (width fill :: attrB) <| text cell.placeholder }
+                [ { header = paragraph (width fill :: attrA) [ text "Type" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.type_ ] }
+                , { header = paragraph (width fill :: attrA) [ text "label" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.label ] }
+                , { header = paragraph (width fill :: attrA) [ text "on..." ], view = \cell -> paragraph (width fill :: attrB) [ text cell.msg ] }
+                , { header = paragraph (width fill :: attrA) [ text "Value" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.value ] }
+                , { header = paragraph (width fill :: attrA) [ text "notice" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.notice ] }
+                , { header = paragraph (width fill :: attrA) [ text "p.holder" ], view = \cell -> paragraph (width fill :: attrB) [ text cell.placeholder ] }
                 ]
             }
 
@@ -204,6 +205,17 @@ view model =
                         ]
                 , placeholder = Just <| text "Place Holder"
                 }
+            ]
+        , section "Regular Html select, to compare the behaviour on mobile"
+        , code "<select><option><option></select>"
+        , paragraph attrCont
+            [ html
+                (Html.select []
+                    [ Html.option [] [ Html.text "Select A" ]
+                    , Html.option [] [ Html.text "Select B" ]
+                    , Html.option [] [ Html.text "Select C" ]
+                    ]
+                )
             ]
 
         --
