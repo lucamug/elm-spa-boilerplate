@@ -1,4 +1,4 @@
-module Pages.ElementInputExamples exposing (view)
+module Pages.ElementInputExamples exposing (Model, Msg(..), initModel, update, view)
 
 --import Element.Area as Area
 
@@ -9,11 +9,100 @@ import Element.Font as Font
 import Element.Input as Input
 
 
+type alias Model =
+    { radio : Maybe String
+    , text : String
+    , checkbox : Bool
+    }
+
+
 type Msg
-    = NoOp
+    = Radio String
+    | Button
+    | Input String
+    | Checkbox Bool
 
 
-view : a -> Element msg
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg |> Debug.log "Msg" of
+        Radio value ->
+            ( { model | radio = Just value }, Cmd.none )
+
+        Button ->
+            ( model, Cmd.none )
+
+        Input value ->
+            ( { model | text = value }, Cmd.none )
+
+        Checkbox value ->
+            ( { model | checkbox = value }, Cmd.none )
+
+
+initModel : Model
+initModel =
+    { radio = Just "A"
+    , text = ""
+    , checkbox = False
+    }
+
+
+type alias Cell2 =
+    { type_ : String
+    , label : String
+    , msg : String
+    , notice : String
+    , value : String
+    , placeholder : String
+    }
+
+
+cells2 : List Cell2
+cells2 =
+    [ { type_ = "button"
+      , label = "✓"
+      , msg = "onPress"
+      , notice = "n/a"
+      , value = "n/a"
+      , placeholder = "n/a"
+      }
+    , { type_ = "text"
+      , label = "✓"
+      , msg = "onChange (String)"
+      , notice = "✓"
+      , value = "text (String)"
+      , placeholder = "✓"
+      }
+    , { type_ = "checkbox"
+      , label = "✓"
+      , msg = "onChange (Bool)"
+      , notice = "✓"
+      , value = "checked (Bool)"
+      , placeholder = "n/a"
+      }
+    , { type_ = "radio"
+      , label = "✓"
+      , msg = "onChange (option)"
+      , notice = "✓"
+      , value = "selected (Maybe option)"
+      , placeholder = "n/a"
+      }
+    , { type_ = "select"
+      , label = "✓"
+      , msg = "onChange (option)"
+      , notice = "✓"
+      , value = "selected (Maybe option)"
+      , placeholder = "✓"
+      }
+    ]
+
+
+notice : List (Element.Attribute msg)
+notice =
+    [ Font.color Color.yellow ]
+
+
+view : Model -> Element Msg
 view model =
     column
         [ spacing 5
@@ -21,52 +110,87 @@ view model =
         [ header
 
         --
-        , section "Radio"
-        , code "radio [] { label, onChange, notice, selected, options }"
-        , Input.radio []
-            { label = Input.labelAbove [] <| text "Label"
-            , onChange = Nothing
-            , notice = Nothing
-            , selected = Nothing
-            , options = []
+        , table attrCont
+            { data = cells2
+            , columns =
+                [ { header = el (width fill :: attrA) <| text "Type", view = \cell -> el (width fill :: attrB) <| text cell.type_ }
+                , { header = el (width fill :: attrA) <| text "label", view = \cell -> el (width fill :: attrB) <| text cell.label }
+                , { header = el (width fill :: attrA) <| text "Msg", view = \cell -> el (width fill :: attrB) <| text cell.msg }
+                , { header = el (width fill :: attrA) <| text "Value", view = \cell -> el (width fill :: attrB) <| text cell.value }
+                , { header = el (width fill :: attrA) <| text "notice", view = \cell -> el (width fill :: attrB) <| text cell.notice }
+                , { header = el (width fill :: attrA) <| text "p.holder", view = \cell -> el (width fill :: attrB) <| text cell.placeholder }
+                ]
             }
 
         --
-        , section "Button"
         , code "button [] { label, onPress }"
-        , Input.button []
-            { label = text "Button"
-            , onPress = Nothing
-            }
+        , paragraph attrCont
+            [ Input.button attrA
+                { label = text "Label"
+                , onPress = Just Button
+                }
+            ]
 
         --
-        , section "Text (note that html attribute value is text)"
         , code "text [] { label, onChange, notice, placeholder, text }"
-        , Input.text []
-            { label = Input.labelAbove [] <| text "Input text"
-            , onChange = Nothing
-            , notice = Nothing
-            , placeholder = Nothing
-            , text = ""
-            }
+        , paragraph attrCont
+            [ Input.text attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Input
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , placeholder = Nothing
+                , text = model.text
+                }
+            ]
 
         --
-        , section "Select"
-        , code "select [] { label, onChange, notice, selected, menu, placeholder }"
-        , Input.select
-            []
-            { label = Input.labelAbove [] <| text "Label"
-            , onChange = Nothing
-            , notice = Nothing
-            , selected = Nothing
-            , menu =
-                Input.menuBelow []
-                    [ Input.option 10 (text "ciao 10")
-                    , Input.option 11 (text "ciao 11")
-                    , Input.option 12 (text "ciao 12")
+        , code "checkbox [] { label, onChange, notice, checked, icon }"
+        , paragraph attrCont
+            [ Input.checkbox attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Checkbox
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , checked = model.checkbox
+
+                -- , icon = Just <| text "Icon"
+                , icon = Nothing
+                }
+            ]
+
+        --
+        , code "radio [] { label, onChange, notice, selected, options }"
+        , paragraph attrCont
+            [ Input.radio attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Radio
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , selected = model.radio
+                , options =
+                    [ Input.option "A" (text "Radio A")
+                    , Input.option "B" (text "Radio B")
+                    , Input.option "C" (text "Radio C")
                     ]
-            , placeholder = Just <| text "Place Holder"
-            }
+                }
+            ]
+
+        --
+        , code "select [] { label, onChange, notice, selected, menu, placeholder }"
+        , paragraph attrCont
+            [ Input.select
+                attrA
+                { label = Input.labelAbove [] <| text "Label"
+                , onChange = Just Radio
+                , notice = Just <| Input.warningBelow notice <| text "Notice"
+                , selected = model.radio
+                , menu =
+                    Input.menuBelow []
+                        [ Input.option "A" (text "Select A")
+                        , Input.option "B" (text "Select B")
+                        , Input.option "C" (text "Select C")
+                        ]
+                , placeholder = Just <| text "Place Holder"
+                }
+            ]
         ]
 
 
@@ -140,16 +264,13 @@ header =
         [ paragraph []
             [ text "Examples of "
             , link [ Font.color orange ]
-                { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
-                , label = text "mdgriffith/stylish-elephants"
+                { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element-Input"
+                , label = text "mdgriffith/stylish-elephants/Element-Input"
                 }
-            , text ". The code is actually some kind of pseudo-code. For real code have a look at "
+            , text ". The code is in "
             , link [ Font.color orange ]
-                { url = "https://github.com/lucamug/elm-spa-boilerplate/blob/master/src/Pages/Examples.elm", label = text "Examples.elm" }
+                { url = "https://github.com/lucamug/elm-spa-boilerplate/blob/master/src/Pages/", label = text "lucamug/elm-spa-boilerplate" }
             , text "."
-            ]
-        , paragraph []
-            [ text "Unless otherwise specified, elements have padding and spacing of 5px so to make the examples clearer."
             ]
         ]
 
@@ -163,29 +284,6 @@ issue url =
             , label = text url
             }
         ]
-
-
-type alias Cell =
-    { cell1 : String
-    , cell2 : String
-    }
-
-
-cells : List Cell
-cells =
-    [ { cell1 = "Cell 1.1"
-      , cell2 = "Cell 2.1"
-      }
-    , { cell1 = "Cell 1.2"
-      , cell2 = "Cell 2.2"
-      }
-    , { cell1 = "Cell 1.3"
-      , cell2 = "Cell 2.3"
-      }
-    , { cell1 = "Cell 1.4"
-      , cell2 = "Cell 2.4"
-      }
-    ]
 
 
 alternateCellAttr : Int -> List (Attribute msg)

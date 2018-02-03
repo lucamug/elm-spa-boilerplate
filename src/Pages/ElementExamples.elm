@@ -264,15 +264,12 @@ header =
             [ text "Examples of "
             , link [ Font.color orange ]
                 { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
-                , label = text "mdgriffith/stylish-elephants"
+                , label = text "mdgriffith/stylish-elephants/Element"
                 }
-            , text ". The code is actually some kind of pseudo-code. For real code have a look at "
+            , text ". The code is in "
             , link [ Font.color orange ]
-                { url = "https://github.com/lucamug/elm-spa-boilerplate/blob/master/src/Pages/Examples.elm", label = text "Examples.elm" }
+                { url = "https://github.com/lucamug/elm-spa-boilerplate/blob/master/src/Pages/", label = text "lucamug/elm-spa-boilerplate" }
             , text "."
-            ]
-        , paragraph []
-            [ text "Unless otherwise specified, elements have padding and spacing of 5px so to make the examples clearer."
             ]
         ]
 

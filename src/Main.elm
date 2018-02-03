@@ -61,7 +61,6 @@ type Route
 type alias RouteData =
     { name : String
     , path : List String
-    , view : Model -> Element Msg
     }
 
 
@@ -71,62 +70,86 @@ routeData route =
         Top ->
             { name = "Intro"
             , path = []
-            , view = viewTop
             }
 
         Framework ->
             { name = "Style Guide"
             , path = [ "framework" ]
-            , view = viewFramework
             }
 
         StyleguideRoute ->
             { name = "Old Style Guide"
             , path = [ "styleguide" ]
-            , view = viewStyleguide
             }
 
         Sitemap ->
             { name = "Sitemap"
             , path = [ "sitemap" ]
-            , view = viewSitemap
             }
 
         Debug ->
             { name = "Debug"
             , path = [ "debug" ]
-            , view = viewDebug
             }
 
         Examples ->
             { name = "Element Examples"
             , path = [ "ElementExamples" ]
-            , view = Pages.ElementExamples.view
             }
 
         Examples2 ->
             { name = "Element Input Examples"
             , path = [ "ElementInputExamples" ]
-            , view = Pages.ElementInputExamples.view
             }
 
         Page2 ->
             { name = "Page two"
             , path = [ "page2" ]
-            , view = viewPage2
             }
 
         Page2_1 ->
             { name = "Page two.one"
             , path = [ "page2", "subpage1" ]
-            , view = viewPage2_1
             }
 
         NotFound ->
             { name = "Page Not Found"
             , path = []
-            , view = \_ -> text "Page not found"
             }
+
+
+routeView : Route -> Model -> Element Msg
+routeView route model =
+    case route of
+        Top ->
+            viewTop model
+
+        Framework ->
+            viewFramework model
+
+        StyleguideRoute ->
+            viewStyleguide model
+
+        Sitemap ->
+            viewSitemap model
+
+        Debug ->
+            viewDebug model
+
+        Examples ->
+            Pages.ElementExamples.view model
+
+        Examples2 ->
+            Element.map ElementInputExamplesMsg (Pages.ElementInputExamples.view model.elementInputExamples)
+
+        Page2 ->
+            viewPage2 model
+
+        Page2_1 ->
+            viewPage2_1 model
+
+        NotFound ->
+            text "Page not found"
 
 
 routePath : Route -> List String
@@ -149,9 +172,8 @@ routeName route =
     .name <| routeData route
 
 
-routeView : Route -> Model -> Element Msg
-routeView route =
-    .view <| routeData route
+
+--routeView : Route -> Model -> Element Msg
 
 
 matchers : UrlParser.Parser (Route -> a) a
@@ -226,6 +248,7 @@ type Msg
     | WindowSize Window.Size
     | Styleguide Styleguide.Msg
     | Styleguide2 Styleguide.Msg
+    | ElementInputExamplesMsg Pages.ElementInputExamples.Msg
 
 
 type alias Model =
@@ -241,6 +264,7 @@ type alias Model =
     , styleguide : Styleguide.Model
     , styleguide2 : Styleguide.Model
     , device : Hack.Device
+    , elementInputExamples : Pages.ElementInputExamples.Model
     }
 
 
@@ -272,6 +296,13 @@ type ApiData
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ElementInputExamplesMsg msg ->
+            let
+                ( newModel, newCmd ) =
+                    Pages.ElementInputExamples.update msg model.elementInputExamples
+            in
+            ( { model | elementInputExamples = newModel }, Cmd.none )
+
         Styleguide msg ->
             let
                 ( newStyleguideModel, newStyleguideCmd ) =
@@ -359,6 +390,7 @@ initModel flag location =
         , ( Framework2.Color.introspection, True )
         , ( Framework2.LogoElm.introspection, True )
         ]
+    , elementInputExamples = Pages.ElementInputExamples.initModel
     }
 
 
@@ -531,15 +563,17 @@ viewFooter model =
 
 view : Model -> Html.Html Msg
 view model =
-    layoutWith
-        { options =
-            [ focusStyle
-                { borderColor = Just <| Framework.Color.color Framework.Color.Warning
-                , backgroundColor = Just <| Framework.Color.color Framework.Color.Warning
-                , shadow = Nothing
-                }
-            ]
-        }
+    {- layoutWith
+       { options =
+           [ focusStyle
+               { borderColor = Just <| Framework.Color.color Framework.Color.Warning
+               , backgroundColor = Just <| Framework.Color.color Framework.Color.Warning
+               , shadow = Nothing
+               }
+           ]
+       }
+    -}
+    layout
         [ Font.family
             [ Font.external
                 { name = "Source Sans Pro"
