@@ -25,6 +25,11 @@ import Styleguide
 -- INTERNAL
 
 
+version : String
+version =
+    "5.0.0"
+
+
 {-| -}
 main : Program Never Model Msg
 main =

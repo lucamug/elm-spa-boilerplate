@@ -18,7 +18,7 @@ import Svg.Attributes exposing (..)
 -- INTROSPECTION
 
 
-introspection : Styleguide.Data msg
+introspection : Styleguide.Introspection msg
 introspection =
     { name = "Spinner"
     , signature = "Int -> Element msg"

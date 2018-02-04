@@ -380,15 +380,15 @@ initModel flag location =
     , bannerSrc = flag.bannerSrc
     , device = Hack.classifyDevice <| Window.Size flag.width flag.height
     , styleguide =
-        [ ( Framework.Button.introspection, True )
-        , ( Framework.Spinner.introspection, True )
-        , ( Framework.Color.introspection, True )
+        [ ( Framework.Button.introspection, False )
+        , ( Framework.Spinner.introspection, False )
+        , ( Framework.Color.introspection, False )
         ]
     , styleguide2 =
-        [ ( Framework2.Button.introspection, True )
-        , ( Framework2.Spinner.introspection, True )
-        , ( Framework2.Color.introspection, True )
-        , ( Framework2.LogoElm.introspection, True )
+        [ ( Framework2.Button.introspection, False )
+        , ( Framework2.Spinner.introspection, False )
+        , ( Framework2.Color.introspection, False )
+        , ( Framework2.LogoElm.introspection, False )
         ]
     , elementInputExamples = Pages.ElementInputExamples.initModel
     }
@@ -712,7 +712,7 @@ viewTop model =
 
 introduction : Element msg
 introduction =
-    el [ paddingXY 0 0, alignLeft ] <|
+    el [ paddingXY 0 20, alignLeft ] <|
         paragraph []
             [ text "This is a "
             , link [ Font.color Framework2.Color.elmOrange ]
@@ -742,7 +742,7 @@ viewFramework : Model -> Element Msg
 viewFramework model =
     column []
         [ introduction
-        , Styleguide.viewPage model.styleguide |> Element.map Styleguide
+        , Styleguide.viewSections model.styleguide |> Element.map Styleguide
         ]
 
 
@@ -750,7 +750,7 @@ viewStyleguide : Model -> Element Msg
 viewStyleguide model =
     column []
         [ introduction
-        , Styleguide.viewPage model.styleguide2 |> Element.map Styleguide2
+        , Styleguide.viewSections model.styleguide2 |> Element.map Styleguide2
         ]
 
 

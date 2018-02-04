@@ -43,7 +43,7 @@ import Styleguide
 
 {-| Used to generate the [Style Guide](https://lucamug.github.io/elm-style-framework/)
 -}
-introspection : Styleguide.Data msg
+introspection : Styleguide.Introspection msg
 introspection =
     let
         buttonText =

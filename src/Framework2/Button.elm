@@ -24,7 +24,7 @@ import Styleguide
 -- INTROSPECTION
 
 
-introspection : Styleguide.Data msg
+introspection : Styleguide.Introspection msg
 introspection =
     { name = "Button"
     , signature = "String -> Maybe msg -> Element msg"

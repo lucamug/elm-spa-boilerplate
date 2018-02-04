@@ -25,7 +25,7 @@ import Styleguide
 -- INTROSPECTION
 
 
-introspection : Styleguide.Data msg
+introspection : Styleguide.Introspection msg
 introspection =
     { name = "Color"
     , signature = "Color.Color"

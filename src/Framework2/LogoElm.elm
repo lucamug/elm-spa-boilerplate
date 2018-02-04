@@ -21,7 +21,7 @@ import Svg.Attributes
 -- INTROSPECTION
 
 
-introspection : Styleguide.Data msg
+introspection : Styleguide.Introspection msg
 introspection =
     { name = "LogoElm"
     , signature = "Int -> Element msg"
