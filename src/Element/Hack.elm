@@ -36,17 +36,17 @@ styleElement text =
 
 class : String -> Element.Attribute msg
 class name =
-    Element.attribute (Html.Attributes.class name)
+    Element.htmlAttribute (Html.Attributes.class name)
 
 
 style : List ( String, String ) -> Element.Attribute msg
 style style =
-    Element.attribute (Html.Attributes.style style)
+    Element.htmlAttribute (Html.Attributes.style style)
 
 
 value : String -> Element.Attribute msg
 value value =
-    Element.attribute (Html.Attributes.value value)
+    Element.htmlAttribute (Html.Attributes.value value)
 
 
 

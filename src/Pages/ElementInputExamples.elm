@@ -7,7 +7,6 @@ import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
 import Element.Input as Input
-import Html
 
 
 type alias Model =
@@ -138,7 +137,6 @@ view model =
             [ Input.text attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
                 }
@@ -150,7 +148,6 @@ view model =
             [ Input.checkbox attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Checkbox
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , checked = model.checkbox
 
                 -- , icon = Just <| text "Icon"
@@ -164,7 +161,6 @@ view model =
             [ Input.radio attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Radio
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , selected = model.radio
                 , options =
                     [ Input.option "A" (text "Radio A")
@@ -178,7 +174,6 @@ view model =
             [ Input.radioRow attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Radio
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , selected = model.radio
                 , options =
                     [ Input.option "A" (text "Radio A")
@@ -189,43 +184,12 @@ view model =
             ]
 
         --
-        , code "select [] { label, onChange, notice, selected, menu, placeholder }"
-        , paragraph attrCont
-            [ Input.select
-                attrA
-                { label = Input.labelAbove [] <| text "Label"
-                , onChange = Just Radio
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
-                , selected = model.radio
-                , menu =
-                    Input.menuBelow []
-                        [ Input.option "A" (text "Select A")
-                        , Input.option "B" (text "Select B")
-                        , Input.option "C" (text "Select C")
-                        ]
-                , placeholder = Just <| text "Place Holder"
-                }
-            ]
-        , section "Regular Html select, to compare the behaviour on mobile"
-        , code "<select><option><option></select>"
-        , paragraph attrCont
-            [ html
-                (Html.select []
-                    [ Html.option [] [ Html.text "Select A" ]
-                    , Html.option [] [ Html.text "Select B" ]
-                    , Html.option [] [ Html.text "Select C" ]
-                    ]
-                )
-            ]
-
-        --
         , section "Variation of Input.text"
         , code "username [] { label, onChange, notice, placeholder, text }"
         , paragraph attrCont
             [ Input.username attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
                 }
@@ -235,9 +199,9 @@ view model =
             [ Input.newPassword attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
+                , show = False
                 }
             ]
         , code "currentPassword [] { label, onChange, notice, placeholder, text }"
@@ -245,9 +209,9 @@ view model =
             [ Input.currentPassword attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
+                , show = False
                 }
             ]
         , code "email [] { label, onChange, notice, placeholder, text }"
@@ -255,7 +219,6 @@ view model =
             [ Input.email attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
                 }
@@ -265,7 +228,6 @@ view model =
             [ Input.search attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
                 }
@@ -275,19 +237,19 @@ view model =
             [ Input.multiline attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
+                , spellcheck = False
                 }
             ]
         , code "spellcheckedMultiline [] { label, onChange, notice, placeholder, text }"
         , paragraph attrCont
-            [ Input.spellcheckedMultiline attrA
+            [ Input.multiline attrA
                 { label = Input.labelAbove [] <| text "Label"
                 , onChange = Just Input
-                , notice = Just <| Input.warningBelow notice <| text "Notice"
                 , placeholder = Nothing
                 , text = model.text
+                , spellcheck = True
                 }
             ]
         ]

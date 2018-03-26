@@ -2,20 +2,18 @@ port module Main exposing (main)
 
 -- import Framework2.Spinner
 
+import Color
 import Element exposing (..)
-import Element.Area as Area
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Hack as Hack
 import Element.Input as Input
-import Framework.Button
-import Framework.Color
-import Framework.Spinner
-import Framework2.Button
-import Framework2.Color
-import Framework2.LogoElm
-import Framework2.Spinner
+import Element.Region as Area
+import Framework
+import Framework.Button as Button
+import Framework.Color exposing (Color(..), color)
+import Framework.Modifiers as Modifiers
 import Html
 import Html.Events
 import Http
@@ -23,7 +21,6 @@ import Json.Decode as Decode
 import Navigation
 import Pages.ElementExamples
 import Pages.ElementInputExamples
-import Styleguide
 import UrlParser exposing ((</>))
 import Window
 
@@ -35,11 +32,9 @@ routes : List Route
 routes =
     [ Top
     , Framework
-    , StyleguideRoute
     , Examples
     , Examples2
     , Sitemap
-    , Debug
 
     --, StyleguideRoute
     ]
@@ -48,9 +43,7 @@ routes =
 type Route
     = Top
     | Framework
-    | StyleguideRoute
     | Sitemap
-    | Debug
     | Examples
     | Examples2
     | Page2
@@ -73,23 +66,13 @@ routeData route =
             }
 
         Framework ->
-            { name = "Style Guide"
+            { name = "Framework"
             , path = [ "framework" ]
-            }
-
-        StyleguideRoute ->
-            { name = "Old Style Guide"
-            , path = [ "styleguide" ]
             }
 
         Sitemap ->
             { name = "Sitemap"
             , path = [ "sitemap" ]
-            }
-
-        Debug ->
-            { name = "Debug"
-            , path = [ "debug" ]
             }
 
         Examples ->
@@ -127,14 +110,8 @@ routeView route model =
         Framework ->
             viewFramework model
 
-        StyleguideRoute ->
-            viewStyleguide model
-
         Sitemap ->
             viewSitemap model
-
-        Debug ->
-            viewDebug model
 
         Examples ->
             Pages.ElementExamples.view model
@@ -246,8 +223,7 @@ type Msg
     | SetLocalStorage (Result String String)
     | UpdateLocalStorage String
     | WindowSize Window.Size
-    | Styleguide Styleguide.Msg
-    | Styleguide2 Styleguide.Msg
+    | MsgFramework Framework.Msg
     | ElementInputExamplesMsg Pages.ElementInputExamples.Msg
 
 
@@ -261,8 +237,7 @@ type alias Model =
     , packVersion : String
     , packElmVersion : String
     , bannerSrc : String
-    , styleguide : Styleguide.Model
-    , styleguide2 : Styleguide.Model
+    , modelFramework : Framework.Model
     , device : Hack.Device
     , elementInputExamples : Pages.ElementInputExamples.Model
     }
@@ -303,19 +278,12 @@ update msg model =
             in
             ( { model | elementInputExamples = newModel }, Cmd.none )
 
-        Styleguide msg ->
+        MsgFramework msgFramework ->
             let
-                ( newStyleguideModel, newStyleguideCmd ) =
-                    Styleguide.update msg model.styleguide
+                ( newModel, newCmd ) =
+                    Framework.update msgFramework model.modelFramework
             in
-            ( { model | styleguide = newStyleguideModel }, Cmd.none )
-
-        Styleguide2 msg ->
-            let
-                ( newStyleguideModel, newStyleguideCmd ) =
-                    Styleguide.update msg model.styleguide2
-            in
-            ( { model | styleguide2 = newStyleguideModel }, Cmd.none )
+            ( { model | modelFramework = newModel }, Cmd.none )
 
         ChangeLocation location ->
             ( model, Navigation.newUrl location )
@@ -369,8 +337,13 @@ update msg model =
 
 initModel : Flag -> Navigation.Location -> Model
 initModel flag location =
+    let
+        ( model, cmd ) =
+            Framework.init { local_storage = "", width = 0, height = 0 } location
+    in
     { route = locationToRoute location
     , history = [ location.pathname ]
+    , modelFramework = model
     , apiData = NoData
     , location = location
     , title = "Spa Boilerplate"
@@ -379,17 +352,6 @@ initModel flag location =
     , packElmVersion = flag.packElmVersion
     , bannerSrc = flag.bannerSrc
     , device = Hack.classifyDevice <| Window.Size flag.width flag.height
-    , styleguide =
-        [ ( Framework.Button.introspection, False )
-        , ( Framework.Spinner.introspection, False )
-        , ( Framework.Color.introspection, False )
-        ]
-    , styleguide2 =
-        [ ( Framework2.Button.introspection, False )
-        , ( Framework2.Spinner.introspection, False )
-        , ( Framework2.Color.introspection, False )
-        , ( Framework2.LogoElm.introspection, False )
-        ]
     , elementInputExamples = Pages.ElementInputExamples.initModel
     }
 
@@ -463,8 +425,8 @@ viewLinkMenu model route =
     in
     if model.route == route then
         el
-            ([ Background.color Framework2.Color.white
-             , Font.color Framework2.Color.font
+            ([ Background.color <| color White
+             , Font.color conf.fontColor
              ]
                 ++ common
             )
@@ -490,14 +452,14 @@ viewMenu model =
     in
     if model.device.width < menuBreakPoint then
         column
-            [ Background.color Framework2.Color.background
-            , Font.color Framework2.Color.onBackground
+            [ Background.color conf.colorBackground
+            , Font.color conf.colorOnBackground
             ]
             menuList
     else
         row
-            [ Background.color Framework2.Color.background
-            , Font.color Framework2.Color.onBackground
+            [ Background.color conf.colorBackground
+            , Font.color conf.colorOnBackground
             ]
             menuList
 
@@ -506,13 +468,12 @@ viewTopPart : Model -> Element Msg
 viewTopPart model =
     column
         [ Background.fittedImage model.bannerSrc
-        , Font.color Framework2.Color.white
+        , Font.color <| color White
         , height <| px 200
         ]
-        [ el [ padding 10 ] <| Framework2.LogoElm.orange 50
-        , h1
-            [ center
-            , Font.shadow { offset = ( 1, 0 ), blur = 1, color = Framework2.Color.black }
+        [ h1
+            [ centerX
+            , Font.shadow { offset = ( 1, 0 ), blur = 1, color = color Black }
             ]
           <|
             text model.title
@@ -521,20 +482,33 @@ viewTopPart model =
 
 viewMiddlePart : Model -> Element Msg
 viewMiddlePart model =
-    row [ width fill ]
-        [ column
-            [ padding 30
-            , Hack.style [ ( "max-width", toString menuBreakPoint ++ "px" ) ]
-            ]
+    if model.route == Framework then
+        routeView model.route model
+    else
+        column
+            [ padding 40 ]
             [ h2 [] <| text <| routeName model.route
             , routeView model.route model
             ]
-        ]
 
 
 menuBreakPoint : Int
 menuBreakPoint =
-    670
+    900
+
+
+conf :
+    { colorBackground : Color.Color
+    , colorOnBackground : Color.Color
+    , linkColor : Color.Color
+    , fontColor : Color.Color
+    }
+conf =
+    { colorBackground = color GrayLight
+    , colorOnBackground = color Black
+    , fontColor = color GrayDark
+    , linkColor = color Info
+    }
 
 
 viewFooter : Model -> Element msg
@@ -548,8 +522,8 @@ viewFooter model =
     in
     element
         [ spaceEvenly
-        , Background.color Framework2.Color.background
-        , Font.color Framework2.Color.onBackground
+        , Background.color conf.colorBackground
+        , Font.color conf.colorOnBackground
         , padding 30
         ]
         [ viewMade "凸" "lucamug"
@@ -573,14 +547,22 @@ view model =
            ]
        }
     -}
-    layout
+    layoutWith
+        { options =
+            [ focusStyle
+                { borderColor = Just <| color Primary
+                , backgroundColor = Nothing
+                , shadow = Nothing
+                }
+            ]
+        }
         [ Font.family
             [ Font.typeface "Source Sans Pro"
             , Font.sansSerif
             ]
         , Font.size 16
-        , Font.color Framework2.Color.font
-        , Background.color Framework2.Color.white
+        , Font.color conf.fontColor
+        , Background.color <| color White
         ]
     <|
         column []
@@ -595,7 +577,7 @@ view model =
 
 onLinkClickSE : String -> Attribute Msg
 onLinkClickSE url =
-    attribute
+    htmlAttribute
         (Html.Events.onWithOptions "click"
             { stopPropagation = False
             , preventDefault = True
@@ -604,51 +586,32 @@ onLinkClickSE url =
         )
 
 
-viewDebug : Model -> Element msg
-viewDebug model =
-    column []
-        (List.map
-            (\( item, name ) ->
-                column []
-                    [ h3 [] <| text <| "► " ++ name
-                    , paragraph
-                        [ Background.color <| Framework2.Color.lightGray
-                        , padding 10
-                        ]
-                        (List.map (\line -> paragraph [] [ text <| line ]) <| String.split "," item)
-                    ]
-            )
-         <|
-            modelIntrospection model
-        )
-
-
 viewTop : Model -> Element Msg
 viewTop model =
     column [ spacing 20 ]
         [ paragraph []
             [ text "This is a "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2", label = text "boilerplate for writing a Single Page Application" }
+            , link [ Font.color conf.linkColor ] { url = "https://medium.com/@l.mugnaini/single-page-application-boilerplate-for-elm-160bb5f3eec2", label = text "boilerplate for writing a Single Page Application" }
             , text "."
             ]
         , paragraph []
             [ text "It is written using "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://elm-lang.org/", label = text "Elm" }
+            , link [ Font.color conf.linkColor ] { url = "http://elm-lang.org/", label = text "Elm" }
             , text " + "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://www.npmjs.com/package/create-elm-app", label = text "elm-app" }
+            , link [ Font.color conf.linkColor ] { url = "https://www.npmjs.com/package/create-elm-app", label = text "elm-app" }
             , text " + "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = text "style-elements v5.alpha" }
+            , link [ Font.color conf.linkColor ] { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/", label = text "style-elements v5.alpha" }
             , text " + "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-style-framework/1.0.1", label = text "elm-style-framework" }
+            , link [ Font.color conf.linkColor ] { url = "http://package.elm-lang.org/packages/lucamug/elm-style-framework/1.0.1", label = text "elm-style-framework" }
             , text " + "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "http://package.elm-lang.org/packages/lucamug/elm-styleguide-generator/1.0.1", label = text "elm-styleguide-generator" }
+            , link [ Font.color conf.linkColor ] { url = "http://package.elm-lang.org/packages/lucamug/elm-styleguide-generator/1.0.1", label = text "elm-styleguide-generator" }
             , text ". So "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = text "No HTML, No CSS, No Javascript" }
+            , link [ Font.color conf.linkColor ] { url = "https://medium.com/@l.mugnaini/is-the-future-of-front-end-development-without-html-css-and-javascript-e7bb0877980e", label = text "No HTML, No CSS, No Javascript" }
             , text "."
             ]
         , paragraph []
             [ text "Code: "
-            , link [ Font.color Framework2.Color.elmOrange ] { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "elm-spa-boilerplate" }
+            , link [ Font.color conf.linkColor ] { url = "https://github.com/lucamug/elm-spa-boilerplate", label = text "elm-spa-boilerplate" }
             , text "."
             ]
         , h3 [] <| text "Ajax request example"
@@ -656,10 +619,11 @@ viewTop model =
             NoData ->
                 column []
                     [ paragraph []
-                        [ Framework2.Button.largeImportant
+                        [ Button.button [ Modifiers.Primary ]
+                            (Just
+                                (FetchApiData "https://httpbin.org/delay/1")
+                            )
                             "My IP is..."
-                          <|
-                            Just (FetchApiData "https://httpbin.org/delay/1")
                         ]
                     , paragraph [] [ text <| "Your IP is ..." ]
                     ]
@@ -667,9 +631,9 @@ viewTop model =
             Fetching ->
                 column []
                     [ paragraph []
-                        [ Framework2.Button.largeWithSpinner
-                            "My IP is..."
+                        [ Button.button []
                             Nothing
+                            "My IP is..."
                         ]
                     , paragraph [] [ text <| "Your IP is ..." ]
                     ]
@@ -677,11 +641,11 @@ viewTop model =
             Fetched ip ->
                 column []
                     [ paragraph []
-                        [ Framework2.Button.largeImportant
-                            "My IP is..."
-                          <|
-                            Just <|
+                        [ Button.button []
+                            (Just <|
                                 FetchApiData "https://httpbin.org/delay/1"
+                            )
+                            "My IP is..."
                         ]
                     , paragraph [] [ text <| "Your IP is " ++ ip ]
                     ]
@@ -689,7 +653,7 @@ viewTop model =
         , paragraph [] [ text "Example of local storage implementation using flags and ports. The value in the input field below is automatically read and written into localStorage.spa." ]
         , Input.text
             [ Border.width 1
-            , Border.color <| Framework2.Color.font
+            , Border.color <| conf.fontColor
             , Border.rounded 10
             , padding 8
             ]
@@ -702,58 +666,13 @@ viewTop model =
                         [ paddingEach { top = 8, right = 20, bottom = 8, left = 0 }
                         ]
                         [ text "Local Storage" ]
-            , notice = Nothing
             }
         ]
 
 
-introduction : Element msg
-introduction =
-    el [ paddingXY 0 20, alignLeft ] <|
-        paragraph []
-            [ text "This is a "
-            , link [ Font.color Framework2.Color.elmOrange ]
-                { url = "https://medium.com/@l.mugnaini/zero-maintenance-always-up-to-date-living-style-guide-in-elm-dbf236d07522"
-                , label = text "Living Style Guide"
-                }
-            , text " of "
-            , link [ Font.color Framework2.Color.elmOrange ]
-                { url = "https://github.com/lucamug/elm-style-framework"
-                , label = text "elm-style-framework"
-                }
-            , text " (built on top of "
-            , link [ Font.color Framework2.Color.elmOrange ]
-                { url = "http://package.elm-lang.org/packages/mdgriffith/stylish-elephants/4.0.0/Element"
-                , label = text "style-elements v.4.alpha"
-                }
-            , text ") automatically generated from Elm code using "
-            , link [ Font.color Framework2.Color.elmOrange ]
-                { url = "https://github.com/lucamug/elm-styleguide-generator"
-                , label = text "elm-styleguide-generator"
-                }
-            , text "."
-            ]
-
-
 viewFramework : Model -> Element Msg
 viewFramework model =
-    column []
-        [ introduction
-        , Styleguide.viewSections model.styleguide |> Element.map Styleguide
-        ]
-
-
-viewStyleguide : Model -> Element Msg
-viewStyleguide model =
-    column []
-        [ introduction
-        , Styleguide.viewSections model.styleguide2 |> Element.map Styleguide2
-        ]
-
-
-viewStyleguide2 : Model -> Element Msg
-viewStyleguide2 model =
-    el [] <| text "This Style Guide is not available. Check the new one under \"Style Guide\""
+    Element.map MsgFramework (Framework.viewPage Nothing model.modelFramework)
 
 
 viewSitemap : Model -> Element Msg
@@ -865,7 +784,7 @@ viewMade with by =
                 [ Hack.styleElement ".made-by:hover .made-by-spin {transform: rotate(0deg);}"
                 , text "made with "
                 , el
-                    [ Font.color <| Framework2.Color.red
+                    [ Font.color <| color Primary
                     , rotate <| degrees 60
                     , padding 4
                     , Hack.class "made-by-spin"
@@ -896,7 +815,7 @@ header level attributes child =
          , Font.size fontSize
          , paddingEach { top = fontSize, right = 0, bottom = fontSize, left = 0 }
          , alignLeft
-         , Font.weight 800
+         , Font.bold
          ]
             ++ attributes
         )

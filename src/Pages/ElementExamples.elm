@@ -2,9 +2,9 @@ module Pages.ElementExamples exposing (view)
 
 import Color exposing (..)
 import Element exposing (..)
-import Element.Area as Area
 import Element.Background as Background
 import Element.Font as Font
+import Element.Region as Area
 
 
 view : a -> Element msg
@@ -93,14 +93,14 @@ view model =
         --
         , section "Nearby Elements"
         , code "row [ height px 80 ] [ el [ below ], el ]"
-        , row (height (px 80) :: attrCont) [ el [ below True (el attrB <| text "below") ] (el attrA dummyT) ]
-        , row (height (px 80) :: attrCont) [ el [ above True (el attrB <| text "above") ] (el attrA dummyT) ]
-        , row (height (px 80) :: attrCont) [ el [ onRight True (el attrB <| text "onRight") ] (el attrA dummyT) ]
-        , row (height (px 80) :: attrCont) [ el [ onLeft True (el attrB <| text "onLeft") ] (el attrA dummyT) ]
-        , row (height (px 80) :: attrCont) [ el [ inFront True (el attrB <| text "inFront") ] (el attrA dummyT) ]
-        , row (height (px 80) :: attrCont) [ el [ behind True (el attrB <| text "behind") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ below (el attrB <| text "below") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ above (el attrB <| text "above") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ onRight (el attrB <| text "onRight") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ onLeft (el attrB <| text "onLeft") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ inFront (el attrB <| text "inFront") ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ behind (el attrB <| text "behind") ] (el attrA dummyT) ]
         , code "row [ height px 80 ] [ el [ below [ onRight ] ] ]"
-        , row (height (px 80) :: attrCont) [ el [ below True (el [ onRight True (el attrC <| text "onRight") ] (el attrB <| text "below")) ] (el attrA dummyT) ]
+        , row (height (px 80) :: attrCont) [ el [ below (el [ onRight (el attrC <| text "onRight") ] (el attrB <| text "below")) ] (el attrA dummyT) ]
 
         --
         , section "row with many items (non wrapping, is not working with \"width fill\" so it needs fixed with otherwise doesn't fit in the parent element. The elements are centered...)"
@@ -132,8 +132,8 @@ view model =
         , row attrCont [ el (attrA ++ [ moveUp 5 ]) <| text "moveUp", el (attrA ++ [ moveDown 5 ]) <| text "moveDown" ]
         , row attrCont [ el (attrA ++ [ moveLeft 5 ]) <| text "moveLeft", el (attrA ++ [ moveRight 5 ]) <| text "moveRight" ]
         , row attrCont [ el (attrA ++ [ rotate <| pi / 4 ]) <| text "rotate", el (attrA ++ [ scale 0.7 ]) <| text "scale" ]
-        , row attrCont [ el (attrA ++ [ scale 0.7, mouseOverScale 1.2 ]) <| text "mouseOverScale" ]
 
+        --, row attrCont [ el (attrA ++ [ scale 0.7, mouseOverScale 1.2 ]) <| text "mouseOverScale" ]
         --
         , section "Paragraph"
         , code "paragraph [] [ text, text, text ]"
@@ -160,7 +160,7 @@ view model =
 
         --
         , section "Attributes"
-        , row attrCont [ el (attrA ++ [ description "description" ]) <| text "description", el (attrA ++ [ pointer ]) <| text "pointer" ]
+        , row attrCont [ el (attrA ++ [ Area.description "description" ]) <| text "description", el (attrA ++ [ pointer ]) <| text "pointer" ]
 
         --
         , section "Tables"
