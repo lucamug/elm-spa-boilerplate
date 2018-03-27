@@ -25,6 +25,15 @@ import Element exposing (..)
 
 {-| Used to generate the [Style Guide](https://lucamug.github.io/elm-style-framework/)
 -}
+introspection :
+    { boxed : Bool
+    , description : String
+    , name : String
+    , signature : String
+    , usage : String
+    , usageResult : Element msg
+    , variations : List ( String, List ( Element msg1, String ) )
+    }
 introspection =
     { name = "Style-Elements"
     , signature = ""
@@ -51,8 +60,8 @@ introspection =
             , ( downloadAs [] { url = "http://example.com", label = text "downloadAs", filename = "filename" }, """downloadAs [] { url = "http://example.com", label = text "downloadAs", filename = "filename" }""" )
 
             --, ( image [] { src = "http://placekitten.com/100/100", description = "description" }, """image [] { src = "https://placebear.com/300/200", description = "description" }""" )
-            , ( image [] { src = "http://via.placeholder.com/200x100/ff3399/000", description = "description" }, """image [] { src = "http://via.placeholder.com/200x100/ff3399/000", description = "description" }""" )
-            , ( decorativeImage [] { src = "http://via.placeholder.com/200x100/ff3399/000" }, """decorativeImage [] { src = "http://via.placeholder.com/200x100/ff3399/000" }""" )
+            , ( image [] { src = "//via.placeholder.com/200x100/ff3399/000", description = "description" }, """image [] { src = "//via.placeholder.com/200x100/ff3399/000", description = "description" }""" )
+            , ( decorativeImage [] { src = "//via.placeholder.com/200x100/ff3399/000" }, """decorativeImage [] { src = "//via.placeholder.com/200x100/ff3399/000" }""" )
             ]
           )
         ]

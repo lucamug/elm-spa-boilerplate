@@ -15,6 +15,7 @@ import Framework.Button as Button
 import Framework.Color exposing (Color(..), color)
 import Framework.Modifiers as Modifiers
 import Html
+import Html.Attributes
 import Html.Events
 import Http
 import Json.Decode as Decode
@@ -23,6 +24,28 @@ import Pages.ElementExamples
 import Pages.ElementInputExamples
 import UrlParser exposing ((</>))
 import Window
+
+
+-- CONFIGURATION
+
+
+conf :
+    { colorBackground : Color.Color
+    , colorOnBackground : Color.Color
+    , linkColor : Color.Color
+    , fontColor : Color.Color
+    , title : String
+    , menuBreakPoint : Int
+    }
+conf =
+    { colorBackground = color GrayLight
+    , colorOnBackground = color Black
+    , fontColor = color GrayDark
+    , linkColor = color Info
+    , title = "Elm Spa Boilerplate"
+    , menuBreakPoint = 900
+    }
+
 
 
 -- ROUTES
@@ -232,7 +255,6 @@ type alias Model =
     , history : List String
     , apiData : ApiData
     , location : Navigation.Location
-    , title : String
     , localStorage : String
     , packVersion : String
     , packElmVersion : String
@@ -249,7 +271,7 @@ modelIntrospection model =
     , ( toString model.history, "history" )
     , ( toString model.apiData, "apiData" )
     , ( toString model.location, "location" )
-    , ( toString model.title, "title" )
+    , ( toString conf.title, "title" )
     , ( toString model.localStorage, "localStorage" )
     , ( toString model.packVersion, "packVersion" )
     , ( toString model.packElmVersion, "packElmVersion" )
@@ -297,7 +319,7 @@ update msg model =
                     location.pathname :: model.history
 
                 newTitle =
-                    routeName newRoute ++ " - " ++ model.title
+                    routeName newRoute ++ " - " ++ conf.title
             in
             ( { model | route = newRoute, history = newHistory, location = location }
             , urlChange newTitle
@@ -346,7 +368,6 @@ initModel flag location =
     , modelFramework = model
     , apiData = NoData
     , location = location
-    , title = "Spa Boilerplate"
     , localStorage = flag.localStorage
     , packVersion = flag.packVersion
     , packElmVersion = flag.packElmVersion
@@ -415,7 +436,7 @@ viewLinkMenu model route =
             routePathJoined route
 
         common =
-            if model.device.width < menuBreakPoint then
+            if model.device.width < conf.menuBreakPoint then
                 [ padding 10
                 , width fill
                 ]
@@ -450,7 +471,7 @@ viewMenu model =
                 (\route -> viewLinkMenu model route)
                 routes
     in
-    if model.device.width < menuBreakPoint then
+    if model.device.width < conf.menuBreakPoint then
         column
             [ Background.color conf.colorBackground
             , Font.color conf.colorOnBackground
@@ -476,7 +497,7 @@ viewTopPart model =
             , Font.shadow { offset = ( 1, 0 ), blur = 1, color = color Black }
             ]
           <|
-            text model.title
+            text conf.title
         ]
 
 
@@ -492,30 +513,11 @@ viewMiddlePart model =
             ]
 
 
-menuBreakPoint : Int
-menuBreakPoint =
-    900
-
-
-conf :
-    { colorBackground : Color.Color
-    , colorOnBackground : Color.Color
-    , linkColor : Color.Color
-    , fontColor : Color.Color
-    }
-conf =
-    { colorBackground = color GrayLight
-    , colorOnBackground = color Black
-    , fontColor = color GrayDark
-    , linkColor = color Info
-    }
-
-
 viewFooter : Model -> Element msg
 viewFooter model =
     let
         element =
-            if model.device.width < menuBreakPoint then
+            if model.device.width < conf.menuBreakPoint then
                 column
             else
                 row
@@ -535,18 +537,13 @@ viewFooter model =
         ]
 
 
+hackInLineStyle : String -> String -> Attribute msg
+hackInLineStyle text1 text2 =
+    Element.htmlAttribute (Html.Attributes.style [ ( text1, text2 ) ])
+
+
 view : Model -> Html.Html Msg
 view model =
-    {- layoutWith
-       { options =
-           [ focusStyle
-               { borderColor = Just <| Framework.Color.color Framework.Color.Warning
-               , backgroundColor = Just <| Framework.Color.color Framework.Color.Warning
-               , shadow = Nothing
-               }
-           ]
-       }
-    -}
     layoutWith
         { options =
             [ focusStyle
@@ -557,12 +554,25 @@ view model =
             ]
         }
         [ Font.family
-            [ Font.typeface "Source Sans Pro"
+            [ Font.external
+                { name = "Noto Sans"
+                , url = "https://fonts.googleapis.com/css?family=Noto+Sans"
+                }
+            , Font.typeface "Noto Sans"
             , Font.sansSerif
             ]
         , Font.size 16
         , Font.color conf.fontColor
         , Background.color <| color White
+        , Element.inFront <|
+            link
+                [ alignRight
+                , Font.color <| color Primary
+                , hackInLineStyle "position" "fixed"
+                ]
+                { label = image [ width <| px 60, alpha 0.5 ] { src = "/github.png", description = "Fork me on Github" }
+                , url = "https://github.com/lucamug/elm-spa-boilerplate"
+                }
         ]
     <|
         column []
