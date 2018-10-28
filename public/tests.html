@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#fb0000">
+    <title>Tests</title>
+    <meta name="description" content="Tests" />
+    <style>
+        body {
+            margin: 0px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Click the button to get your coordinates.</p>
+
+    <button onclick="vibrate()">Vibrate</button>
+    <button onclick="playSound()">Play Sound</button>
+
+    <pre id="demo"></pre>
+
+    <iframe frameborder="0" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d810.7150395348118!2d139.7!3d35.6311738170428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sjp!4v1540691800885"></iframe>
+    <iframe frameborder="0" src="https://www.openstreetmap.org/export/embed.html?bbox=139,35,140,36" style="border: 1px solid black"></iframe>
+
+
+    <script>
+        var x = document.getElementById("demo");
+        var positions = [];
+
+
+        var audio = new Audio('sound.mp3');
+
+        function playSound() {
+            audio.play();
+        }
+
+        function vibrate() {
+            window.navigator.vibrate([200]);
+        }
+
+        if (navigator.geolocation) {
+            console.log("navigator.geolocation exists");
+            navigator.geolocation.watchPosition(function(position, error) {
+                console.log("xxx", position, error);
+                positions.push(position);
+                x.innerHTML = positions.map(function(position) {
+                    return showPosition(position);
+                }).join("\n\n");
+
+            })
+        } else {
+            console.log("navigator.geolocation not available");
+        }
+
+
+        function showPosition(position) {
+            return "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+        }
+
+        function showMap(position) {
+            var latlon = position.coords.latitude + "," + position.coords.longitude;
+            var img_url = "http://staticmap.openstreetmap.de/staticmap.php?center=" + position.coords.latitude + ",-73.998672&zoom=14&size=865x512&maptype=mapnik";
+            document.getElementById("mapholder").innerHTML = "<img src='" + img_url + "'>";
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+    <noscript>
+        You need to enable JavaScript to run this app.
+    </noscript>
+    <script>
+    </script>
+</body>
+
+</html>
